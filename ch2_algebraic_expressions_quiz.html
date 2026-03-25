@@ -1,0 +1,281 @@
+
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Advanced HTML Quiz – অধ্যায় ২: বীজগাণিতিক রাশি</title>
+  <style>
+    :root{ --blue:#2563eb; --green:#039855; --yellow:#ca8a04; --red:#dc2626; --bg:#0b1020; --card:#0f172a; --muted:#94a3b8; --text:#e2e8f0; --accent:#22d3ee; }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:ui-sans-serif,-apple-system,Segoe UI,Roboto,'Noto Sans Bengali','Noto Sans','SolaimanLipi',Arial,sans-serif;background:#0b1020;color:var(--text);}
+    header{position:sticky;top:0;z-index:50;background:rgba(11,16,32,.75);backdrop-filter:blur(8px);border-bottom:1px solid rgba(148,163,184,.2);}
+    .wrap{max-width:1000px;margin:0 auto;padding:14px 16px;}
+    h1{margin:0;font-size:22px}
+    .pill{padding:6px 10px;border:1px solid rgba(255,255,255,.1);border-radius:999px;color:var(--muted);}
+    .meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+    .progress{height:10px;background:rgba(148,163,184,.2);border-radius:999px;overflow:hidden;margin-top:10px}
+    .progress>div{height:100%;width:0;background:linear-gradient(90deg,var(--accent),#60a5fa)}
+    main{padding:22px 0 130px}
+    .card{background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.02));border:1px solid rgba(148,163,184,.2);border-radius:16px;padding:18px;box-shadow:0 10px 35px rgba(0,0,0,.35);}
+    .q-badge{padding:6px 10px;border-radius:999px;color:#fff;font-weight:700}
+    .q-badge[data-level="Knowledge"]{background:var(--blue)}
+    .q-badge[data-level="Comprehension"]{background:var(--green)}
+    .q-badge[data-level="Application"]{background:var(--yellow); color:#111827}
+    .q-badge[data-level="Higher"]{background:var(--red)}
+    .qtext{font-size:18px;line-height:1.55;margin:10px 0 12px}
+    .options{display:grid;gap:10px}
+    .opt{display:flex;gap:10px;padding:12px;border:1px solid rgba(148,163,184,.25);border-radius:12px;background:rgba(2,6,23,.4);cursor:pointer}
+    .nav{display:flex;justify-content:space-between;align-items:center;margin-top:14px}
+    button{appearance:none;border:none;border-radius:12px;padding:10px 14px;font-weight:700;cursor:pointer;background:linear-gradient(180deg,#22d3ee,#1ea7be);color:#042026;box-shadow:0 10px 25px rgba(34,211,238,.3)}
+    button.secondary{background:rgba(148,163,184,.15);color:var(--text);box-shadow:none;border:1px solid rgba(148,163,184,.25)}
+    button.danger{background:linear-gradient(180deg,#f43f5e,#e11d48);color:#fff}
+    .small{font-size:13px;color:var(--muted)}
+    .hidden{display:none!important}
+    .results{display:grid;gap:16px}
+    .grid2{display:grid;grid-template-columns:1fr;gap:16px}
+    @media(min-width:900px){ .grid2{grid-template-columns:1.2fr .8fr} }
+    table{width:100%;border-collapse:collapse;border-radius:12px;overflow:hidden}
+    th,td{padding:10px 12px;border-bottom:1px solid rgba(148,163,184,.2);text-align:left}
+    th{background:rgba(148,163,184,.15)}
+    .ok{color:#22c55e;font-weight:700}.bad{color:#f43f5e;font-weight:700}.neutral{color:#eab308;font-weight:700}
+    canvas{background:rgba(255,255,255,.03);border:1px dashed rgba(148,163,184,.25);border-radius:12px}
+    footer{position:fixed;bottom:0;left:0;right:0;background:rgba(11,16,32,.85);backdrop-filter:blur(8px);border-top:1px solid rgba(148,163,184,.18)}
+    .footer-inner{max-width:1000px;margin:0 auto;display:flex;gap:10px;align-items:center;justify-content:space-between;padding:10px 16px}
+    .legend span{padding:6px 10px;border-radius:999px;border:1px solid rgba(148,163,184,.2)}
+    .l-blue{background:var(--blue);color:#fff}.l-green{background:var(--green);color:#fff}.l-yellow{background:var(--yellow);color:#111827}.l-red{background:var(--red);color:#fff}
+    .mini{display:flex;align-items:center;gap:8px}
+    .mini canvas{width:200px;height:70px}
+    @media print { header, footer, .nav, .meta, .legend {display:none !important} body{background:#fff;color:#111827} .card{border:1px solid #ddd;box-shadow:none} }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <h1>Advanced HTML Quiz · অধ্যায় ২: বীজগাণিতিক রাশি</h1>
+      <div class="meta">
+        <span class="pill">⏳ টাইমার: <span class="timer" id="timer">90:00</span></span>
+        <span class="pill">🔀 শাফল অন</span>
+        <span class="pill">➖ ভুলে −0.25</span>
+        <span class="pill">💾 অটো-সেভ</span>
+        <button class="secondary" id="pdfBtn">🖨 PDF</button>
+      </div>
+      <div class="progress"><div id="bar"></div></div>
+    </div>
+  </header>
+  <main class="wrap">
+    <section id="quiz-card" class="card">
+      <div class="question-header" style="display:flex;justify-content:space-between;align-items:center;gap:12px">
+        <div>
+          <div id="qBadge" class="q-badge" data-level="Knowledge">Knowledge</div>
+          <div class="small">প্রশ্ন <span id="qNum">1</span> / <span id="qTotal">100</span></div>
+        </div>
+        <div class="mini">
+          <span class="small">প্রশ্ন-পর প্রশ্ন ছোট চার্ট</span>
+          <canvas id="mini" width="200" height="70"></canvas>
+        </div>
+      </div>
+      <div class="qtext" id="qText">Loading…</div>
+      <div class="options" id="options"></div>
+      <div class="nav">
+        <button class="secondary" id="prevBtn">⬅ পূর্বের</button>
+        <div>
+          <button class="secondary" id="resetBtn">🔄 রিসেট</button>
+          <button class="secondary" id="saveBtn">💾 সেভ</button>
+        </div>
+        <button id="nextBtn">পরবর্তী ➡</button>
+      </div>
+    </section>
+
+    <section id="results" class="card hidden">
+      <div class="results">
+        <div class="grid2">
+          <div>
+            <h2>📋 ফলাফল ও রিপোর্ট</h2>
+            <table>
+              <tbody>
+                <tr><th>মোট প্রশ্ন</th><td id="sumTotal">—</td></tr>
+                <tr><th>সঠিক</th><td id="sumRight">—</td></tr>
+                <tr><th>ভুল</th><td id="sumWrong">—</td></tr>
+                <tr><th>ফাঁকা</th><td id="sumBlank">—</td></tr>
+                <tr><th>নেগেটিভ</th><td id="sumNeg">—</td></tr>
+                <tr><th>ফাইনাল স্কোর</th><td id="sumScore">—</td></tr>
+                <tr><th>সময় লেগেছে</th><td id="sumTime">—</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div>
+            <h3>📊 Bloom স্তরভিত্তিক চার্ট</h3>
+            <canvas id="chart" width="500" height="320"></canvas>
+          </div>
+        </div>
+        <h3>ব্যাখ্যাসহ উত্তর তালিকা</h3>
+        <table>
+          <thead><tr><th>#</th><th>স্তর</th><th>প্রশ্ন</th><th>আপনার</th><th>সঠিক</th><th>স্ট্যাটাস</th><th>ব্যাখ্যা</th></tr></thead>
+          <tbody id="expBody"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <div class="footer-inner">
+      <div class="legend">
+        <span class="l-blue">🔵 জ্ঞানমূলক</span>
+        <span class="l-green">🟢 অনুধাবন</span>
+        <span class="l-yellow">🟡 প্রয়োগ</span>
+        <span class="l-red">🔴 উচ্চতর</span>
+      </div>
+      <button id="submitBtn" class="danger">✅ সাবমিট</button>
+    </div>
+  </footer>
+  <script>
+    const STORAGE_KEY = "ch2_algebraic_expressions_quiz_v1";
+    const QUESTIONS = [{"level": "Knowledge", "text": "(a+b)³ এর বিস্তৃতি", "options": ["a³+3a²b+3ab²+b³", "a³+b³+3ab(a+b)", "(a+b)²(a−b)", "উপরের কোনোটিই নয়"], "correct": 0, "expl": "দ্বিপদ বিস্তৃতি।"}, {"level": "Knowledge", "text": "(a−b)³ এর বিস্তৃতি", "options": ["a³−3a²b+3ab²−b³", "a³−b³", "(a−b)²", "উপরের কোনোটিই নয়"], "correct": 0, "expl": "দ্বিপদ বিস্তৃতি।"}, {"level": "Knowledge", "text": "a³+b³ এর উৎপাদক", "options": ["(a+b)(a²−ab+b²)", "(a+b)³", "(a−b)(a²+ab+b²)", "উপরের কোনোটিই নয়"], "correct": 0, "expl": "Sum of cubes।"}, {"level": "Knowledge", "text": "a³−b³ এর উৎপাদক", "options": ["(a−b)(a²+ab+b²)", "(a−b)³", "(a+b)(a²−ab+b²)", "উপরের কোনোটিই নয়"], "correct": 0, "expl": "Difference of cubes।"}, {"level": "Knowledge", "text": "x⁴−16 =", "options": ["(x²−4)(x²+4)", "(x−4)(x+4)", "(x²+4)²", "উপরের কোনোটিই নয়"], "correct": 0, "expl": "Difference of squares।"}, {"level": "Knowledge", "text": "x²−6x+9 =", "options": ["(x−3)²", "(x+3)²", "(x−3)(x+3)", "x−9"], "correct": 0, "expl": "Perfect square trinomial।"}, {"level": "Knowledge", "text": "x³+y³+z³−3xyz =", "options": ["(x+y+z)(x²+y²+z²−xy−yz−zx)", "(x+y+z)³", "(x+y)(y+z)(z+x)", "উপরের কোনোটিই নয়"], "correct": 0, "expl": "বিখ্যাত factorization।"}, {"level": "Knowledge", "text": "(a+b)ⁿ এর সাধারণ পদ Tʳ⁺¹", "options": ["C(n,r) aⁿ−ʳ bʳ", "C(n,r) aʳ bⁿ−ʳ", "C(r,n) aⁿ−ʳ bʳ", "nC1 · aⁿ"], "correct": 0, "expl": "Tᵣ₊₁ = C(n,r) aⁿ⁻ʳ bʳ।"}, {"level": "Knowledge", "text": "a⁴−b⁴ =", "options": ["(a²−b²) (a²+b²)", "(a−b)⁴", "(a+b)²(a−b)²", "উপরের কোনোটিই নয়"], "correct": 0, "expl": "a⁴−b⁴=(a²−b²)(a²+b²)।"}, {"level": "Knowledge", "text": "(a+b)² =", "options": ["a²+2ab+b²", "a²−2ab+b²", "(a−b)²", "(a+b)³"], "correct": 0, "expl": "দ্বিপদ বর্গ।"}, {"level": "Comprehension", "text": "নিম্নের কোনটি সঠিক factorization?", "options": ["a³+b³=(a+b)(a²−ab+b²)", "a³−b³=(a+b)(a²−ab+b²)", "x⁴−16=(x−4)(x+4)", "(x−3)²=x²+6x+9"], "correct": 0, "expl": "প্রথমটি সঠিক; তৃতীয়টি অসম্পূর্ণ।"}, {"level": "Comprehension", "text": "(a+b)³ এর 'factor form' কোনটি?", "options": ["a³+b³+3ab(a+b)", "(a+b)²(a−b)", "(a−b)³", "a³−b³"], "correct": 0, "expl": "পরিচিতি a³+b³+3ab(a+b)।"}, {"level": "Comprehension", "text": "x⁴−16 এর সম্পূর্ণ ভাঙন:", "options": ["(x−2)(x+2)(x²+4)", "(x−4)(x+4)", "(x²−4)", "(x²+4)"], "correct": 0, "expl": "দুই ধাপ: (x²−4)(x²+4) ⇒ (x−2)(x+2)(x²+4)।"}, {"level": "Comprehension", "text": "x²−6x+9 এর রুট:", "options": ["x=3 (দ্বিগুণ)", "x=±3", "x=−3", "কোনোটিই নয়"], "correct": 0, "expl": "(x−3)² ⇒ double root 3।"}, {"level": "Comprehension", "text": "x³+y³+z³−3xyz শূন্য হবে যদি", "options": ["x+y+z=0", "xy+yz+zx=0", "x=y=z", "উপরের কোনোটিই নয়"], "correct": 0, "expl": "x+y+z=0 হলে মান 0।"}, {"level": "Comprehension", "text": "(a+b)ⁿ এ পদসংখ্যা", "options": ["n+1", "n", "n−1", "2n"], "correct": 0, "expl": "০ থেকে n ⇒ n+1 টি।"}, {"level": "Comprehension", "text": "মধ্যপদের সহগ (1+x)¹⁰", "options": ["C(10,5)", "C(10,4)", "C(10,6)", "C(10,1)"], "correct": 0, "expl": "জোড় n ⇒ n/2।"}, {"level": "Application", "text": "( 5x + 5 )⁵ এ x⁴ এর সহগ", "options": ["15625", "15627", "15623", "15635"], "correct": 0, "expl": "সহগ = C(5,4) · 5ʳ · 5ⁿ⁻ʳ = 15625।"}, {"level": "Application", "text": "(a+b)ⁿ এর সাধারণ পদ Tʳ⁺¹", "options": ["C(n,r) aⁿ−ʳ bʳ", "C(n,r) aʳ bⁿ−ʳ", "C(r,n) aⁿ−ʳ bʳ", "nC1 · aⁿ"], "correct": 0, "expl": "Tᵣ₊₁ = C(n,r) aⁿ⁻ʳ bʳ।"}, {"level": "Application", "text": "x² − 6x + 9 এর উৎপাদকরূপ", "options": ["(x−3)²", "(x+3)²", "(x−3)(x+3)", "(x−6)(x+3)"], "correct": 0, "expl": "Perfect square: (x−p)²।"}, {"level": "Application", "text": "( 1x + 2 )³ এর মান x=2 এ", "options": ["64", "67", "60", "74"], "correct": 0, "expl": "( 1·2+2 )³ = 64।"}, {"level": "Application", "text": "x⁴ − 16 এর সম্পূর্ণ উৎপাদক", "options": ["(x−2)(x+2)(x²+4)", "(x−2)(x+2)", "(x²−4)", "(x²+4)²"], "correct": 0, "expl": "দুই ধাপে difference of squares।"}, {"level": "Application", "text": "5³+3³ এর factorization", "options": ["(5+3)(5²−15+3²)", "(5−3)(5²+15+3²)", "(5+3)³", "উপরের কোনোটিই নয়"], "correct": 0, "expl": "Sum of cubes।"}, {"level": "Application", "text": "(x−3)³ − (x−5)³ সরলীকরণ", "options": ["6x² − 48x + 98", "-6x² + 48x − 98", "6x²", "-48x + 98"], "correct": 0, "expl": "বিস্তার করে: 6x² − 48x + 98।"}, {"level": "Application", "text": "a+b=2, ab=1 ⇒ a³+b³ এর মান", "options": ["2", "5", "-1", "8"], "correct": 0, "expl": "a³+b³=(a+b)³−3ab(a+b)।"}, {"level": "Application", "text": "x+y+z=0 হলে x³+y³+z³−3xyz এর মান", "options": ["0", "xyz", "(x+y+z)³", "x³+y³"], "correct": 0, "expl": "শর্ত x+y+z=0 ⇒ মান 0।"}, {"level": "Application", "text": "(1+2x)⁶ এ x¹ এর সহগ", "options": ["12", "24", "17", "11"], "correct": 0, "expl": "সহগ = C(6,1)·(2)ᵏ = 12।"}, {"level": "Higher", "text": "প্রমাণের কৌশল: x³+y³+z³−3xyz = (x+y+z)(...) — সবচেয়ে সরাসরি পদ্ধতি", "options": ["পরিচিত identity স্মরণ বা পলিনোমিয়াল ভাগ", "সাংখ্যিক পরীক্ষা", "গ্রাফিক পদ্ধতি", "উপরের কোনোটিই নয়"], "correct": 0, "expl": "Factorization recall/division।"}, {"level": "Higher", "text": "(a+b)ⁿ থেকে (a−b)ⁿ এ চিহ্ন-পরিবর্তন", "options": ["r বিজোড় ⇒ চিহ্ন ঋণাত্মক; r জোড় ⇒ ধনাত্মক", "সব পদ ঋণাত্মক", "সব পদ ধনাত্মক", "কোনোটিই নয়"], "correct": 0, "expl": "b→−b বসালে alternation।"}, {"level": "Higher", "text": "(x−1)³+(x+1)³ — ফল", "options": ["even পলিনোমিয়াল (শুধু even ঘাত)", "odd পলিনোমিয়াল", "শুধু ধ্রুবক", "লিনিয়ার"], "correct": 0, "expl": "odd ঘাত কেটে যায়।"}, {"level": "Higher", "text": "যদি x+y+z=0, তবে (x+y+z)³−3(x+y)(y+z)(z+x) =", "options": ["−3xyz", "0", "3xyz", "xyz"], "correct": 0, "expl": "পরিচিত সমতা।"}, {"level": "Higher", "text": "a,b>0 হলে (a+b)³ ≥ a³+b³ — কারণ", "options": ["মিশ্র পদ 3ab(a+b) ≥ 0", "AM≥GM", "ত্রিভুজ অসমতা", "উপরের কোনোটিই নয়"], "correct": 0, "expl": "মিশ্র পদ ধনাত্মক।"}, {"level": "Higher", "text": "x⁴−16 সম্পূর্ণ উৎপাদক", "options": ["(x−2)(x+2)(x²+4)", "(x−4)(x+4)", "(x²+4)²", "উপরের কোনোটিই নয়"], "correct": 0, "expl": "পূর্ণ ভাঙন প্রথমটি।"}, {"level": "Higher", "text": "n জোড় হলে (1−x)ⁿ এর মধ্যপদের চিহ্ন", "options": ["ধনাত্মক", "ঋণাত্মক", "শূন্য", "নির্ধারিত নয়"], "correct": 0, "expl": "C(n,n/2)(−x)ⁿ/² তে n/2 জোড় হলে ধনাত্মক।"}, {"level": "Higher", "text": "a³−b³ | aⁿ−bⁿ (n বিজোড়) — প্রমাণ কৌশল", "options": ["ইন্ডাকশন/ইউক্লিডীয় ভাগ", "শুধু সাংখ্যিক পরীক্ষা", "গ্রাফ", "উপরের কোনোটিই নয়"], "correct": 0, "expl": "বিয়োগের গুণনীয়কতা।"}, {"level": "Higher", "text": "x,y,z বাস্তব; x+y+z=0 ⇒ x²+y²+z² ≥ xy+yz+zx — কারণ", "options": ["(x−y)²+(y−z)²+(z−x)² ≥ 0", "AM-GM", "Cauchy", "উপরের কোনোটিই নয়"], "correct": 0, "expl": "পরিচিত অসাম্য বিস্তার।"}, {"level": "Higher", "text": "(x−3)² divides x²−6x+9 — ব্যাখ্যা", "options": ["ডাবল রুট 3", "সাধারণ রুট", "রুট নেই", "অপর্যাপ্ত তথ্য"], "correct": 0, "expl": "Perfect square ⇒ multiplicity 2।"}, {"level": "Application", "text": "(a+b)ⁿ এর সাধারণ পদ Tʳ⁺¹", "options": ["C(n,r) aⁿ−ʳ bʳ", "C(n,r) aʳ bⁿ−ʳ", "C(r,n) aⁿ−ʳ bʳ", "nC1 · aⁿ"], "correct": 0, "expl": "Tᵣ₊₁ = C(n,r) aⁿ⁻ʳ bʳ।"}, {"level": "Application", "text": "x² − 4x + 4 এর উৎপাদকরূপ", "options": ["(x−2)²", "(x+2)²", "(x−2)(x+2)", "(x−4)(x+2)"], "correct": 0, "expl": "Perfect square: (x−p)²।"}, {"level": "Application", "text": "x⁴ − 16 এর সম্পূর্ণ উৎপাদক", "options": ["(x−2)(x+2)(x²+4)", "(x−2)(x+2)", "(x²−4)", "(x²+4)²"], "correct": 0, "expl": "দুই ধাপে difference of squares।"}, {"level": "Application", "text": "(a+b)ⁿ এর সাধারণ পদ Tʳ⁺¹", "options": ["C(n,r) aⁿ−ʳ bʳ", "C(n,r) aʳ bⁿ−ʳ", "C(r,n) aⁿ−ʳ bʳ", "nC1 · aⁿ"], "correct": 0, "expl": "Tᵣ₊₁ = C(n,r) aⁿ⁻ʳ bʳ।"}, {"level": "Application", "text": "x+y+z=0 হলে x³+y³+z³−3xyz এর মান", "options": ["0", "xyz", "(x+y+z)³", "x³+y³"], "correct": 0, "expl": "শর্ত x+y+z=0 ⇒ মান 0।"}, {"level": "Application", "text": "( 2x + 2 )⁶ এ x² এর সহগ", "options": ["960", "967", "958", "970"], "correct": 0, "expl": "সহগ = C(6,2) · 2ʳ · 2ⁿ⁻ʳ = 960।"}, {"level": "Application", "text": "a+b=8, ab=7 ⇒ a³+b³ এর মান", "options": ["344", "347", "341", "350"], "correct": 0, "expl": "a³+b³=(a+b)³−3ab(a+b)।"}, {"level": "Application", "text": "6³+6³ এর factorization", "options": ["(6+6)(6²−36+6²)", "(6−6)(6²+36+6²)", "(6+6)³", "উপরের কোনোটিই নয়"], "correct": 0, "expl": "Sum of cubes।"}, {"level": "Application", "text": "( 5x + 1 )³ এর মান x=1 এ", "options": ["216", "221", "207", "226"], "correct": 0, "expl": "( 5·1+1 )³ = 216।"}, {"level": "Application", "text": "(a+b)ⁿ এর সাধারণ পদ Tʳ⁺¹", "options": ["C(n,r) aⁿ−ʳ bʳ", "C(n,r) aʳ bⁿ−ʳ", "C(r,n) aⁿ−ʳ bʳ", "nC1 · aⁿ"], "correct": 0, "expl": "Tᵣ₊₁ = C(n,r) aⁿ⁻ʳ bʳ।"}, {"level": "Application", "text": "1³+3³ এর factorization", "options": ["(1+3)(1²−3+3²)", "(1−3)(1²+3+3²)", "(1+3)³", "উপরের কোনোটিই নয়"], "correct": 0, "expl": "Sum of cubes।"}, {"level": "Application", "text": "x⁴ − 16 এর সম্পূর্ণ উৎপাদক", "options": ["(x−2)(x+2)(x²+4)", "(x−2)(x+2)", "(x²−4)", "(x²+4)²"], "correct": 0, "expl": "দুই ধাপে difference of squares।"}, {"level": "Application", "text": "(1+2x)⁷ এ x¹ এর সহগ", "options": ["14", "28", "19", "13"], "correct": 0, "expl": "সহগ = C(7,1)·(2)ᵏ = 14।"}, {"level": "Application", "text": "( 1x + 3 )⁵ এ x³ এর সহগ", "options": ["90", "96", "83", "100"], "correct": 0, "expl": "সহগ = C(5,3) · 1ʳ · 3ⁿ⁻ʳ = 90।"}, {"level": "Application", "text": "( 2x + 3 )³ এর মান x=1 এ", "options": ["125", "126", "121", "135"], "correct": 0, "expl": "( 2·1+3 )³ = 125।"}, {"level": "Application", "text": "x⁴ − 625 এর সম্পূর্ণ উৎপাদক", "options": ["(x−5)(x+5)(x²+25)", "(x−5)(x+5)", "(x²−25)", "(x²+25)²"], "correct": 0, "expl": "দুই ধাপে difference of squares।"}, {"level": "Application", "text": "x+y+z=0 হলে x³+y³+z³−3xyz এর মান", "options": ["0", "xyz", "(x+y+z)³", "x³+y³"], "correct": 0, "expl": "শর্ত x+y+z=0 ⇒ মান 0।"}, {"level": "Application", "text": "(1+2x)⁶ এ x¹ এর সহগ", "options": ["12", "24", "17", "11"], "correct": 0, "expl": "সহগ = C(6,1)·(2)ᵏ = 12।"}, {"level": "Application", "text": "( 2x + 3 )⁴ এ x³ এর সহগ", "options": ["96", "98", "95", "106"], "correct": 0, "expl": "সহগ = C(4,3) · 2ʳ · 3ⁿ⁻ʳ = 96।"}, {"level": "Application", "text": "(a+b)ⁿ এর সাধারণ পদ Tʳ⁺¹", "options": ["C(n,r) aⁿ−ʳ bʳ", "C(n,r) aʳ bⁿ−ʳ", "C(r,n) aⁿ−ʳ bʳ", "nC1 · aⁿ"], "correct": 0, "expl": "Tᵣ₊₁ = C(n,r) aⁿ⁻ʳ bʳ।"}, {"level": "Application", "text": "(1+2x)⁷ এ x² এর সহগ", "options": ["84", "168", "89", "83"], "correct": 0, "expl": "সহগ = C(7,2)·(2)ᵏ = 84।"}, {"level": "Application", "text": "x⁴ − 1296 এর সম্পূর্ণ উৎপাদক", "options": ["(x−6)(x+6)(x²+36)", "(x−6)(x+6)", "(x²−36)", "(x²+36)²"], "correct": 0, "expl": "দুই ধাপে difference of squares।"}, {"level": "Application", "text": "( 3x + 1 )⁵ এ x³ এর সহগ", "options": ["270", "273", "263", "280"], "correct": 0, "expl": "সহগ = C(5,3) · 3ʳ · 1ⁿ⁻ʳ = 270।"}, {"level": "Application", "text": "(x−4)³ − (x−3)³ সরলীকরণ", "options": ["-3x² + 21x − 37", "3x² − 21x + 37", "-3x²", "21x + -37"], "correct": 0, "expl": "বিস্তার করে: -3x² + 21x − 37।"}, {"level": "Application", "text": "( 1x + 4 )³ এর মান x=4 এ", "options": ["512", "516", "503", "522"], "correct": 0, "expl": "( 1·4+4 )³ = 512।"}, {"level": "Application", "text": "(1+2x)⁶ এ x² এর সহগ", "options": ["60", "120", "65", "59"], "correct": 0, "expl": "সহগ = C(6,2)·(2)ᵏ = 60।"}, {"level": "Knowledge", "text": "a³+b³ এর উৎপাদক", "options": ["(a+b)(a²−ab+b²)", "(a+b)³", "(a−b)(a²+ab+b²)", "উপরের কোনোটিই নয়"], "correct": 0, "expl": "Sum of cubes।"}, {"level": "Knowledge", "text": "a³+b³ এর উৎপাদক", "options": ["(a+b)(a²−ab+b²)", "(a+b)³", "(a−b)(a²+ab+b²)", "উপরের কোনোটিই নয়"], "correct": 0, "expl": "Sum of cubes।"}, {"level": "Knowledge", "text": "x⁴−16 =", "options": ["(x²−4)(x²+4)", "(x−4)(x+4)", "(x²+4)²", "উপরের কোনোটিই নয়"], "correct": 0, "expl": "Difference of squares।"}, {"level": "Knowledge", "text": "(a−b)³ এর বিস্তৃতি", "options": ["a³−3a²b+3ab²−b³", "a³−b³", "(a−b)²", "উপরের কোনোটিই নয়"], "correct": 0, "expl": "দ্বিপদ বিস্তৃতি।"}, {"level": "Knowledge", "text": "x³+y³+z³−3xyz =", "options": ["(x+y+z)(x²+y²+z²−xy−yz−zx)", "(x+y+z)³", "(x+y)(y+z)(z+x)", "উপরের কোনোটিই নয়"], "correct": 0, "expl": "বিখ্যাত factorization।"}, {"level": "Knowledge", "text": "a³+b³ এর উৎপাদক", "options": ["(a+b)(a²−ab+b²)", "(a+b)³", "(a−b)(a²+ab+b²)", "উপরের কোনোটিই নয়"], "correct": 0, "expl": "Sum of cubes।"}, {"level": "Knowledge", "text": "a³+b³ এর উৎপাদক", "options": ["(a+b)(a²−ab+b²)", "(a+b)³", "(a−b)(a²+ab+b²)", "উপরের কোনোটিই নয়"], "correct": 0, "expl": "Sum of cubes।"}, {"level": "Knowledge", "text": "(a+b)² =", "options": ["a²+2ab+b²", "a²−2ab+b²", "(a−b)²", "(a+b)³"], "correct": 0, "expl": "দ্বিপদ বর্গ।"}, {"level": "Knowledge", "text": "a⁴−b⁴ =", "options": ["(a²−b²) (a²+b²)", "(a−b)⁴", "(a+b)²(a−b)²", "উপরের কোনোটিই নয়"], "correct": 0, "expl": "a⁴−b⁴=(a²−b²)(a²+b²)।"}, {"level": "Knowledge", "text": "a⁴−b⁴ =", "options": ["(a²−b²) (a²+b²)", "(a−b)⁴", "(a+b)²(a−b)²", "উপরের কোনোটিই নয়"], "correct": 0, "expl": "a⁴−b⁴=(a²−b²)(a²+b²)।"}, {"level": "Knowledge", "text": "x²−6x+9 =", "options": ["(x−3)²", "(x+3)²", "(x−3)(x+3)", "x−9"], "correct": 0, "expl": "Perfect square trinomial।"}, {"level": "Knowledge", "text": "x³+y³+z³−3xyz =", "options": ["(x+y+z)(x²+y²+z²−xy−yz−zx)", "(x+y+z)³", "(x+y)(y+z)(z+x)", "উপরের কোনোটিই নয়"], "correct": 0, "expl": "বিখ্যাত factorization।"}, {"level": "Knowledge", "text": "(a+b)³ এর বিস্তৃতি", "options": ["a³+3a²b+3ab²+b³", "a³+b³+3ab(a+b)", "(a+b)²(a−b)", "উপরের কোনোটিই নয়"], "correct": 0, "expl": "দ্বিপদ বিস্তৃতি।"}, {"level": "Knowledge", "text": "(a+b)³ এর বিস্তৃতি", "options": ["a³+3a²b+3ab²+b³", "a³+b³+3ab(a+b)", "(a+b)²(a−b)", "উপরের কোনোটিই নয়"], "correct": 0, "expl": "দ্বিপদ বিস্তৃতি।"}, {"level": "Comprehension", "text": "x²−6x+9 এর রুট:", "options": ["x=3 (দ্বিগুণ)", "x=±3", "x=−3", "কোনোটিই নয়"], "correct": 0, "expl": "(x−3)² ⇒ double root 3।"}, {"level": "Comprehension", "text": "মধ্যপদের সহগ (1+x)¹⁰", "options": ["C(10,5)", "C(10,4)", "C(10,6)", "C(10,1)"], "correct": 0, "expl": "জোড় n ⇒ n/2।"}, {"level": "Comprehension", "text": "x³+y³+z³−3xyz শূন্য হবে যদি", "options": ["x+y+z=0", "xy+yz+zx=0", "x=y=z", "উপরের কোনোটিই নয়"], "correct": 0, "expl": "x+y+z=0 হলে মান 0।"}, {"level": "Comprehension", "text": "মধ্যপদের সহগ (1+x)¹⁰", "options": ["C(10,5)", "C(10,4)", "C(10,6)", "C(10,1)"], "correct": 0, "expl": "জোড় n ⇒ n/2।"}, {"level": "Comprehension", "text": "(a+b)ⁿ এ পদসংখ্যা", "options": ["n+1", "n", "n−1", "2n"], "correct": 0, "expl": "০ থেকে n ⇒ n+1 টি।"}, {"level": "Comprehension", "text": "x⁴−16 এর সম্পূর্ণ ভাঙন:", "options": ["(x−2)(x+2)(x²+4)", "(x−4)(x+4)", "(x²−4)", "(x²+4)"], "correct": 0, "expl": "দুই ধাপ: (x²−4)(x²+4) ⇒ (x−2)(x+2)(x²+4)।"}, {"level": "Comprehension", "text": "x⁴−16 এর সম্পূর্ণ ভাঙন:", "options": ["(x−2)(x+2)(x²+4)", "(x−4)(x+4)", "(x²−4)", "(x²+4)"], "correct": 0, "expl": "দুই ধাপ: (x²−4)(x²+4) ⇒ (x−2)(x+2)(x²+4)।"}, {"level": "Comprehension", "text": "x³+y³+z³−3xyz শূন্য হবে যদি", "options": ["x+y+z=0", "xy+yz+zx=0", "x=y=z", "উপরের কোনোটিই নয়"], "correct": 0, "expl": "x+y+z=0 হলে মান 0।"}, {"level": "Comprehension", "text": "x²−6x+9 এর রুট:", "options": ["x=3 (দ্বিগুণ)", "x=±3", "x=−3", "কোনোটিই নয়"], "correct": 0, "expl": "(x−3)² ⇒ double root 3।"}, {"level": "Comprehension", "text": "x²−6x+9 এর রুট:", "options": ["x=3 (দ্বিগুণ)", "x=±3", "x=−3", "কোনোটিই নয়"], "correct": 0, "expl": "(x−3)² ⇒ double root 3।"}, {"level": "Comprehension", "text": "x⁴−16 এর সম্পূর্ণ ভাঙন:", "options": ["(x−2)(x+2)(x²+4)", "(x−4)(x+4)", "(x²−4)", "(x²+4)"], "correct": 0, "expl": "দুই ধাপ: (x²−4)(x²+4) ⇒ (x−2)(x+2)(x²+4)।"}, {"level": "Comprehension", "text": "নিম্নের কোনটি সঠিক factorization?", "options": ["a³+b³=(a+b)(a²−ab+b²)", "a³−b³=(a+b)(a²−ab+b²)", "x⁴−16=(x−4)(x+4)", "(x−3)²=x²+6x+9"], "correct": 0, "expl": "প্রথমটি সঠিক; তৃতীয়টি অসম্পূর্ণ।"}, {"level": "Comprehension", "text": "x⁴−16 এর সম্পূর্ণ ভাঙন:", "options": ["(x−2)(x+2)(x²+4)", "(x−4)(x+4)", "(x²−4)", "(x²+4)"], "correct": 0, "expl": "দুই ধাপ: (x²−4)(x²+4) ⇒ (x−2)(x+2)(x²+4)।"}, {"level": "Higher", "text": "n জোড় হলে (1−x)ⁿ এর মধ্যপদের চিহ্ন", "options": ["ধনাত্মক", "ঋণাত্মক", "শূন্য", "নির্ধারিত নয়"], "correct": 0, "expl": "C(n,n/2)(−x)ⁿ/² তে n/2 জোড় হলে ধনাত্মক।"}, {"level": "Higher", "text": "a³−b³ | aⁿ−bⁿ (n বিজোড়) — প্রমাণ কৌশল", "options": ["ইন্ডাকশন/ইউক্লিডীয় ভাগ", "শুধু সাংখ্যিক পরীক্ষা", "গ্রাফ", "উপরের কোনোটিই নয়"], "correct": 0, "expl": "বিয়োগের গুণনীয়কতা।"}, {"level": "Higher", "text": "a,b>0 হলে (a+b)³ ≥ a³+b³ — কারণ", "options": ["মিশ্র পদ 3ab(a+b) ≥ 0", "AM≥GM", "ত্রিভুজ অসমতা", "উপরের কোনোটিই নয়"], "correct": 0, "expl": "মিশ্র পদ ধনাত্মক।"}, {"level": "Higher", "text": "(x−3)² divides x²−6x+9 — ব্যাখ্যা", "options": ["ডাবল রুট 3", "সাধারণ রুট", "রুট নেই", "অপর্যাপ্ত তথ্য"], "correct": 0, "expl": "Perfect square ⇒ multiplicity 2।"}, {"level": "Higher", "text": "x,y,z বাস্তব; x+y+z=0 ⇒ x²+y²+z² ≥ xy+yz+zx — কারণ", "options": ["(x−y)²+(y−z)²+(z−x)² ≥ 0", "AM-GM", "Cauchy", "উপরের কোনোটিই নয়"], "correct": 0, "expl": "পরিচিত অসাম্য বিস্তার।"}, {"level": "Higher", "text": "x⁴−16 সম্পূর্ণ উৎপাদক", "options": ["(x−2)(x+2)(x²+4)", "(x−4)(x+4)", "(x²+4)²", "উপরের কোনোটিই নয়"], "correct": 0, "expl": "পূর্ণ ভাঙন প্রথমটি।"}, {"level": "Higher", "text": "x⁴−16 সম্পূর্ণ উৎপাদক", "options": ["(x−2)(x+2)(x²+4)", "(x−4)(x+4)", "(x²+4)²", "উপরের কোনোটিই নয়"], "correct": 0, "expl": "পূর্ণ ভাঙন প্রথমটি।"}, {"level": "Higher", "text": "(x−3)² divides x²−6x+9 — ব্যাখ্যা", "options": ["ডাবল রুট 3", "সাধারণ রুট", "রুট নেই", "অপর্যাপ্ত তথ্য"], "correct": 0, "expl": "Perfect square ⇒ multiplicity 2।"}, {"level": "Higher", "text": "প্রমাণের কৌশল: x³+y³+z³−3xyz = (x+y+z)(...) — সবচেয়ে সরাসরি পদ্ধতি", "options": ["পরিচিত identity স্মরণ বা পলিনোমিয়াল ভাগ", "সাংখ্যিক পরীক্ষা", "গ্রাফিক পদ্ধতি", "উপরের কোনোটিই নয়"], "correct": 0, "expl": "Factorization recall/division।"}, {"level": "Higher", "text": "প্রমাণের কৌশল: x³+y³+z³−3xyz = (x+y+z)(...) — সবচেয়ে সরাসরি পদ্ধতি", "options": ["পরিচিত identity স্মরণ বা পলিনোমিয়াল ভাগ", "সাংখ্যিক পরীক্ষা", "গ্রাফিক পদ্ধতি", "উপরের কোনোটিই নয়"], "correct": 0, "expl": "Factorization recall/division।"}];
+    const TOTAL = QUESTIONS.length;
+
+    const $ = s=>document.querySelector(s);
+    const $$ = s=>Array.from(document.querySelectorAll(s));
+
+    let state = {order:[], answers:{}, current:0, remaining: 90*60, finished:false, startedAt: Date.now()};
+
+    function shuffle(arr){ for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]];} return arr; }
+    function formatTime(s){const m=String(Math.floor(s/60)).padStart(2,'0'); const r=String(s%60).padStart(2,'0'); return m+":"+r;}
+
+    function save(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+    function load(){
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if(raw){
+        try{ const obj=JSON.parse(raw); if(Array.isArray(obj.order)){ state = Object.assign(state,obj); } }catch(e){}
+      }
+      if(!state.order || state.order.length!==TOTAL){
+        state.order = shuffle([...Array(TOTAL).keys()]);
+        state.current = 0;
+        state.remaining = 90*60;
+        save();
+      }
+    }
+
+    function renderMini(){
+      const canvas = document.getElementById('mini'); const ctx = canvas.getContext('2d');
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      const answered = Object.keys(state.answers).length;
+      const right = Object.entries(state.answers).filter(([i,a])=>Number(a)===QUESTIONS[Number(i)].correct).length;
+      const wrong = answered - right;
+      const blank = TOTAL - answered;
+      const arr = [right, wrong, blank];
+      const colors = ['#22c55e','#f43f5e','#eab308'];
+      const W=canvas.width, H=canvas.height; const pad=6; const bw=(W-2*pad)/(arr.length*1.5);
+      ctx.strokeStyle='rgba(148,163,184,.5)'; ctx.strokeRect(pad,pad,W-2*pad,H-2*pad);
+      const max=Math.max(...arr,1);
+      arr.forEach((v,i)=>{
+        const x=pad+i*1.5*bw + 6;
+        const h=(v/max)*(H-2*pad-10);
+        ctx.fillStyle=colors[i];
+        ctx.fillRect(x, H-pad-h, bw, h);
+      });
+    }
+
+    function render(){
+      $('#qTotal').textContent = TOTAL;
+      $('#qNum').textContent = state.current+1;
+      $('#bar').style.width = ((state.current)/TOTAL*100)+'%';
+      const qIdx = state.order[state.current];
+      const q = QUESTIONS[qIdx];
+      const badge=$('#qBadge'); badge.dataset.level=q.level; badge.textContent=q.level;
+      $('#qText').innerHTML = q.text;
+      const opts=$('#options'); opts.innerHTML='';
+      q.options.forEach((op,i)=>{
+        const lbl=document.createElement('label'); lbl.className='opt';
+        lbl.innerHTML = `<input type="radio" name="q_${qIdx}" value="${i}"> <div>${op}</div>`;
+        opts.appendChild(lbl);
+      });
+      if(state.answers[qIdx]!=null){
+        const v=String(state.answers[qIdx]); const inp=$(`input[name="q_${qIdx}"][value="${v}"]`); if(inp) inp.checked=true;
+      }
+      $$('#options input[type="radio"]').forEach(inp=>{
+        inp.addEventListener('change',e=>{ state.answers[qIdx]=Number(e.target.value); save(); renderMini(); });
+      });
+      $('#prevBtn').disabled = state.current===0;
+      $('#nextBtn').textContent = state.current===TOTAL-1 ? 'শেষ ➡' : 'পরবর্তী ➡';
+      renderMini();
+    }
+
+    let timer=null;
+    function startTimer(){
+      if(timer) clearInterval(timer);
+      timer = setInterval(()=>{
+        if(state.finished){ clearInterval(timer); return; }
+        state.remaining=Math.max(0, state.remaining-1);
+        $('#timer').textContent = formatTime(state.remaining);
+        if(state.remaining===0){ submit(true); }
+        if(state.remaining%5===0) save();
+      },1000);
+    }
+
+    $('#prevBtn').addEventListener('click',()=>{ if(state.current>0){ state.current--; save(); render(); } });
+    $('#nextBtn').addEventListener('click',()=>{ if(state.current<TOTAL-1){ state.current++; save(); render(); } else { submit(false); } });
+    $('#resetBtn').addEventListener('click',()=>{ if(confirm('সব প্রগ্রেস মুছে ফেলবেন?')){ localStorage.removeItem(STORAGE_KEY); location.reload(); } });
+    $('#saveBtn').addEventListener('click',()=>{ save(); alert('✅ সেভ হয়েছে'); });
+    $('#submitBtn').addEventListener('click',()=> submit(false));
+    $('#pdfBtn').addEventListener('click',()=> window.print());
+
+    function submit(auto){
+      state.finished=true; save(); clearInterval(timer);
+      let right=0, wrong=0, blank=0;
+      const byLevel = {Knowledge:{total:0,right:0}, Comprehension:{total:0,right:0}, Application:{total:0,right:0}, Higher:{total:0,right:0}};
+      const exp=[];
+      QUESTIONS.forEach((q, i)=>{
+        byLevel[q.level].total++;
+        const a = state.answers[i];
+        const corr = q.correct;
+        let status='ফাঁকা', your='—', ok=false;
+        if(a==null){ blank++; }
+        else if(a===corr){ right++; status='সঠিক'; your=q.options[a]; ok=true; }
+        else { wrong++; status='ভুল'; your=q.options[a]; }
+        if(ok) byLevel[q.level].right++;
+        exp.push(`<tr><td>${i+1}</td><td>${q.level}</td><td>${q.text}</td><td>${your}</td><td>${q.options[corr]}</td><td class="${ok?'ok':(a==null?'neutral':'bad')}">${status}</td><td>${q.expl}</td></tr>`);
+      });
+      const score = right - 0.25*wrong;
+      $('#sumTotal').textContent = TOTAL;
+      $('#sumRight').textContent = right;
+      $('#sumWrong').textContent = wrong;
+      $('#sumBlank').textContent = blank;
+      $('#sumNeg').textContent = `−${(0.25*wrong).toFixed(2)}`;
+      $('#sumScore').textContent = `${score.toFixed(2)} / ${TOTAL}`;
+      const used = 90*60 - state.remaining; const m=Math.floor(used/60), s=used%60;
+      $('#sumTime').textContent = `${m} মিনিট ${s} সেকেন্ড`;
+      document.getElementById('expBody').innerHTML = exp.join('');
+
+      document.getElementById('quiz-card').classList.add('hidden');
+      document.getElementById('results').classList.remove('hidden');
+      $('#bar').style.width = '100%';
+      drawChart(byLevel);
+      window.scrollTo({top:0, behavior:'smooth'});
+    }
+
+    function drawChart(by){
+      const canvas=document.getElementById('chart'); const ctx=canvas.getContext('2d');
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      const labels=['Knowledge','Comprehension','Application','Higher'];
+      const totals=labels.map(l=>by[l].total), rights=labels.map(l=>by[l].right);
+      const pad=40, W=canvas.width, H=canvas.height; const gw=W-pad*2, gh=H-pad*2;
+      ctx.strokeStyle='rgba(148,163,184,.6)'; ctx.strokeRect(pad,pad,gw,gh);
+      const maxY=Math.max(...totals,1); const barW=gw/(labels.length*3);
+      const styles=getComputedStyle(document.documentElement);
+      const colors={Knowledge:styles.getPropertyValue('--blue').trim(),Comprehension:styles.getPropertyValue('--green').trim(),Application:styles.getPropertyValue('--yellow').trim(),Higher:styles.getPropertyValue('--red').trim()};
+      labels.forEach((lab,i)=>{
+        const x0=pad+i*3*barW+barW*0.5;
+        const t=totals[i], r=rights[i];
+        const htT=t/maxY*gh, htR=r/maxY*gh;
+        ctx.fillStyle='rgba(148,163,184,.35)'; ctx.fillRect(x0, pad+gh-htT, barW*.9, htT);
+        ctx.fillStyle=colors[lab]; ctx.fillRect(x0+barW, pad+gh-htR, barW*.9, htR);
+        ctx.fillStyle='#cbd5e1'; ctx.font='12px sans-serif'; ctx.textAlign='center'; ctx.fillText(lab, x0+barW*.5, H-10);
+      });
+      ctx.fillStyle='#cbd5e1'; ctx.font='12px sans-serif'; ctx.textAlign='left'; ctx.fillText('ফিকে = মোট, রঙিন = সঠিক', pad+8, pad-10);
+    }
+
+    function init(){ load(); render(); startTimer(); }
+    init();
+  </script>
+</body>
+</html>

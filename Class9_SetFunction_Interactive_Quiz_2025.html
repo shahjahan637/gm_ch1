@@ -1,0 +1,305 @@
+
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>অধ্যায় ১: সেট ও ফাংশন — ইন্টারঅ্যাকটিভ কুইজ (৩০ MCQ)</title>
+  <meta name="description" content="৯ম শ্রেণি উচ্চতর গণিত ২০২৫ — অধ্যায় ১: সেট ও ফাংশন। Bloom বণ্টনসহ ইন্টারঅ্যাকটিভ MCQ, ব্যাখ্যা ও ভেন ডায়াগ্রাম নির্দেশ।" />
+  <style>
+    :root{
+      --bg:#0f172a; --card:#111827; --text:#e5e7eb; --muted:#94a3b8;
+      --border:#1f2937; --chip:#1f2937; --chip-border:#374151;
+      --accent:#22c55e; --accent2:#60a5fa; --danger:#f87171;
+      --shadow:0 10px 25px rgba(0,0,0,.35); --radius:16px;
+    }
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--text);
+      font-family:"Noto Sans Bengali","Nirmala UI","SolaimanLipi",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;line-height:1.6;}
+    .container{max-width:1100px;margin:24px auto;padding:0 16px;}
+    header{background:linear-gradient(90deg,rgba(34,197,94,.15),rgba(96,165,250,.15));
+      padding:20px 16px;border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);}
+    h1{margin:0 0 6px 0;font-size:clamp(1.2rem,2.5vw,1.7rem);}
+    .meta{color:var(--muted);font-size:.95rem;display:flex;gap:12px;flex-wrap:wrap;}
+    .chip{display:inline-flex;gap:8px;align-items:center;background:var(--chip);border:1px solid var(--chip-border);
+      border-radius:999px;padding:6px 10px;font-size:.85rem;}
+    .controls{margin-top:14px;display:grid;grid-template-columns:repeat(12,1fr);gap:10px;}
+    .control{grid-column:span 12;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+    @media(min-width:720px){.control.cols-6{grid-column:span 6}.control.cols-3{grid-column:span 3}}
+    select,input[type=number],button{background:#0b1220;color:var(--text);border:1px solid var(--border);border-radius:10px;padding:10px 12px;font-size:.95rem}
+    .btn{cursor:pointer;transition:.05s transform,.2s box-shadow,.2s background;box-shadow:var(--shadow)}
+    .btn:hover{transform:translateY(-1px)}
+    .btn-primary{background:linear-gradient(90deg,rgba(34,197,94,.9),rgba(96,165,250,.9));border:none}
+    .btn-outline{background:transparent}
+    .btn-danger{background:rgba(248,113,113,.15);border-color:#ef4444}
+    .progress{margin-top:14px;padding:12px;border:1px dashed var(--chip-border);border-radius:12px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;background:#0b1220}
+    .dots{display:flex;gap:6px;flex-wrap:wrap}.dot{width:12px;height:12px;border-radius:50%;background:#334155;border:1px solid #475569}
+    .dot.correct{background:#16a34a;border-color:#16a34a}.dot.wrong{background:#ef4444;border-color:#ef4444}.dot.answered{background:#0284c7;border-color:#0284c7}
+    .quiz-area{margin-top:20px;display:grid;gap:14px}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px}
+    .qhead{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;flex-wrap:wrap}
+    .qtitle{font-weight:700;font-size:1.05rem}
+    .options{margin-top:8px;display:grid;gap:10px}
+    .opt{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--border);border-radius:12px;padding:10px;background:#0b1220}
+    .opt.correct{border-color:#16a34a;background:rgba(22,163,74,.08)} .opt.wrong{border-color:#ef4444;background:rgba(239,68,68,.08)}
+    .toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+    details.summary-box{margin-top:10px;background:#0b1220;border:1px solid var(--border);border-radius:12px;padding:10px 12px}
+    details.summary-box>summary{cursor:pointer;font-weight:700;color:var(--accent2)}
+    .hidden{display:none!important}
+    footer{opacity:.85;color:var(--muted);margin:28px 0 16px;text-align:center;font-size:.9rem}
+  </style>
+  <!-- MathJax -->
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)'],['$','$']]},svg:{fontCache:'global'},options:{skipHtmlTags:['script','noscript','style','textarea','pre']}};
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>অধ্যায় ১: সেট ও ফাংশন — ইন্টারঅ্যাকটিভ কুইজ</h1>
+    <div class="meta">
+      <span>শ্রেণি: ৯ম (উচ্চতর গণিত ২০২৫)</span>
+      <span>তারিখ: 2025-08-23</span>
+      <span class="chip">Bloom: জ্ঞান 30% · অনুধাবন 30% · প্রয়োগ 25% · বিশ্লেষণ 15%</span>
+    </div>
+    <div class="controls">
+      <div class="control cols-6">
+        <label for="filterBloom">ব্লুম স্তর:</label>
+        <select id="filterBloom">
+          <option value="all">সব</option>
+          <option value="Knowledge">জ্ঞান (Knowledge)</option>
+          <option value="Comprehension">অনুধাবন (Comprehension)</option>
+          <option value="Application">প্রয়োগ (Application)</option>
+          <option value="Analysis">বিশ্লেষণ (Analysis)</option>
+        </select>
+      </div>
+      <div class="control cols-3">
+        <label for="numQ">প্রশ্ন সংখ্যা:</label>
+        <input id="numQ" type="number" min="1" max="30" value="30" />
+      </div>
+      <div class="control cols-3">
+        <label><input id="shuffle" type="checkbox" /> শাফল</label>
+        <label><input id="immediateCheck" type="checkbox" checked /> তাৎক্ষণিক যাচাই</label>
+      </div>
+      <div class="control cols-6">
+        <button id="btnGenerate" class="btn btn-primary">Generate Quiz</button>
+        <button id="btnSubmitAll" class="btn btn-outline">Submit All</button>
+        <button id="btnReset" class="btn btn-danger">Reset</button>
+        <button id="btnPrint" class="btn btn-outline">Print / Save PDF</button>
+      </div>
+    </div>
+    <div class="progress">
+      <div>স্কোর: <span id="score">0</span> / <span id="total">0</span></div>
+      <div class="dots" id="dots"></div>
+    </div>
+  </header>
+
+  <main class="quiz-area" id="quizArea"></main>
+
+  <footer>ইন্টারঅ্যাকটিভ অফলাইন HTML · MathJax সমর্থিত · মোবাইল রেসপন্সিভ</footer>
+</div>
+
+<script>
+// ----------------- DATA: 30 MCQs -----------------
+const DATA = [
+  {id:1,bloom:"Knowledge",q:"A = {1,2,3}, B = {3,4,5} হলে A ∪ B কত?",opts:["{1,2,3,4,5}","{3}","{1,2}","{}"],ans:"a",
+    exp:"ঐক্য মানে উভয় সেটের সব স্বতন্ত্র উপাদান একত্রে: {1,2,3,4,5}.",hint:"ভেন ডায়াগ্রামে দুই বৃত্তের রঙ করা পূর্ণ অংশ।"},
+  {id:2,bloom:"Knowledge",q:"ফাংশনের ডোমেইন কী নির্দেশ করে?",opts:["ইনপুট মানের সেট","আউটপুট মানের সেট","সকল বাস্তব সংখ্যা","জটিল সংখ্যা"],ans:"a",
+    exp:"ডোমেইন = সম্ভাব্য ইনপুটের সেট।",hint:"x-অক্ষ বরাবর অনুমোদিত মানগুলো।"},
+  {id:3,bloom:"Knowledge",q:"রেঞ্জ হলো—",opts:["ইনপুট মান","আউটপুট মান","ধনাত্মক পূর্ণ সংখ্যা","যোগফল"],ans:"b",
+    exp:"রেঞ্জ = আউটপুটের সেট।",hint:"y-অক্ষ বরাবর প্রাপ্ত মানগুলো।"},
+  {id:4,bloom:"Knowledge",q:"A ∩ B নির্দেশ করে—",opts:["ঐক্য","ছেদ","পার্থক্য","কোনোটিই নয়"],ans:"b",
+    exp:"ছেদ = উভয় সেটে সাধারণ উপাদান।",hint:"ভেনের মাঝের মিলিত অঞ্চল।"},
+  {id:5,bloom:"Knowledge",q:"A = {x ∈ Z | x^2 < 10} এর মান হবে—",opts:["{-3,-2,-1,0,1,2,3}","{0,1,2,3}","{1,2,3}","{-2,-1,0,1,2}"],ans:"a",
+    exp:"x^2<10 ⇒ x=-3,-2,-1,0,1,2,3.",hint:"পূর্ণসংখ্যা যাদের বর্গ 10-এর কম।"},
+  {id:6,bloom:"Knowledge",q:"সমবায় (composition) ফাংশন কী?",opts:["দুটি ফাংশনের আউটপুট সমান","এক ফাংশনের আউটপুট অপর ফাংশনের ইনপুট","ফাংশনের যোগফল","কোনোটিই নয়"],ans:"b",
+    exp:"f∘g(x)=f(g(x))—একটির আউটপুট আরেকটির ইনপুট।",hint:"f(g(x)) বা g(f(x)) আকারে।"},
+  {id:7,bloom:"Knowledge",q:"f(x)=2x+1 হলে f(2) কত?",opts:["5","4","2","3"],ans:"a",
+    exp:"2×2+1=5.",hint:"সরাসরি প্রতিস্থাপন।"},
+  {id:8,bloom:"Knowledge",q:"g(x)=x^2-4 হলে g(3) কত?",opts:["9","5","-5","0"],ans:"b",
+    exp:"3^2-4=9-4=5.",hint:"সরাসরি প্রতিস্থাপন।"},
+  {id:9,bloom:"Knowledge",q:"ফাংশনের একক মান নীতি নিশ্চিত করে—",opts:["এক ইনপুটে এক আউটপুট","একাধিক আউটপুট","আউটপুট ধনাত্মক","ইনপুট পূর্ণসংখ্যা"],ans:"a",
+    exp:"প্রতিটি ইনপুটের জন্য ঠিক একটি আউটপুট।",hint:"Vertical line test ধারণা।"},
+
+  {id:10,bloom:"Comprehension",q:"A={1,2,3,4}, B={2,4,6} হলে (A\B) ∩ B কত?",opts:["{1,3}","{}","{2,4}","{6}"],ans:"b",
+    exp:"A\B={1,3}; সেটি B-এর সাথে ছেদ দিলে {}.",hint:"ভেন ডায়াগ্রামে B-এর বাইরের A-অংশ ও B-এর ছেদ।"},
+  {id:11,bloom:"Comprehension",q:"f(x)=2x+1, g(x)=x^2-4; f(g(x)) কত?",opts:["2x^2-7","2x^2+1","x^2-3","2x^2-5"],ans:"a",
+    exp:"f(g(x))=2(x^2-4)+1=2x^2-7.",hint:"ভিতর থেকে বাইরের দিকে প্রতিস্থাপন।"},
+  {id:12,bloom:"Comprehension",q:"ভেন চিত্রে তিন সেটের ক্ষেত্রে কয়টি পৃথক অঞ্চল হয়?",opts:["4","6","7","8"],ans:"d",
+    exp:"তিন বৃত্তের ছেদ-ঐক্যসহ মোট 8 অঞ্চল।",hint:"প্রতিটি ওভারল্যাপ গণনা।"},
+  {id:13,bloom:"Comprehension",q:"(A ∪ B)\(A ∩ B) কাকে নির্দেশ করে?",opts:["A\B","B\A","Symmetric Difference","কোনোটিই নয়"],ans:"c",
+    exp:"এটি A△B (Symmetric Difference).",hint:"শুধু অ-মিল অংশ।"},
+  {id:14,bloom:"Comprehension",q:"A⊆B মানে—",opts:["A-এর সব উপাদান B-তে","B-এর সব উপাদান A-তে","A=B","কোন মিল নেই"],ans:"a",
+    exp:"A-এর প্রতিটি উপাদান B-তে উপস্থিত।",hint:"Subset সংজ্ঞা।"},
+  {id:15,bloom:"Comprehension",q:"যদি A∩B=∅, তবে A ও B হলো—",opts:["Disjoint","Equal","Subset","Universal"],ans:"a",
+    exp:"ছেদ শূন্য ⇒ পরস্পর বিযুক্ত।",hint:"কোনো সাধারণ উপাদান নেই।"},
+  {id:16,bloom:"Comprehension",q:"U={1,2,3,4,5}, A={1,2}; তবে A’ কত?",opts:["{3,4,5}","{1,2}","{}","U"],ans:"a",
+    exp:"Complement U\A={3,4,5}.",hint:"সার্বিক সেট থেকে A বাদ।"},
+  {id:17,bloom:"Comprehension",q:"ঐক্যের সূত্র—",opts:["n(A∪B)=n(A)+n(B)-n(A∩B)","n(A∪B)=n(A)+n(B)","n(A∪B)=n(A)×n(B)","কোনোটিই নয়"],ans:"a",
+    exp:"ডাবল কাউন্টিং এড়াতে ছেদ বিয়োগ।",hint:"Inclusion-Exclusion।"},
+  {id:18,bloom:"Comprehension",q:"f:A→B, g:B→C হলে g∘f:A→C কী?",opts:["সমবায়","বিযুক্ত","সিমেট্রিক","কোনোটিই নয়"],ans:"a",
+    exp:"g(f(x))—সমবায় ফাংশন।",hint:"Arrow chasing: A→B→C।"},
+
+  {id:19,bloom:"Application",q:"A={1,2,3}, B={2,3,4}; A ∩ B=?",opts:["{1,2,3,4}","{2,3}","{1}","{}"],ans:"b",
+    exp:"উভয়ে সাধারণ {2,3}.",hint:"ভেনের মাঝখান।"},
+  {id:20,bloom:"Application",q:"f(x)=x^2-4; f(±2) কত?",opts:["0","-4","2","4"],ans:"a",
+    exp:"f(2)=0, f(-2)=0.",hint:"দুইটিই শূন্য দেয়।"},
+  {id:21,bloom:"Application",q:"f(x)=2x+1, g(x)=x^2-4; g(f(x)) কত?",opts:["(2x+1)^2-4","2x^2-3","(x^2+1)^2","(2x-1)^2"],ans:"a",
+    exp:"g(f(x))=(2x+1)^2-4.",hint:"প্রথমে f, পরে g।"},
+  {id:22,bloom:"Application",q:"f(x)=x^2; f(√5) কত?",opts:["5","25","√5","কোনোটিই নয়"],ans:"a",
+    exp:"(√5)^2=5.",hint:"বর্গ প্রয়োগ।"},
+  {id:23,bloom:"Application",q:"A={1,3,5}, B={2,4,6}; A ∪ B=?",opts:["{1,2,3,4,5,6}","{}","{1,3,5}","{2,4,6}"],ans:"a",
+    exp:"সমস্ত স্বতন্ত্র উপাদান একত্রে।",hint:"উভয় বৃত্তের পূর্ণ অংশ।"},
+  {id:24,bloom:"Application",q:"n(A)=10, n(B)=15, n(A∩B)=5; তবে n(A∪B)=?",opts:["30","25","20","15"],ans:"c",
+    exp:"10+15-5=20.",hint:"Inclusion-Exclusion সূত্র।"},
+  {id:25,bloom:"Application",q:"A={x∈N | x≤5}, B={x∈N | x<3}; A\B=?",opts:["{1,2}","{3,4,5}","{5}","{}"],ans:"b",
+    exp:"A={1,2,3,4,5}, B={1,2} ⇒ A\B={3,4,5}.",hint:"A থেকে B-এর উপাদান বাদ।"},
+  {id:26,bloom:"Application",q:"f(x)=2x; f(f(3)) কত?",opts:["6","12","3","18"],ans:"b",
+    exp:"f(3)=6 ⇒ f(6)=12.",hint:"দ্বিগুণের ওপর আবার দ্বিগুণ।"},
+
+  {id:27,bloom:"Analysis",q:"(A ∪ B)\(A ∩ B) সমান কী?",opts:["Symmetric Difference","Complement","Union","Intersection"],ans:"a",
+    exp:"এটি A△B: শুধুই অ-মিল অংশ।",hint:"ভেন ডায়াগ্রামে দুই পাশের অর্ধচন্দ্র।"},
+  {id:28,bloom:"Analysis",q:"একক মান নীতি ভঙ্গ হলে সেটি কী?",opts:["Relation","Function","Subset","Surjection"],ans:"a",
+    exp:"একই ইনপুটে বহু আউটপুট ⇒ Relation; Function নয়।",hint:"ফাংশনের সংজ্ঞা পরীক্ষা।"},
+  {id:29,bloom:"Analysis",q:"f:R→R, f(x)=x^2; f কি One–One?",opts:["হ্যাঁ","না","সবসময়","অজানা"],ans:"b",
+    exp:"f(a)=f(-a); a≠-a হলে একাধিক ইনপুট একই আউটপুট দেয়।",hint:"x ও -x একই y দেয়।"},
+  {id:30,bloom:"Analysis",q:"f(x)=x^2, g(x)=√x; g∘f(x) এর প্রকৃতি কী (R-এ)?",opts:["Identity","Onto but not One–one","One–one but not Onto","কোনোটিই নয়"],ans:"d",
+    exp:"g(f(x))=|x|; R-এ এটি Identity নয়, One–one নয় এবং Onto-ও নয় (ঋণাত্মকগুলো অনুপস্থিত)।",hint:"ডোমেইন-রেঞ্জ স্পষ্ট করো।"}
+];
+
+// ----------------- QUIZ LOGIC -----------------
+let quiz=[], score=0;
+const letterToIndex={a:0,b:1,c:2,d:3};
+
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a;}
+function makeDots(n){const d=document.getElementById('dots');d.innerHTML='';for(let i=0;i<n;i++){const e=document.createElement('div');e.className='dot';e.id='dot-'+i;d.appendChild(e);}}
+
+function renderQuiz(){
+  const area=document.getElementById('quizArea');
+  area.innerHTML='';
+  document.getElementById('total').textContent=quiz.length;
+  score=0; document.getElementById('score').textContent=score;
+  makeDots(quiz.length);
+
+  quiz.forEach((q,idx)=>{
+    const card=document.createElement('section'); card.className='card'; card.id='qcard-'+idx;
+    card.innerHTML=`
+      <div class="qhead">
+        <div class="qtitle">Q${idx+1}. ${q.q}</div>
+        <div class="qmeta">
+          <span class="chip">${q.bloom}</span>
+          <span class="chip">ID: ${q.id}</span>
+        </div>
+      </div>
+      <div class="options" role="group" aria-label="বিকল্পসমূহ">
+        ${q.opts.map((t,i)=>`
+          <label class="opt" id="q${idx}-opt${i}">
+            <input type="radio" name="q${idx}" value="${i}" aria-label="বিকল্প ${i+1}">
+            <span>(${['a','b','c','d'][i]}) ${t}</span>
+          </label>
+        `).join('')}
+      </div>
+      <div class="toolbar">
+        <button class="btn btn-outline" onclick="checkAnswer(${idx})">Check</button>
+        <button class="btn btn-outline" onclick="clearSelection(${idx})">Clear</button>
+      </div>
+      <details class="summary-box hidden" id="exp-${idx}">
+        <summary>ব্যাখ্যা ও নির্দেশ</summary>
+        <div class="feedback"><strong>ব্যাখ্যা:</strong> ${q.exp}</div>
+        <div class="feedback"><strong>ভিজ্যুয়াল নির্দেশ:</strong> ${q.hint}</div>
+      </details>`;
+    area.appendChild(card);
+  });
+
+  if (window.MathJax && window.MathJax.typeset) window.MathJax.typeset();
+}
+
+function clearSelection(idx){
+  document.querySelectorAll(`input[name="q${idx}"]`).forEach(r=>r.checked=false);
+  document.querySelectorAll(`#qcard-${idx} .opt`).forEach(el=>el.classList.remove('correct','wrong'));
+  document.getElementById('exp-'+idx).classList.add('hidden');
+  const dot=document.getElementById('dot-'+idx); dot.classList.remove('correct','wrong','answered');
+}
+
+function recalcScore(){
+  let s=0;
+  quiz.forEach((qq,ii)=>{
+    const rr=document.querySelector(`input[name="q${ii}"]:checked`);
+    if(!rr) return;
+    if(parseInt(rr.value)===letterToIndex[qq.ans]) s++;
+  });
+  score=s; document.getElementById('score').textContent=score;
+}
+
+function checkAnswer(idx){
+  const q=quiz[idx];
+  const radios=document.querySelectorAll(`input[name="q${idx}"]`);
+  let chosen=-1; radios.forEach((r,i)=>{if(r.checked) chosen=i;});
+  if(chosen===-1) return;
+
+  const ci=letterToIndex[q.ans];
+  const opts=document.querySelectorAll(`#qcard-${idx} .opt`);
+  opts.forEach((el,i)=>{
+    el.classList.remove('correct','wrong');
+    if(i===chosen && i===ci) el.classList.add('correct');
+    else if(i===chosen && i!==ci) el.classList.add('wrong');
+  });
+  const dot=document.getElementById('dot-'+idx);
+  dot.classList.remove('correct','wrong','answered');
+  dot.classList.add(chosen===ci?'correct':'wrong');
+
+  document.getElementById('exp-'+idx).classList.remove('hidden');
+  recalcScore();
+  if (window.MathJax && window.MathJax.typesetPromise) window.MathJax.typesetPromise();
+}
+
+function submitAll(){
+  quiz.forEach((q,idx)=>{
+    const rr=document.querySelector(`input[name="q${idx}"]:checked`);
+    const ci=letterToIndex[q.ans];
+    const dot=document.getElementById('dot-'+idx);
+    if(!rr) dot.classList.add('answered'); else dot.classList.add(parseInt(rr.value)===ci?'correct':'wrong');
+    document.getElementById('exp-'+idx).classList.remove('hidden');
+  });
+  recalcScore();
+  if (window.MathJax && window.MathJax.typesetPromise) window.MathJax.typesetPromise();
+}
+
+function generateQuiz(){
+  const level=document.getElementById('filterBloom').value;
+  const numQ=Math.min(30,Math.max(1,parseInt(document.getElementById('numQ').value||'30')));
+  let candidates=DATA.slice();
+  if(level!=='all') candidates=candidates.filter(x=>x.bloom===level);
+  if(document.getElementById('shuffle').checked) shuffle(candidates);
+  quiz=candidates.slice(0,numQ);
+  renderQuiz();
+  setTimeout(()=>{
+    quiz.forEach((q,idx)=>{
+      document.querySelectorAll(`input[name="q${idx}"]`).forEach(r=>{
+        r.addEventListener('change',()=>{
+          if(document.getElementById('immediateCheck').checked) checkAnswer(idx);
+          else document.getElementById('dot-'+idx).classList.add('answered');
+        });
+      });
+    });
+  },0);
+}
+
+function resetQuiz(){
+  quiz=[];
+  document.getElementById('quizArea').innerHTML='';
+  document.getElementById('score').textContent=0;
+  document.getElementById('total').textContent=0;
+  document.getElementById('dots').innerHTML='';
+}
+
+document.getElementById('btnGenerate').addEventListener('click',generateQuiz);
+document.getElementById('btnSubmitAll').addEventListener('click',submitAll);
+document.getElementById('btnReset').addEventListener('click',resetQuiz);
+document.getElementById('btnPrint').addEventListener('click',()=>window.print());
+
+// init
+generateQuiz();
+</script>
+</body>
+</html>

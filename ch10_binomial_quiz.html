@@ -1,0 +1,281 @@
+
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Advanced HTML Quiz – অধ্যায় ১০: দ্বিপদ বিস্তৃতি</title>
+  <style>
+    :root{ --blue:#2563eb; --green:#039855; --yellow:#ca8a04; --red:#dc2626; --bg:#0b1020; --card:#0f172a; --muted:#94a3b8; --text:#e2e8f0; --accent:#22d3ee; }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:ui-sans-serif,-apple-system,Segoe UI,Roboto,'Noto Sans Bengali','Noto Sans','SolaimanLipi',Arial,sans-serif;background:#0b1020;color:var(--text);}
+    header{position:sticky;top:0;z-index:50;background:rgba(11,16,32,.75);backdrop-filter:blur(8px);border-bottom:1px solid rgba(148,163,184,.2);}
+    .wrap{max-width:1000px;margin:0 auto;padding:14px 16px;}
+    h1{margin:0;font-size:22px}
+    .pill{padding:6px 10px;border:1px solid rgba(255,255,255,.1);border-radius:999px;color:var(--muted);}
+    .meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+    .progress{height:10px;background:rgba(148,163,184,.2);border-radius:999px;overflow:hidden;margin-top:10px}
+    .progress>div{height:100%;width:0;background:linear-gradient(90deg,var(--accent),#60a5fa)}
+    main{padding:22px 0 130px}
+    .card{background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.02));border:1px solid rgba(148,163,184,.2);border-radius:16px;padding:18px;box-shadow:0 10px 35px rgba(0,0,0,.35);}
+    .q-badge{padding:6px 10px;border-radius:999px;color:#fff;font-weight:700}
+    .q-badge[data-level="Knowledge"]{background:var(--blue)}
+    .q-badge[data-level="Comprehension"]{background:var(--green)}
+    .q-badge[data-level="Application"]{background:var(--yellow); color:#111827}
+    .q-badge[data-level="Higher"]{background:var(--red)}
+    .qtext{font-size:18px;line-height:1.55;margin:10px 0 12px}
+    .options{display:grid;gap:10px}
+    .opt{display:flex;gap:10px;padding:12px;border:1px solid rgba(148,163,184,.25);border-radius:12px;background:rgba(2,6,23,.4);cursor:pointer}
+    .nav{display:flex;justify-content:space-between;align-items:center;margin-top:14px}
+    button{appearance:none;border:none;border-radius:12px;padding:10px 14px;font-weight:700;cursor:pointer;background:linear-gradient(180deg,#22d3ee,#1ea7be);color:#042026;box-shadow:0 10px 25px rgba(34,211,238,.3)}
+    button.secondary{background:rgba(148,163,184,.15);color:var(--text);box-shadow:none;border:1px solid rgba(148,163,184,.25)}
+    button.danger{background:linear-gradient(180deg,#f43f5e,#e11d48);color:#fff}
+    .small{font-size:13px;color:var(--muted)}
+    .hidden{display:none!important}
+    .results{display:grid;gap:16px}
+    .grid2{display:grid;grid-template-columns:1fr;gap:16px}
+    @media(min-width:900px){ .grid2{grid-template-columns:1.2fr .8fr} }
+    table{width:100%;border-collapse:collapse;border-radius:12px;overflow:hidden}
+    th,td{padding:10px 12px;border-bottom:1px solid rgba(148,163,184,.2);text-align:left}
+    th{background:rgba(148,163,184,.15)}
+    .ok{color:#22c55e;font-weight:700}.bad{color:#f43f5e;font-weight:700}.neutral{color:#eab308;font-weight:700}
+    canvas{background:rgba(255,255,255,.03);border:1px dashed rgba(148,163,184,.25);border-radius:12px}
+    footer{position:fixed;bottom:0;left:0;right:0;background:rgba(11,16,32,.85);backdrop-filter:blur(8px);border-top:1px solid rgba(148,163,184,.18)}
+    .footer-inner{max-width:1000px;margin:0 auto;display:flex;gap:10px;align-items:center;justify-content:space-between;padding:10px 16px}
+    .legend span{padding:6px 10px;border-radius:999px;border:1px solid rgba(148,163,184,.2)}
+    .l-blue{background:var(--blue);color:#fff}.l-green{background:var(--green);color:#fff}.l-yellow{background:var(--yellow);color:#111827}.l-red{background:var(--red);color:#fff}
+    .mini{display:flex;align-items:center;gap:8px}
+    .mini canvas{width:200px;height:70px}
+    @media print { header, footer, .nav, .meta, .legend {display:none !important} body{background:#fff;color:#111827} .card{border:1px solid #ddd;box-shadow:none} }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <h1>Advanced HTML Quiz · অধ্যায় ১০: দ্বিপদ বিস্তৃতি</h1>
+      <div class="meta">
+        <span class="pill">⏳ টাইমার: <span class="timer" id="timer">90:00</span></span>
+        <span class="pill">🔀 শাফল অন</span>
+        <span class="pill">➖ ভুলে −0.25</span>
+        <span class="pill">💾 অটো-সেভ</span>
+        <button class="secondary" id="pdfBtn">🖨 PDF</button>
+      </div>
+      <div class="progress"><div id="bar"></div></div>
+    </div>
+  </header>
+  <main class="wrap">
+    <section id="quiz-card" class="card">
+      <div class="question-header" style="display:flex;justify-content:space-between;align-items:center;gap:12px">
+        <div>
+          <div id="qBadge" class="q-badge" data-level="Knowledge">Knowledge</div>
+          <div class="small">প্রশ্ন <span id="qNum">1</span> / <span id="qTotal">100</span></div>
+        </div>
+        <div class="mini">
+          <span class="small">প্রশ্ন-পর প্রশ্ন ছোট চার্ট</span>
+          <canvas id="mini" width="200" height="70"></canvas>
+        </div>
+      </div>
+      <div class="qtext" id="qText">Loading…</div>
+      <div class="options" id="options"></div>
+      <div class="nav">
+        <button class="secondary" id="prevBtn">⬅ পূর্বের</button>
+        <div>
+          <button class="secondary" id="resetBtn">🔄 রিসেট</button>
+          <button class="secondary" id="saveBtn">💾 সেভ</button>
+        </div>
+        <button id="nextBtn">পরবর্তী ➡</button>
+      </div>
+    </section>
+
+    <section id="results" class="card hidden">
+      <div class="results">
+        <div class="grid2">
+          <div>
+            <h2>📋 ফলাফল ও রিপোর্ট</h2>
+            <table>
+              <tbody>
+                <tr><th>মোট প্রশ্ন</th><td id="sumTotal">—</td></tr>
+                <tr><th>সঠিক</th><td id="sumRight">—</td></tr>
+                <tr><th>ভুল</th><td id="sumWrong">—</td></tr>
+                <tr><th>ফাঁকা</th><td id="sumBlank">—</td></tr>
+                <tr><th>নেগেটিভ</th><td id="sumNeg">—</td></tr>
+                <tr><th>ফাইনাল স্কোর</th><td id="sumScore">—</td></tr>
+                <tr><th>সময় লেগেছে</th><td id="sumTime">—</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div>
+            <h3>📊 Bloom স্তরভিত্তিক চার্ট</h3>
+            <canvas id="chart" width="500" height="320"></canvas>
+          </div>
+        </div>
+        <h3>ব্যাখ্যাসহ উত্তর তালিকা</h3>
+        <table>
+          <thead><tr><th>#</th><th>স্তর</th><th>প্রশ্ন</th><th>আপনার</th><th>সঠিক</th><th>স্ট্যাটাস</th><th>ব্যাখ্যা</th></tr></thead>
+          <tbody id="expBody"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <div class="footer-inner">
+      <div class="legend">
+        <span class="l-blue">🔵 জ্ঞানমূলক</span>
+        <span class="l-green">🟢 অনুধাবন</span>
+        <span class="l-yellow">🟡 প্রয়োগ</span>
+        <span class="l-red">🔴 উচ্চতর</span>
+      </div>
+      <button id="submitBtn" class="danger">✅ সাবমিট</button>
+    </div>
+  </footer>
+  <script>
+    const STORAGE_KEY = "ch10_binomial_quiz_v1";
+    const QUESTIONS = [{"level": "Knowledge", "text": "দ্বিপদ বিস্তৃতির সাধারণ পদ Tʳ⁺¹ = ?", "options": ["nCr · aⁿ−ʳ · bʳ", "nPr · aʳ · bⁿ−ʳ", "nCr · aʳ · bⁿ−ʳ", "nC(n−r) · aⁿ · bʳ"], "correct": 0, "expl": "Tᵣ₊₁ = nCr · aⁿ⁻ʳ · bʳ।"}, {"level": "Application", "text": "(x+y)⁴ এর বিস্তৃতিতে মোট পদ সংখ্যা কত?", "options": ["5", "4", "6", "8"], "correct": 0, "expl": "(n+1)=5।"}, {"level": "Application", "text": "(x−y)⁵ এর প্রথম তিনটি পদ =", "options": ["x⁵ − 5x⁴y + 10x³y²", "x⁵ + 5x⁴y + 10x³y²", "x⁵ − 5x⁴y − 10x³y²", "x⁵ − 10x⁴y + 5x³y²"], "correct": 0, "expl": "−y বসালে চিহ্ন পাল্টাবে।"}, {"level": "Application", "text": "n=6, r=3 ⇒ nCr = ?", "options": ["20", "15", "18", "10"], "correct": 0, "expl": "6C3=20।"}, {"level": "Application", "text": "(a+b)⁶ এর ৪র্থ পদ =", "options": ["6C3·a³b³", "6C3·a⁴b²", "6C2·a⁴b²", "6C4·a²b⁴"], "correct": 1, "expl": "T₄ ⇒ r=3 ⇒ a⁴b², সহগ 6C3।"}, {"level": "Application", "text": "(x−3)⁴ এর ৩য় পদ =", "options": ["4C2·x²·(−3)²", "4C1·x·(−3)", "4C3·x·(−27)", "4C2·x·(−3)"], "correct": 0, "expl": "T₃: 4C2·x²·(−3)² = 6·9 = 54x²।"}, {"level": "Application", "text": "(2x+3)³ বিস্তৃতির ধ্রুবক পদ =", "options": ["27", "12x", "8x³", "18x"], "correct": 0, "expl": "ধ্রুবক ⇒ r=3 ⇒ 3³।"}, {"level": "Comprehension", "text": "x⁴ − 16 কে বিশ্লেষণ ⇒", "options": ["(x²−4)(x²+4)", "(x−4)(x+4)", "(x−2)(x+8)", "(x²−8)(x²+2)"], "correct": 0, "expl": "বর্গের অন্তর।"}, {"level": "Application", "text": "(1+x)⁵ এ ধ্রুবক ছাড়া সহগসমষ্টি =", "options": ["31", "32", "30", "5"], "correct": 0, "expl": "f(1)−ধ্রুবক=32−1=31।"}, {"level": "Application", "text": "(a+b)⁸ এর ৫ম পদ =", "options": ["8C4·a⁴b⁴", "8C5·a³b⁵", "8C3·a⁵b³", "8C4·a⁵b⁴"], "correct": 0, "expl": "T₅ ⇒ r=4 ⇒ a⁴b⁴; সহগ 8C4।"}, {"level": "Knowledge", "text": "nCr = ?", "options": ["nC(n−r)", "nPr", "(n−r)Cr", "n+rCr"], "correct": 0, "expl": "সিমেট্রি।"}, {"level": "Knowledge", "text": "Σ nCr (r=0..n) =", "options": ["2ⁿ", "n", "n!", "0"], "correct": 0, "expl": "(1+1)ⁿ।"}, {"level": "Knowledge", "text": "nC1 =", "options": ["n", "1", "n!", "n−1"], "correct": 0, "expl": "n।"}, {"level": "Knowledge", "text": "nCn =", "options": ["1", "n", "n!", "0"], "correct": 0, "expl": "1।"}, {"level": "Knowledge", "text": "n জোড় হলে মধ্যম পদ সংখ্যা", "options": ["একটি", "দুটি", "তিনটি", "কোনোটিই নয়"], "correct": 0, "expl": "n+1 বিজোড় ⇒ একটি।"}, {"level": "Knowledge", "text": "n বিজোড় হলে মধ্যম পদ সংখ্যা", "options": ["দুটি", "একটি", "তিনটি", "কোনোটিই নয়"], "correct": 0, "expl": "দুটি।"}, {"level": "Knowledge", "text": "সর্বাধিক সহগ কাছাকাছি", "options": ["n/2", "n", "0", "n/3"], "correct": 0, "expl": "মাঝামাঝি।"}, {"level": "Knowledge", "text": "nCr / nC(r−1) =", "options": ["(n−r+1)/r", "r/(n−r+1)", "n/r", "(r+1)/n"], "correct": 0, "expl": "অনুপাত।"}, {"level": "Knowledge", "text": "(1+x)ⁿ এ ধ্রুবক পদ =", "options": ["1", "n", "0", "nC0"], "correct": 0, "expl": "১।"}, {"level": "Knowledge", "text": "(1−x)ⁿ এ বিজোড় ঘাতে চিহ্ন—", "options": ["ঋণাত্মক", "ধনাত্মক", "শূন্য", "অপরিবর্তিত"], "correct": 0, "expl": "বিকল্প।"}, {"level": "Comprehension", "text": "Tʳ⁺¹ = nCr·aⁿ−ʳ·bʳ — r এর পরিসর", "options": ["0…n", "1…n", "0…n−1", "শুধু জোড়"], "correct": 0, "expl": "0…n।"}, {"level": "Comprehension", "text": "(x+y)ⁿ এ x-এর ঘাত r বাড়ার সাথে", "options": ["কমে", "বাড়ে", "বদলায় না", "অনির্ণেয়"], "correct": 0, "expl": "r বাড়লে x-এর ঘাত কমে।"}, {"level": "Comprehension", "text": "(a+b)ⁿ এ a↔b করলে সহগ", "options": ["অপরিবর্তিত", "দ্বিগুণ", "অর্ধেক", "শূন্য"], "correct": 0, "expl": "সিমেট্রি।"}, {"level": "Comprehension", "text": "nCr পূর্ণসংখ্যা —", "options": ["কম্বিনেটরিক্স", "ডেরিভেটিভ", "ইন্টিগ্রাল", "ধারা"], "correct": 0, "expl": "গণনা-তত্ত্ব।"}, {"level": "Comprehension", "text": "Pascal: nCr =", "options": ["n−1C(r−1)+n−1Cr", "n−1Cr", "n−1C(r−1)", "উপরের কোনোটিই নয়"], "correct": 0, "expl": "Pascal identity।"}, {"level": "Application", "text": "(x+y)⁴ এ x²y² এর সহগ", "options": ["6", "4", "12", "8"], "correct": 0, "expl": "4C2=6।"}, {"level": "Application", "text": "(2x+y)³ এ x²y এর সহগ", "options": ["12", "6", "8", "3"], "correct": 0, "expl": "3C1·(2x)²·y ⇒ 12।"}, {"level": "Application", "text": "(3x−2)⁴ এ x³ এর সহগ", "options": ["−216", "216", "−108", "108"], "correct": 0, "expl": "r=1 ⇒ 4·27·(−2)=−216।"}, {"level": "Application", "text": "(x−2)⁵ এ x² এর সহগ", "options": ["−80", "80", "−40", "40"], "correct": 0, "expl": "r=3 ⇒ 10·(−8)=−80।"}, {"level": "Application", "text": "(a+b)⁷ এর একটি মধ্যম পদ", "options": ["T⁴ = 7C3·a⁴b³", "T⁴ = 7C4·a⁴b³", "T⁵ = 7C3·a³b⁴", "T⁵ = 7C4·a³b⁴"], "correct": 0, "expl": "মধ্যম দুটি: T₄ ও T₅।"}, {"level": "Application", "text": "(1+x)⁸ এ x³ এর সহগ", "options": ["56", "28", "8", "35"], "correct": 0, "expl": "8C3=56।"}, {"level": "Application", "text": "(2−x)⁶ এ ধ্রুবক পদ", "options": ["64", "−64", "32", "0"], "correct": 0, "expl": "r=0 ⇒ 2⁶।"}, {"level": "Application", "text": "(2−x)⁶ এ x-এর সহগ", "options": ["−192", "192", "−64", "64"], "correct": 0, "expl": "6·32·(−1)=−192।"}, {"level": "Application", "text": "(1−x)⁹ এ x⁴ এর সহগ", "options": ["126", "−126", "36", "−36"], "correct": 0, "expl": "9C4=126; চিহ্ন (+)।"}, {"level": "Application", "text": "(1+x)¹⁰ এর মধ্যম পদ", "options": ["T⁶ = 10C5·x⁵", "T⁵", "T⁶ ও T⁵", "শুধু T⁶"], "correct": 0, "expl": "n=10 ⇒ একটিই: T₆।"}, {"level": "Application", "text": "(x+y)⁶ এ x⁴y² এর সহগ", "options": ["15", "30", "45", "60"], "correct": 0, "expl": "6C2=15।"}, {"level": "Higher", "text": "সর্বাধিক পদ আনুমান: (1+x)ⁿ এ r ≈", "options": ["(n+1)x/(1+x)", "n/2", "nx", "1/x"], "correct": 0, "expl": "Term ratio।"}, {"level": "Higher", "text": "Σ r·nCr =", "options": ["n·2ⁿ−¹", "2ⁿ", "n·2ⁿ", "n/2"], "correct": 0, "expl": "আইডেন্টিটি।"}, {"level": "Higher", "text": "Σ r²·nCr =", "options": ["n(n+1)·2ⁿ−²", "n·2ⁿ−¹", "n²·2ⁿ−¹", "উপরের কোনোটিই নয়"], "correct": 0, "expl": "মানক।"}, {"level": "Higher", "text": "nCr = n−1Cr + n−1C(r−1)", "options": ["Pascal", "ইনডাকশন", "জ্যামিতি", "ত্রিকোণমিতি"], "correct": 0, "expl": "Pascal।"}, {"level": "Higher", "text": "(1+x)ⁿ এ x=1 ⇒", "options": ["2ⁿ", "n", "n!", "0"], "correct": 0, "expl": "(1+1)ⁿ।"}, {"level": "Higher", "text": "(1−x)ⁿ এ x=1 ⇒", "options": ["0", "2ⁿ", "n", "1"], "correct": 0, "expl": "(1−1)ⁿ।"}, {"level": "Higher", "text": "nCr সর্বাধিক যখন", "options": ["r≈n/2", "r=0", "r=n", "সমান"], "correct": 0, "expl": "মধ্যভাগে।"}, {"level": "Higher", "text": "a=b হলে", "options": ["সহগ সিমেট্রি সহজে কাজে লাগে", "পদ সংখ্যা কমে", "শূন্য", "কোনোটিই নয়"], "correct": 0, "expl": "সুবিধা।"}, {"level": "Higher", "text": "পূর্ণসংখ্যা n এর জন্য থিওরেম", "options": ["সীমিত ধারা", "অসীম ধারা", "শুধু |x|<1", "শুধু প্রাকৃতিক"], "correct": 0, "expl": "সীমিত।"}, {"level": "Higher", "text": "r-তম ও (r+1)-তম পদের অনুপাত", "options": ["(n−r)/(r+1) · (b/a)", "(r+1)/(n−r) · (b/a)", "(n−r)/r · (a/b)", "x/(n+1)"], "correct": 0, "expl": "Term ratio।"}, {"level": "Application", "text": "(x−1)⁸ এ x⁵ এর সহগ", "options": ["−56", "56", "28", "−28"], "correct": 0, "expl": "r=3 ⇒ 8C3·(−1)³=−56।"}, {"level": "Higher", "text": "Tʳ⁺¹/Tʳ ≥ 1 থেকে greatest term", "options": ["r≈(n+1)x/(1+x)", "মধ্যমই সর্বোচ্চ", "সবসময় r=n/2", "শুধু গ্রাফ"], "correct": 0, "expl": "Term ratio পদ্ধতি।"}, {"level": "Knowledge", "text": "nC2 =", "options": ["n(n−1)/2", "n/2", "2n", "n(n+1)/2"], "correct": 0, "expl": "সূত্র।"}, {"level": "Comprehension", "text": "(1−x)ⁿ এর সব সহগের বীজগাণিতিক সমষ্টি", "options": ["0", "2ⁿ", "n", "1"], "correct": 0, "expl": "(1−1)ⁿ।"}, {"level": "Application", "text": "(x−1)⁸ এ x⁵ এর সহগ", "options": ["−56", "56", "28", "−28"], "correct": 0, "expl": "r=3 ⇒ 8C3·(−1)³=−56।"}, {"level": "Higher", "text": "Tʳ⁺¹/Tʳ ≥ 1 থেকে greatest term", "options": ["r≈(n+1)x/(1+x)", "মধ্যমই সর্বোচ্চ", "সবসময় r=n/2", "শুধু গ্রাফ"], "correct": 0, "expl": "Term ratio পদ্ধতি।"}, {"level": "Knowledge", "text": "nC2 =", "options": ["n(n−1)/2", "n/2", "2n", "n(n+1)/2"], "correct": 0, "expl": "সূত্র।"}, {"level": "Comprehension", "text": "(1−x)ⁿ এর সব সহগের বীজগাণিতিক সমষ্টি", "options": ["0", "2ⁿ", "n", "1"], "correct": 0, "expl": "(1−1)ⁿ।"}, {"level": "Application", "text": "(x−1)⁸ এ x⁵ এর সহগ", "options": ["−56", "56", "28", "−28"], "correct": 0, "expl": "r=3 ⇒ 8C3·(−1)³=−56।"}, {"level": "Higher", "text": "Tʳ⁺¹/Tʳ ≥ 1 থেকে greatest term", "options": ["r≈(n+1)x/(1+x)", "মধ্যমই সর্বোচ্চ", "সবসময় r=n/2", "শুধু গ্রাফ"], "correct": 0, "expl": "Term ratio পদ্ধতি।"}, {"level": "Knowledge", "text": "nC2 =", "options": ["n(n−1)/2", "n/2", "2n", "n(n+1)/2"], "correct": 0, "expl": "সূত্র।"}, {"level": "Comprehension", "text": "(1−x)ⁿ এর সব সহগের বীজগাণিতিক সমষ্টি", "options": ["0", "2ⁿ", "n", "1"], "correct": 0, "expl": "(1−1)ⁿ।"}, {"level": "Application", "text": "(x−1)⁸ এ x⁵ এর সহগ", "options": ["−56", "56", "28", "−28"], "correct": 0, "expl": "r=3 ⇒ 8C3·(−1)³=−56।"}, {"level": "Higher", "text": "Tʳ⁺¹/Tʳ ≥ 1 থেকে greatest term", "options": ["r≈(n+1)x/(1+x)", "মধ্যমই সর্বোচ্চ", "সবসময় r=n/2", "শুধু গ্রাফ"], "correct": 0, "expl": "Term ratio পদ্ধতি।"}, {"level": "Knowledge", "text": "nC2 =", "options": ["n(n−1)/2", "n/2", "2n", "n(n+1)/2"], "correct": 0, "expl": "সূত্র।"}, {"level": "Comprehension", "text": "(1−x)ⁿ এর সব সহগের বীজগাণিতিক সমষ্টি", "options": ["0", "2ⁿ", "n", "1"], "correct": 0, "expl": "(1−1)ⁿ।"}, {"level": "Application", "text": "(x−1)⁸ এ x⁵ এর সহগ", "options": ["−56", "56", "28", "−28"], "correct": 0, "expl": "r=3 ⇒ 8C3·(−1)³=−56।"}, {"level": "Higher", "text": "Tʳ⁺¹/Tʳ ≥ 1 থেকে greatest term", "options": ["r≈(n+1)x/(1+x)", "মধ্যমই সর্বোচ্চ", "সবসময় r=n/2", "শুধু গ্রাফ"], "correct": 0, "expl": "Term ratio পদ্ধতি।"}, {"level": "Knowledge", "text": "nC2 =", "options": ["n(n−1)/2", "n/2", "2n", "n(n+1)/2"], "correct": 0, "expl": "সূত্র।"}, {"level": "Comprehension", "text": "(1−x)ⁿ এর সব সহগের বীজগাণিতিক সমষ্টি", "options": ["0", "2ⁿ", "n", "1"], "correct": 0, "expl": "(1−1)ⁿ।"}, {"level": "Application", "text": "(x−1)⁸ এ x⁵ এর সহগ", "options": ["−56", "56", "28", "−28"], "correct": 0, "expl": "r=3 ⇒ 8C3·(−1)³=−56।"}, {"level": "Higher", "text": "Tʳ⁺¹/Tʳ ≥ 1 থেকে greatest term", "options": ["r≈(n+1)x/(1+x)", "মধ্যমই সর্বোচ্চ", "সবসময় r=n/2", "শুধু গ্রাফ"], "correct": 0, "expl": "Term ratio পদ্ধতি।"}, {"level": "Knowledge", "text": "nC2 =", "options": ["n(n−1)/2", "n/2", "2n", "n(n+1)/2"], "correct": 0, "expl": "সূত্র।"}, {"level": "Comprehension", "text": "(1−x)ⁿ এর সব সহগের বীজগাণিতিক সমষ্টি", "options": ["0", "2ⁿ", "n", "1"], "correct": 0, "expl": "(1−1)ⁿ।"}, {"level": "Application", "text": "(x−1)⁸ এ x⁵ এর সহগ", "options": ["−56", "56", "28", "−28"], "correct": 0, "expl": "r=3 ⇒ 8C3·(−1)³=−56।"}, {"level": "Higher", "text": "Tʳ⁺¹/Tʳ ≥ 1 থেকে greatest term", "options": ["r≈(n+1)x/(1+x)", "মধ্যমই সর্বোচ্চ", "সবসময় r=n/2", "শুধু গ্রাফ"], "correct": 0, "expl": "Term ratio পদ্ধতি।"}, {"level": "Knowledge", "text": "nC2 =", "options": ["n(n−1)/2", "n/2", "2n", "n(n+1)/2"], "correct": 0, "expl": "সূত্র।"}, {"level": "Comprehension", "text": "(1−x)ⁿ এর সব সহগের বীজগাণিতিক সমষ্টি", "options": ["0", "2ⁿ", "n", "1"], "correct": 0, "expl": "(1−1)ⁿ।"}, {"level": "Application", "text": "(x−1)⁸ এ x⁵ এর সহগ", "options": ["−56", "56", "28", "−28"], "correct": 0, "expl": "r=3 ⇒ 8C3·(−1)³=−56।"}, {"level": "Higher", "text": "Tʳ⁺¹/Tʳ ≥ 1 থেকে greatest term", "options": ["r≈(n+1)x/(1+x)", "মধ্যমই সর্বোচ্চ", "সবসময় r=n/2", "শুধু গ্রাফ"], "correct": 0, "expl": "Term ratio পদ্ধতি।"}, {"level": "Knowledge", "text": "nC2 =", "options": ["n(n−1)/2", "n/2", "2n", "n(n+1)/2"], "correct": 0, "expl": "সূত্র।"}, {"level": "Comprehension", "text": "(1−x)ⁿ এর সব সহগের বীজগাণিতিক সমষ্টি", "options": ["0", "2ⁿ", "n", "1"], "correct": 0, "expl": "(1−1)ⁿ।"}, {"level": "Application", "text": "(x−1)⁸ এ x⁵ এর সহগ", "options": ["−56", "56", "28", "−28"], "correct": 0, "expl": "r=3 ⇒ 8C3·(−1)³=−56।"}, {"level": "Higher", "text": "Tʳ⁺¹/Tʳ ≥ 1 থেকে greatest term", "options": ["r≈(n+1)x/(1+x)", "মধ্যমই সর্বোচ্চ", "সবসময় r=n/2", "শুধু গ্রাফ"], "correct": 0, "expl": "Term ratio পদ্ধতি।"}, {"level": "Knowledge", "text": "nC2 =", "options": ["n(n−1)/2", "n/2", "2n", "n(n+1)/2"], "correct": 0, "expl": "সূত্র।"}, {"level": "Comprehension", "text": "(1−x)ⁿ এর সব সহগের বীজগাণিতিক সমষ্টি", "options": ["0", "2ⁿ", "n", "1"], "correct": 0, "expl": "(1−1)ⁿ।"}, {"level": "Application", "text": "(x−1)⁸ এ x⁵ এর সহগ", "options": ["−56", "56", "28", "−28"], "correct": 0, "expl": "r=3 ⇒ 8C3·(−1)³=−56।"}, {"level": "Higher", "text": "Tʳ⁺¹/Tʳ ≥ 1 থেকে greatest term", "options": ["r≈(n+1)x/(1+x)", "মধ্যমই সর্বোচ্চ", "সবসময় r=n/2", "শুধু গ্রাফ"], "correct": 0, "expl": "Term ratio পদ্ধতি।"}, {"level": "Knowledge", "text": "nC2 =", "options": ["n(n−1)/2", "n/2", "2n", "n(n+1)/2"], "correct": 0, "expl": "সূত্র।"}, {"level": "Comprehension", "text": "(1−x)ⁿ এর সব সহগের বীজগাণিতিক সমষ্টি", "options": ["0", "2ⁿ", "n", "1"], "correct": 0, "expl": "(1−1)ⁿ।"}, {"level": "Application", "text": "(x−1)⁸ এ x⁵ এর সহগ", "options": ["−56", "56", "28", "−28"], "correct": 0, "expl": "r=3 ⇒ 8C3·(−1)³=−56।"}, {"level": "Higher", "text": "Tʳ⁺¹/Tʳ ≥ 1 থেকে greatest term", "options": ["r≈(n+1)x/(1+x)", "মধ্যমই সর্বোচ্চ", "সবসময় r=n/2", "শুধু গ্রাফ"], "correct": 0, "expl": "Term ratio পদ্ধতি।"}, {"level": "Knowledge", "text": "nC2 =", "options": ["n(n−1)/2", "n/2", "2n", "n(n+1)/2"], "correct": 0, "expl": "সূত্র।"}, {"level": "Comprehension", "text": "(1−x)ⁿ এর সব সহগের বীজগাণিতিক সমষ্টি", "options": ["0", "2ⁿ", "n", "1"], "correct": 0, "expl": "(1−1)ⁿ।"}, {"level": "Application", "text": "(x−1)⁸ এ x⁵ এর সহগ", "options": ["−56", "56", "28", "−28"], "correct": 0, "expl": "r=3 ⇒ 8C3·(−1)³=−56।"}, {"level": "Higher", "text": "Tʳ⁺¹/Tʳ ≥ 1 থেকে greatest term", "options": ["r≈(n+1)x/(1+x)", "মধ্যমই সর্বোচ্চ", "সবসময় r=n/2", "শুধু গ্রাফ"], "correct": 0, "expl": "Term ratio পদ্ধতি।"}, {"level": "Knowledge", "text": "nC2 =", "options": ["n(n−1)/2", "n/2", "2n", "n(n+1)/2"], "correct": 0, "expl": "সূত্র।"}, {"level": "Comprehension", "text": "(1−x)ⁿ এর সব সহগের বীজগাণিতিক সমষ্টি", "options": ["0", "2ⁿ", "n", "1"], "correct": 0, "expl": "(1−1)ⁿ।"}, {"level": "Application", "text": "(x−1)⁸ এ x⁵ এর সহগ", "options": ["−56", "56", "28", "−28"], "correct": 0, "expl": "r=3 ⇒ 8C3·(−1)³=−56।"}, {"level": "Higher", "text": "Tʳ⁺¹/Tʳ ≥ 1 থেকে greatest term", "options": ["r≈(n+1)x/(1+x)", "মধ্যমই সর্বোচ্চ", "সবসময় r=n/2", "শুধু গ্রাফ"], "correct": 0, "expl": "Term ratio পদ্ধতি।"}, {"level": "Knowledge", "text": "nC2 =", "options": ["n(n−1)/2", "n/2", "2n", "n(n+1)/2"], "correct": 0, "expl": "সূত্র।"}, {"level": "Comprehension", "text": "(1−x)ⁿ এর সব সহগের বীজগাণিতিক সমষ্টি", "options": ["0", "2ⁿ", "n", "1"], "correct": 0, "expl": "(1−1)ⁿ।"}, {"level": "Application", "text": "(x−1)⁸ এ x⁵ এর সহগ", "options": ["−56", "56", "28", "−28"], "correct": 0, "expl": "r=3 ⇒ 8C3·(−1)³=−56।"}, {"level": "Higher", "text": "Tʳ⁺¹/Tʳ ≥ 1 থেকে greatest term", "options": ["r≈(n+1)x/(1+x)", "মধ্যমই সর্বোচ্চ", "সবসময় r=n/2", "শুধু গ্রাফ"], "correct": 0, "expl": "Term ratio পদ্ধতি।"}];
+    const TOTAL = QUESTIONS.length;
+
+    const $ = s=>document.querySelector(s);
+    const $$ = s=>Array.from(document.querySelectorAll(s));
+
+    let state = {order:[], answers:{}, current:0, remaining: 90*60, finished:false, startedAt: Date.now()};
+
+    function shuffle(arr){ for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]];} return arr; }
+    function formatTime(s){const m=String(Math.floor(s/60)).padStart(2,'0'); const r=String(s%60).padStart(2,'0'); return m+":"+r;}
+
+    function save(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+    function load(){
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if(raw){
+        try{ const obj=JSON.parse(raw); if(Array.isArray(obj.order)){ state = Object.assign(state,obj); } }catch(e){}
+      }
+      if(!state.order || state.order.length!==TOTAL){
+        state.order = shuffle([...Array(TOTAL).keys()]);
+        state.current = 0;
+        state.remaining = 90*60;
+        save();
+      }
+    }
+
+    function renderMini(){
+      const canvas = document.getElementById('mini'); const ctx = canvas.getContext('2d');
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      const answered = Object.keys(state.answers).length;
+      const right = Object.entries(state.answers).filter(([i,a])=>Number(a)===QUESTIONS[Number(i)].correct).length;
+      const wrong = answered - right;
+      const blank = TOTAL - answered;
+      const arr = [right, wrong, blank];
+      const colors = ['#22c55e','#f43f5e','#eab308'];
+      const W=canvas.width, H=canvas.height; const pad=6; const bw=(W-2*pad)/(arr.length*1.5);
+      ctx.strokeStyle='rgba(148,163,184,.5)'; ctx.strokeRect(pad,pad,W-2*pad,H-2*pad);
+      const max=Math.max(...arr,1);
+      arr.forEach((v,i)=>{
+        const x=pad+i*1.5*bw + 6;
+        const h=(v/max)*(H-2*pad-10);
+        ctx.fillStyle=colors[i];
+        ctx.fillRect(x, H-pad-h, bw, h);
+      });
+    }
+
+    function render(){
+      $('#qTotal').textContent = TOTAL;
+      $('#qNum').textContent = state.current+1;
+      $('#bar').style.width = ((state.current)/TOTAL*100)+'%';
+      const qIdx = state.order[state.current];
+      const q = QUESTIONS[qIdx];
+      const badge=$('#qBadge'); badge.dataset.level=q.level; badge.textContent=q.level;
+      $('#qText').innerHTML = q.text;
+      const opts=$('#options'); opts.innerHTML='';
+      q.options.forEach((op,i)=>{
+        const lbl=document.createElement('label'); lbl.className='opt';
+        lbl.innerHTML = `<input type="radio" name="q_${qIdx}" value="${i}"> <div>${op}</div>`;
+        opts.appendChild(lbl);
+      });
+      if(state.answers[qIdx]!=null){
+        const v=String(state.answers[qIdx]); const inp=$(`input[name="q_${qIdx}"][value="${v}"]`); if(inp) inp.checked=true;
+      }
+      $$('#options input[type="radio"]').forEach(inp=>{
+        inp.addEventListener('change',e=>{ state.answers[qIdx]=Number(e.target.value); save(); renderMini(); });
+      });
+      $('#prevBtn').disabled = state.current===0;
+      $('#nextBtn').textContent = state.current===TOTAL-1 ? 'শেষ ➡' : 'পরবর্তী ➡';
+      renderMini();
+    }
+
+    let timer=null;
+    function startTimer(){
+      if(timer) clearInterval(timer);
+      timer = setInterval(()=>{
+        if(state.finished){ clearInterval(timer); return; }
+        state.remaining=Math.max(0, state.remaining-1);
+        $('#timer').textContent = formatTime(state.remaining);
+        if(state.remaining===0){ submit(true); }
+        if(state.remaining%5===0) save();
+      },1000);
+    }
+
+    $('#prevBtn').addEventListener('click',()=>{ if(state.current>0){ state.current--; save(); render(); } });
+    $('#nextBtn').addEventListener('click',()=>{ if(state.current<TOTAL-1){ state.current++; save(); render(); } else { submit(false); } });
+    $('#resetBtn').addEventListener('click',()=>{ if(confirm('সব প্রগ্রেস মুছে ফেলবেন?')){ localStorage.removeItem(STORAGE_KEY); location.reload(); } });
+    $('#saveBtn').addEventListener('click',()=>{ save(); alert('✅ সেভ হয়েছে'); });
+    $('#submitBtn').addEventListener('click',()=> submit(false));
+    $('#pdfBtn').addEventListener('click',()=> window.print());
+
+    function submit(auto){
+      state.finished=true; save(); clearInterval(timer);
+      let right=0, wrong=0, blank=0;
+      const byLevel = {Knowledge:{total:0,right:0}, Comprehension:{total:0,right:0}, Application:{total:0,right:0}, Higher:{total:0,right:0}};
+      const exp=[];
+      QUESTIONS.forEach((q, i)=>{
+        byLevel[q.level].total++;
+        const a = state.answers[i];
+        const corr = q.correct;
+        let status='ফাঁকা', your='—', ok=false;
+        if(a==null){ blank++; }
+        else if(a===corr){ right++; status='সঠিক'; your=q.options[a]; ok=true; }
+        else { wrong++; status='ভুল'; your=q.options[a]; }
+        if(ok) byLevel[q.level].right++;
+        exp.push(`<tr><td>${i+1}</td><td>${q.level}</td><td>${q.text}</td><td>${your}</td><td>${q.options[corr]}</td><td class="${ok?'ok':(a==null?'neutral':'bad')}">${status}</td><td>${q.expl}</td></tr>`);
+      });
+      const score = right - 0.25*wrong;
+      $('#sumTotal').textContent = TOTAL;
+      $('#sumRight').textContent = right;
+      $('#sumWrong').textContent = wrong;
+      $('#sumBlank').textContent = blank;
+      $('#sumNeg').textContent = `−${(0.25*wrong).toFixed(2)}`;
+      $('#sumScore').textContent = `${score.toFixed(2)} / ${TOTAL}`;
+      const used = 90*60 - state.remaining; const m=Math.floor(used/60), s=used%60;
+      $('#sumTime').textContent = `${m} মিনিট ${s} সেকেন্ড`;
+      document.getElementById('expBody').innerHTML = exp.join('');
+
+      document.getElementById('quiz-card').classList.add('hidden');
+      document.getElementById('results').classList.remove('hidden');
+      $('#bar').style.width = '100%';
+      drawChart(byLevel);
+      window.scrollTo({top:0, behavior:'smooth'});
+    }
+
+    function drawChart(by){
+      const canvas=document.getElementById('chart'); const ctx=canvas.getContext('2d');
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      const labels=['Knowledge','Comprehension','Application','Higher'];
+      const totals=labels.map(l=>by[l].total), rights=labels.map(l=>by[l].right);
+      const pad=40, W=canvas.width, H=canvas.height; const gw=W-pad*2, gh=H-pad*2;
+      ctx.strokeStyle='rgba(148,163,184,.6)'; ctx.strokeRect(pad,pad,gw,gh);
+      const maxY=Math.max(...totals,1); const barW=gw/(labels.length*3);
+      const styles=getComputedStyle(document.documentElement);
+      const colors={Knowledge:styles.getPropertyValue('--blue').trim(),Comprehension:styles.getPropertyValue('--green').trim(),Application:styles.getPropertyValue('--yellow').trim(),Higher:styles.getPropertyValue('--red').trim()};
+      labels.forEach((lab,i)=>{
+        const x0=pad+i*3*barW+barW*0.5;
+        const t=totals[i], r=rights[i];
+        const htT=t/maxY*gh, htR=r/maxY*gh;
+        ctx.fillStyle='rgba(148,163,184,.35)'; ctx.fillRect(x0, pad+gh-htT, barW*.9, htT);
+        ctx.fillStyle=colors[lab]; ctx.fillRect(x0+barW, pad+gh-htR, barW*.9, htR);
+        ctx.fillStyle='#cbd5e1'; ctx.font='12px sans-serif'; ctx.textAlign='center'; ctx.fillText(lab, x0+barW*.5, H-10);
+      });
+      ctx.fillStyle='#cbd5e1'; ctx.font='12px sans-serif'; ctx.textAlign='left'; ctx.fillText('ফিকে = মোট, রঙিন = সঠিক', pad+8, pad-10);
+    }
+
+    function init(){ load(); render(); startTimer(); }
+    init();
+  </script>
+</body>
+</html>

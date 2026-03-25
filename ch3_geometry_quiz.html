@@ -1,0 +1,145 @@
+
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Advanced HTML Quiz – অধ্যায় ৩: জ্যামিতি</title>
+  <style>
+    :root{ --blue:#2563eb; --green:#039855; --yellow:#ca8a04; --red:#dc2626; --bg:#0b1020; --card:#0f172a; --muted:#94a3b8; --text:#e2e8f0; --accent:#22d3ee; }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:ui-sans-serif,-apple-system,Segoe UI,Roboto,'Noto Sans Bengali','Noto Sans','SolaimanLipi',Arial,sans-serif;background:#0b1020;color:var(--text);}
+    header{position:sticky;top:0;z-index:50;background:rgba(11,16,32,.75);backdrop-filter:blur(8px);border-bottom:1px solid rgba(148,163,184,.2);}
+    .wrap{max-width:1000px;margin:0 auto;padding:14px 16px;}
+    h1{margin:0;font-size:22px}
+    .pill{padding:6px 10px;border:1px solid rgba(255,255,255,.1);border-radius:999px;color:var(--muted);}
+    .meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+    .progress{height:10px;background:rgba(148,163,184,.2);border-radius:999px;overflow:hidden;margin-top:10px}
+    .progress>div{height:100%;width:0;background:linear-gradient(90deg,var(--accent),#60a5fa)}
+    main{padding:22px 0 130px}
+    .card{background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.02));border:1px solid rgba(148,163,184,.2);border-radius:16px;padding:18px;box-shadow:0 10px 35px rgba(0,0,0,.35);}
+    .q-badge{padding:6px 10px;border-radius:999px;color:#fff;font-weight:700}
+    .q-badge[data-level="Knowledge"]{background:var(--blue)}
+    .q-badge[data-level="Comprehension"]{background:var(--green)}
+    .q-badge[data-level="Application"]{background:var(--yellow); color:#111827}
+    .q-badge[data-level="Higher"]{background:var(--red)}
+    .qtext{font-size:18px;line-height:1.55;margin:10px 0 12px}
+    .options{display:grid;gap:10px}
+    .opt{display:flex;gap:10px;padding:12px;border:1px solid rgba(148,163,184,.25);border-radius:12px;background:rgba(2,6,23,.4);cursor:pointer}
+    .nav{display:flex;justify-content:space-between;align-items:center;margin-top:14px}
+    button{appearance:none;border:none;border-radius:12px;padding:10px 14px;font-weight:700;cursor:pointer;background:linear-gradient(180deg,#22d3ee,#1ea7be);color:#042026;box-shadow:0 10px 25px rgba(34,211,238,.3)}
+    button.secondary{background:rgba(148,163,184,.15);color:var(--text);box-shadow:none;border:1px solid rgba(148,163,184,.25)}
+    button.danger{background:linear-gradient(180deg,#f43f5e,#e11d48);color:#fff}
+    .small{font-size:13px;color:var(--muted)}
+    .hidden{display:none!important}
+    .results{display:grid;gap:16px}
+    .grid2{display:grid;grid-template-columns:1fr;gap:16px}
+    @media(min-width:900px){ .grid2{grid-template-columns:1.2fr .8fr} }
+    table{width:100%;border-collapse:collapse;border-radius:12px;overflow:hidden}
+    th,td{padding:10px 12px;border-bottom:1px solid rgba(148,163,184,.2);text-align:left}
+    th{background:rgba(148,163,184,.15)}
+    .ok{color:#22c55e;font-weight:700}.bad{color:#f43f5e;font-weight:700}.neutral{color:#eab308;font-weight:700}
+    canvas{background:rgba(255,255,255,.03);border:1px dashed rgba(148,163,184,.25);border-radius:12px}
+    footer{position:fixed;bottom:0;left:0;right:0;background:rgba(11,16,32,.85);backdrop-filter:blur(8px);border-top:1px solid rgba(148,163,184,.18)}
+    .footer-inner{max-width:1000px;margin:0 auto;display:flex;gap:10px;align-items:center;justify-content:space-between;padding:10px 16px}
+    .legend span{padding:6px 10px;border-radius:999px;border:1px solid rgba(148,163,184,.2)}
+    .l-blue{background:var(--blue);color:#fff}.l-green{background:var(--green);color:#fff}.l-yellow{background:var(--yellow);color:#111827}.l-red{background:var(--red);color:#fff}
+    .mini{display:flex;align-items:center;gap:8px}
+    .mini canvas{width:200px;height:70px}
+    @media print { header, footer, .nav, .meta, .legend {display:none !important} body{background:#fff;color:#111827} .card{border:1px solid #ddd;box-shadow:none} }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <h1>Advanced HTML Quiz · অধ্যায় ৩: জ্যামিতি</h1>
+      <div class="meta">
+        <span class="pill">⏳ টাইমার: <span class="timer" id="timer">90:00</span></span>
+        <span class="pill">🔀 শাফল অন</span>
+        <span class="pill">➖ ভুলে −0.25</span>
+        <span class="pill">💾 অটো-সেভ</span>
+        <button class="secondary" id="pdfBtn">🖨 PDF</button>
+      </div>
+      <div class="progress"><div id="bar"></div></div>
+    </div>
+  </header>
+  <main class="wrap">
+    <section id="quiz-card" class="card">
+      <div class="question-header" style="display:flex;justify-content:space-between;align-items:center;gap:12px">
+        <div>
+          <div id="qBadge" class="q-badge" data-level="Knowledge">Knowledge</div>
+          <div class="small">প্রশ্ন <span id="qNum">1</span> / <span id="qTotal">100</span></div>
+        </div>
+        <div class="mini">
+          <span class="small">প্রশ্ন-পর প্রশ্ন ছোট চার্ট</span>
+          <canvas id="mini" width="200" height="70"></canvas>
+        </div>
+      </div>
+      <div class="qtext" id="qText">Loading…</div>
+      <div class="options" id="options"></div>
+      <div class="nav">
+        <button class="secondary" id="prevBtn">⬅ পূর্বের</button>
+        <div>
+          <button class="secondary" id="resetBtn">🔄 রিসেট</button>
+          <button class="secondary" id="saveBtn">💾 সেভ</button>
+        </div>
+        <button id="nextBtn">পরবর্তী ➡</button>
+      </div>
+    </section>
+
+    <section id="results" class="card hidden">
+      <div class="results">
+        <div class="grid2">
+          <div>
+            <h2>📋 ফলাফল ও রিপোর্ট</h2>
+            <table>
+              <tbody>
+                <tr><th>মোট প্রশ্ন</th><td id="sumTotal">—</td></tr>
+                <tr><th>সঠিক</th><td id="sumRight">—</td></tr>
+                <tr><th>ভুল</th><td id="sumWrong">—</td></tr>
+                <tr><th>ফাঁকা</th><td id="sumBlank">—</td></tr>
+                <tr><th>নেগেটিভ</th><td id="sumNeg">—</td></tr>
+                <tr><th>ফাইনাল স্কোর</th><td id="sumScore">—</td></tr>
+                <tr><th>সময় লেগেছে</th><td id="sumTime">—</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div>
+            <h3>📊 Bloom স্তরভিত্তিক চার্ট</h3>
+            <canvas id="chart" width="500" height="320"></canvas>
+          </div>
+        </div>
+        <h3>ব্যাখ্যাসহ উত্তর তালিকা</h3>
+        <table>
+          <thead><tr><th>#</th><th>স্তর</th><th>প্রশ্ন</th><th>আপনার</th><th>সঠিক</th><th>স্ট্যাটাস</th><th>ব্যাখ্যা</th></tr></thead>
+          <tbody id="expBody"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <div class="footer-inner">
+      <div class="legend">
+        <span class="l-blue">🔵 জ্ঞানমূলক</span>
+        <span class="l-green">🟢 অনুধাবন</span>
+        <span class="l-yellow">🟡 প্রয়োগ</span>
+        <span class="l-red">🔴 উচ্চতর</span>
+      </div>
+      <button id="submitBtn" class="danger">✅ সাবমিট</button>
+    </div>
+  </footer>
+  <script>
+    const STORAGE_KEY = "ch3_geometry_quiz_v1";
+    const QUESTIONS = [{"level": "Knowledge", "text": "পিথাগোরাসের উপপাদ্য কোন ত্রিভুজে প্রযোজ্য?", "options": ["সমকোণী ত্রিভুজ", "সমবাহু ত্রিভুজ", "সমদ্বিবাহু ত্রিভুজ", "যে কোনো ত্রিভুজ"], "correct": 0, "expl": "শুধুমাত্র সমকোণী ত্রিভুজে a²+b²=c²।"}, {"level": "Knowledge", "text": "সমকোণী ত্রিভুজে যদি লম্ব দুটো a,b এবং কর্ণ c, তবে সম্পর্ক—", "options": ["a²+b²=c²", "a+b=c", "a²=b²+c²", "ab=c"], "correct": 0, "expl": "পিথাগোরাস সূত্র।"}, {"level": "Knowledge", "text": "সমবাহু ত্রিভুজের ক্ষেত্রফল সূত্র", "options": ["(√3/4)·a²", "½·b·h", "½·a·b·sin(C)", "s(s−a)(s−b)(s−c)"], "correct": 0, "expl": "সমবাহু: ΔA=(√3/4)a²।"}, {"level": "Knowledge", "text": "বৃত্তের পরিধি", "options": ["2πr", "πr²", "πd²", "πr"], "correct": 0, "expl": "পরিধি C=2πr, ক্ষেত্রফল A=πr²।"}, {"level": "Knowledge", "text": "বৃত্তের ক্ষেত্রফল", "options": ["πr²", "2πr", "πd", "πr/2"], "correct": 0, "expl": "A=πr²।"}, {"level": "Knowledge", "text": "সেক্টরের ক্ষেত্রফল (θ ডিগ্রি)", "options": ["(θ/360)·πr²", "(θ/180)·πr", "(θ/2)·r", "2πr·θ"], "correct": 0, "expl": "ডিগ্রিতে সেক্টর ক্ষেত্রফল।"}, {"level": "Knowledge", "text": "কেন্দ্রীয় কোণ θ (ডিগ্রি) হলে আর্ক দৈর্ঘ্য", "options": ["(θ/360)·2πr", "θ·r", "(θ/180)·π", "πr²"], "correct": 0, "expl": "ডিগ্রিতে আর্ক = (θ/360)·2πr।"}, {"level": "Knowledge", "text": "দুটি সমান্তরাল রেখায় সমস্থানিক কোণ", "options": ["সমান", "পরিপূরক", "সম্পূরক", "নির্ধারিত নয়"], "correct": 0, "expl": "Corresponding angles সমান।"}, {"level": "Knowledge", "text": "ত্রিভুজের কোণের সমষ্টি", "options": ["180°", "90°", "270°", "360°"], "correct": 0, "expl": "ত্রিভুজে 180°।"}, {"level": "Knowledge", "text": "n বাহুবিশিষ্ট নিয়মিত বহুভুজে প্রতিটি অন্তঃকোণ", "options": ["[(n−2)·180°]/n", "(n·180°)°", "(n−1)·180°", "[(n−1)·360°]/n"], "correct": 0, "expl": "অন্তঃকোণ = [(n−2)·180°]/n।"}, {"level": "Knowledge", "text": "দ্বিভাজক উপপাদ্য (Angle Bisector Theorem) বলে—", "options": ["বিপরীত বাহু বিভাজিত হয় পার্শ্বদ্বয়ের অনুপাতে", "ত্রিভুজ সদৃশ হয়", "উচ্চতা সমান", "বহির্বিভাজক নেই"], "correct": 0, "expl": "Angle bisector divides opposite side proportionally।"}, {"level": "Knowledge", "text": "ত্রিভুজ সদৃশতার শর্ত", "options": ["AAA, SAS, SSS", "ASA, RHS", "SSA, AAS", "কোনোটিই নয়"], "correct": 0, "expl": "AAA/SAS/SSS।"}, {"level": "Comprehension", "text": "একটি সমকোণী ত্রিভুজে বাহু 3 ও 4 হলে কর্ণ", "options": ["5", "7", "√7", "25"], "correct": 0, "expl": "3-4-5 ত্রয়ী।"}, {"level": "Comprehension", "text": "সমবাহু ত্রিভুজের উচ্চতা", "options": ["(√3/2)a", "a", "(√2/2)a", "(3/2)a"], "correct": 0, "expl": "equilateral height h=√3/2·a।"}, {"level": "Comprehension", "text": "বৃত্তে কেন্দ্রীয় কোণ 60° হলে আর্ক দৈর্ঘ্য (ব্যাসার্ধ r)", "options": ["(1/3)·πr", "(1/6)·2πr", "πr", "2πr"], "correct": 0, "expl": "(60/360)·2πr = (1/3)πr।"}, {"level": "Comprehension", "text": "সমান্তরাল রেখায় বিকল্প অন্তঃকোণ", "options": ["সমান", "সম্পূরক", "90°", "নির্ণয় করা যায় না"], "correct": 0, "expl": "Alternate interior angles equal।"}, {"level": "Comprehension", "text": "একটি আয়তক্ষেত্রের কর্ণ", "options": ["√(l²+w²)", "l+w", "l·w", "|l−w|"], "correct": 0, "expl": "পিথাগোরাস প্রয়োগ।"}, {"level": "Comprehension", "text": "ত্রিভুজ ABC তে ∠A=90°, AB=c, AC=b, BC=a; সঠিকটি কোনটি?", "options": ["b²+c²=a²", "a²+b²=c²", "a+b=c", "a·b=c"], "correct": 0, "expl": "কর্ণ a হলে a²=b²+c²।"}, {"level": "Comprehension", "text": "সদৃশ ত্রিভুজে পরিসীমার অনুপাত k হলে ক্ষেত্রফলের অনুপাত", "options": ["k²", "k", "k³", "1/k"], "correct": 0, "expl": "Area scale = k²।"}, {"level": "Application", "text": "সমকোণী ত্রিভুজে লম্ব 15 সেমি ও 8 সেমি ⇒ কর্ণ", "options": ["17 সেমি", "23 সেমি", "7 সেমি", "√289 সেমি"], "correct": 0, "expl": "c = √(15²+8²) = 17।"}, {"level": "Application", "text": "সমকোণী ত্রিভুজে কর্ণ 10 ও এক লম্ব 6 ⇒ অন্য লম্ব", "options": ["8", "8", "4", "2"], "correct": 0, "expl": "অন্য লম্ব = √(c²−b²) = √(10²−6²) = 8।"}, {"level": "Application", "text": "সমকোণী ত্রিভুজে দুই লম্ব 6 সেমি ও 9 সেমি ⇒ ক্ষেত্রফল", "options": ["27.0 বর্গ সেমি", "54 বর্গ সেমি", "15 বর্গ সেমি", "3 বর্গ সেমি"], "correct": 0, "expl": "সমকোণী: Area = ½ ab।"}, {"level": "Application", "text": "ব্যাসার্ধ 4 সেমি ও কেন্দ্রীয় কোণ 120° ⇒ সেক্টরের ক্ষেত্রফল (π অনুপাতেই)", "options": ["120/360 · π·4²", "120/180 · π·4", "120 · 4", "2π·4"], "correct": 0, "expl": "A = (θ/360)·πr² ⇒ 120/360·π·4²।"}, {"level": "Application", "text": "ব্যাসার্ধ 8 সেমি, কেন্দ্রীয় কোণ 120° ⇒ আর্ক দৈর্ঘ্য (π অনুপাতেই)", "options": ["120/360 · 2π·8", "120/180 · π·8²", "120/360 · π·8", "π·8²"], "correct": 0, "expl": "L=(θ/360)·2πr।"}, {"level": "Application", "text": "দুটি সমান্তরাল রেখায় এক কোণ 120°। বিকল্প অন্তঃ কোণটি কত°?", "options": ["120°", "60°", "90°", "120°"], "correct": 0, "expl": "বিকল্প অন্তঃ কোণ সমান ⇒ 120°।"}, {"level": "Application", "text": "দুটি সদৃশ ত্রিভুজে পার্শ্ব স্কেল অনুপাত k=2 ⇒ ক্ষেত্রফলের অনুপাত", "options": ["2²:1", "2:1", "2³:1", "1:2"], "correct": 0, "expl": "Area ratio = k²।"}, {"level": "Application", "text": "সমবাহু ত্রিভুজের বাহু 8 সেমি ⇒ ক্ষেত্রফল (√3 অনুপাতেই)", "options": ["(√3/4)·8²", "½·8·8", "64·√3", "(√3/2)·8"], "correct": 0, "expl": "ΔA = (√3/4)a²।"}, {"level": "Application", "text": "n=10 নিয়মিত বহুভুজে প্রতিটি অন্তঃকোণ", "options": ["1440/10°", "1440°", "1620/10°", "1260/10°"], "correct": 0, "expl": "প্রতি অন্তঃকোণ = [(n−2)·180°]/n।"}, {"level": "Application", "text": "ব্যাসার্ধ 9 সেমি; কেন্দ্রীয় কোণ 60° ⇒ জ্যা দৈর্ঘ্য (চিহ্নিত সূত্রে)", "options": ["2·9·sin(60/2)", "9·sin(60)", "2·9·cos(60/2)", "9·tan(60/2)"], "correct": 0, "expl": "জ্যা = 2r·sin(θ/2)।"}, {"level": "Application", "text": "দৈর্ঘ্য 13 ও প্রস্থ 10 এর আয়তক্ষেত্রের কর্ণ", "options": ["√(13²+10²)", "23", "3", "130"], "correct": 0, "expl": "d=√(l²+w²)।"}, {"level": "Application", "text": "ত্রিভুজের বাহু 5,12,13 ⇒ ক্ষেত্রফল (Heron)", "options": ["30", "15.0", "35", "27"], "correct": 0, "expl": "s=(a+b+c)/2 ⇒ Heron √(s(s−a)(s−b)(s−c)) = 30।"}, {"level": "Higher", "text": "কোন উক্তিটি পিথাগোরাসের বিপরীত উপপাদ্য?", "options": ["যদি ত্রিভুজে a²+b²=c² তবে ∠C=90°", "a+b>c", "∠A+∠B+∠C=180°", "যদি ∠C=90° তবে a²+b²=c²"], "correct": 0, "expl": "Converse: a²+b²=c² ⇒ সমকোণ।"}, {"level": "Higher", "text": "Midpoint Theorem এর সঠিক ব্যাখ্যা", "options": ["ত্রিভুজের দুই বাহুর মধ্যবিন্দু সংযোগকারী রেখা তৃতীয় বাহুর সমান্তরাল ও তার অর্ধেক", "উচ্চতার সমান", "মধ্যমা = দ্বিভাজক", "বাইসেক্টর সবসময় লম্ব"], "correct": 0, "expl": "Midpoint theorem।"}, {"level": "Higher", "text": "সমান্তরাল রেখায় অনুবর্ত কোণ দুটির যোগফল", "options": ["180°", "90°", "সমান", "360°"], "correct": 0, "expl": "co-interior (same-side interior) → পরিপূরক: 180°।"}, {"level": "Higher", "text": "ত্রিভুজ গঠনের প্রয়োজনীয় ও পর্যাপ্ত শর্ত", "options": ["যে কোনো দুটি বাহুর যোগ তৃতীয়টির থেকে বড়", "তিন বাহু সমান", "দুটি কোণ সমান", "একটি কোণ 90°"], "correct": 0, "expl": "Triangle inequality।"}, {"level": "Higher", "text": "সদৃশ ত্রিভুজ থেকে পরিধি/ক্ষেত্রফল/আয়তনের অনুপাত—", "options": ["k : k² : k³", "k² : k : k³", "k³ : k : k²", "সবই সমান"], "correct": 0, "expl": "১D/২D/৩D স্কেলিং।"}, {"level": "Higher", "text": "একটি সমকোণী ত্রিভুজে, কর্ণের মধ্যবিন্দু থেকে তিন শীর্ষে দূরত্ব", "options": ["সমান", "দুটি সমান", "সব ভিন্ন", "তথ্য অসম্পূর্ণ"], "correct": 0, "expl": "Right triangle circumcenter at hypotenuse midpoint ⇒ দূরত্ব সমান = ব্যাসার্ধ।"}, {"level": "Higher", "text": "যদি বৃত্তের স্পর্শক ও ব্যাসার্ধ মিলিত বিন্দুতে", "options": ["পরস্পর লম্ব", "সমান্তরাল", "45°", "নির্ণীত নয়"], "correct": 0, "expl": "স্পর্শক ব্যাসার্ধের উপর লম্ব।"}, {"level": "Higher", "text": "বহিঃকোণ উপপাদ্য: একটি ত্রিভুজের বহিঃকোণ", "options": ["দুটি বিপরীত অন্তঃকোণের সমষ্টি", "তাদের পার্থক্য", "তিনগুণ", "180°−অভ্যন্তরীণ"], "correct": 0, "expl": "Exterior angle theorem।"}, {"level": "Higher", "text": "পরাবৃত্ত নয়— কোনটি বৃত্ত-সম্পর্কিত সঠিক উক্তি?", "options": ["কেন্দ্রস্থ কোণ আর্কের সমমান, পরিধিস্থ কোণ তার অর্ধেক", "দুটিই সমমান", "দুটিই অর্ধেক", "কোনোটিই নয়"], "correct": 0, "expl": "Inscribed angle = half of central।"}, {"level": "Higher", "text": "একটি সামান্তরিকের কর্ণদ্বয়", "options": ["পরস্পরকে সমদ্বিখণ্ডিত করে", "সমান", "লম্ব", "সবসময় 90°"], "correct": 0, "expl": "Parallelogram diagonals bisect each other।"}, {"level": "Application", "text": "সমকোণী ত্রিভুজে দুই লম্ব 6 সেমি ও 11 সেমি ⇒ ক্ষেত্রফল", "options": ["33.0 বর্গ সেমি", "66 বর্গ সেমি", "17 বর্গ সেমি", "5 বর্গ সেমি"], "correct": 0, "expl": "সমকোণী: Area = ½ ab।"}, {"level": "Application", "text": "দৈর্ঘ্য 10 ও প্রস্থ 15 এর আয়তক্ষেত্রের কর্ণ", "options": ["√(10²+15²)", "25", "5", "150"], "correct": 0, "expl": "d=√(l²+w²)।"}, {"level": "Application", "text": "সমকোণী ত্রিভুজে দুই লম্ব 10 সেমি ও 10 সেমি ⇒ ক্ষেত্রফল", "options": ["50.0 বর্গ সেমি", "100 বর্গ সেমি", "20 বর্গ সেমি", "0 বর্গ সেমি"], "correct": 0, "expl": "সমকোণী: Area = ½ ab।"}, {"level": "Application", "text": "দুটি সমান্তরাল রেখায় এক কোণ 50°। বিকল্প অন্তঃ কোণটি কত°?", "options": ["50°", "130°", "90°", "50°"], "correct": 0, "expl": "বিকল্প অন্তঃ কোণ সমান ⇒ 50°।"}, {"level": "Application", "text": "ব্যাসার্ধ 4 সেমি ও কেন্দ্রীয় কোণ 45° ⇒ সেক্টরের ক্ষেত্রফল (π অনুপাতেই)", "options": ["45/360 · π·4²", "45/180 · π·4", "45 · 4", "2π·4"], "correct": 0, "expl": "A = (θ/360)·πr² ⇒ 45/360·π·4²।"}, {"level": "Application", "text": "ব্যাসার্ধ 5 সেমি ও কেন্দ্রীয় কোণ 150° ⇒ সেক্টরের ক্ষেত্রফল (π অনুপাতেই)", "options": ["150/360 · π·5²", "150/180 · π·5", "150 · 5", "2π·5"], "correct": 0, "expl": "A = (θ/360)·πr² ⇒ 150/360·π·5²।"}, {"level": "Application", "text": "দুটি সমান্তরাল রেখায় এক কোণ 70°। সমস্থানিক কোণটি কত°?", "options": ["70°", "110°", "90°", "70°"], "correct": 0, "expl": "সমস্থানিক কোণ সমান ⇒ 70°।"}, {"level": "Application", "text": "ব্যাসার্ধ 3 সেমি, কেন্দ্রীয় কোণ 45° ⇒ আর্ক দৈর্ঘ্য (π অনুপাতেই)", "options": ["45/360 · 2π·3", "45/180 · π·3²", "45/360 · π·3", "π·3²"], "correct": 0, "expl": "L=(θ/360)·2πr।"}, {"level": "Application", "text": "দুটি সদৃশ ত্রিভুজে পার্শ্ব স্কেল অনুপাত k=3 ⇒ ক্ষেত্রফলের অনুপাত", "options": ["3²:1", "3:1", "3³:1", "1:3"], "correct": 0, "expl": "Area ratio = k²।"}, {"level": "Application", "text": "সমবাহু ত্রিভুজের বাহু 7 সেমি ⇒ ক্ষেত্রফল (√3 অনুপাতেই)", "options": ["(√3/4)·7²", "½·7·7", "49·√3", "(√3/2)·7"], "correct": 0, "expl": "ΔA = (√3/4)a²।"}, {"level": "Application", "text": "সমকোণী ত্রিভুজে দুই লম্ব 9 সেমি ও 4 সেমি ⇒ ক্ষেত্রফল", "options": ["18.0 বর্গ সেমি", "36 বর্গ সেমি", "13 বর্গ সেমি", "5 বর্গ সেমি"], "correct": 0, "expl": "সমকোণী: Area = ½ ab।"}, {"level": "Application", "text": "দৈর্ঘ্য 19 ও প্রস্থ 5 এর আয়তক্ষেত্রের কর্ণ", "options": ["√(19²+5²)", "24", "14", "95"], "correct": 0, "expl": "d=√(l²+w²)।"}, {"level": "Application", "text": "ত্রিভুজের বাহু 5,12,13 ⇒ ক্ষেত্রফল (Heron)", "options": ["30", "15.0", "35", "27"], "correct": 0, "expl": "s=(a+b+c)/2 ⇒ Heron √(s(s−a)(s−b)(s−c)) = 30।"}, {"level": "Application", "text": "ব্যাসার্ধ 8 সেমি, কেন্দ্রীয় কোণ 45° ⇒ আর্ক দৈর্ঘ্য (π অনুপাতেই)", "options": ["45/360 · 2π·8", "45/180 · π·8²", "45/360 · π·8", "π·8²"], "correct": 0, "expl": "L=(θ/360)·2πr।"}, {"level": "Application", "text": "সমকোণী ত্রিভুজে লম্ব 8 সেমি ও 15 সেমি ⇒ কর্ণ", "options": ["17 সেমি", "23 সেমি", "7 সেমি", "√289 সেমি"], "correct": 0, "expl": "c = √(8²+15²) = 17।"}, {"level": "Application", "text": "ত্রিভুজের বাহু 5,12,13 ⇒ ক্ষেত্রফল (Heron)", "options": ["30", "15.0", "35", "27"], "correct": 0, "expl": "s=(a+b+c)/2 ⇒ Heron √(s(s−a)(s−b)(s−c)) = 30।"}, {"level": "Application", "text": "ব্যাসার্ধ 10 সেমি; কেন্দ্রীয় কোণ 60° ⇒ জ্যা দৈর্ঘ্য (চিহ্নিত সূত্রে)", "options": ["2·10·sin(60/2)", "10·sin(60)", "2·10·cos(60/2)", "10·tan(60/2)"], "correct": 0, "expl": "জ্যা = 2r·sin(θ/2)।"}, {"level": "Application", "text": "সমকোণী ত্রিভুজে দুই লম্ব 9 সেমি ও 12 সেমি ⇒ ক্ষেত্রফল", "options": ["54.0 বর্গ সেমি", "108 বর্গ সেমি", "21 বর্গ সেমি", "3 বর্গ সেমি"], "correct": 0, "expl": "সমকোণী: Area = ½ ab।"}, {"level": "Application", "text": "সমকোণী ত্রিভুজে লম্ব 12 সেমি ও 5 সেমি ⇒ কর্ণ", "options": ["13 সেমি", "17 সেমি", "7 সেমি", "√169 সেমি"], "correct": 0, "expl": "c = √(12²+5²) = 13।"}, {"level": "Application", "text": "দৈর্ঘ্য 20 ও প্রস্থ 6 এর আয়তক্ষেত্রের কর্ণ", "options": ["√(20²+6²)", "26", "14", "120"], "correct": 0, "expl": "d=√(l²+w²)।"}, {"level": "Application", "text": "সমকোণী ত্রিভুজে কর্ণ 17 ও এক লম্ব 8 ⇒ অন্য লম্ব", "options": ["15", "15", "9", "2"], "correct": 0, "expl": "অন্য লম্ব = √(c²−b²) = √(17²−8²) = 15।"}, {"level": "Application", "text": "দৈর্ঘ্য 20 ও প্রস্থ 10 এর আয়তক্ষেত্রের কর্ণ", "options": ["√(20²+10²)", "30", "10", "200"], "correct": 0, "expl": "d=√(l²+w²)।"}, {"level": "Application", "text": "সমকোণী ত্রিভুজে দুই লম্ব 7 সেমি ও 10 সেমি ⇒ ক্ষেত্রফল", "options": ["35.0 বর্গ সেমি", "70 বর্গ সেমি", "17 বর্গ সেমি", "3 বর্গ সেমি"], "correct": 0, "expl": "সমকোণী: Area = ½ ab।"}, {"level": "Application", "text": "দুটি সমান্তরাল রেখায় এক কোণ 50°। সমস্থানিক কোণটি কত°?", "options": ["50°", "130°", "90°", "50°"], "correct": 0, "expl": "সমস্থানিক কোণ সমান ⇒ 50°।"}, {"level": "Knowledge", "text": "বৃত্তের পরিধি", "options": ["2πr", "πr²", "πd²", "πr"], "correct": 0, "expl": "পরিধি C=2πr, ক্ষেত্রফল A=πr²।"}, {"level": "Knowledge", "text": "কেন্দ্রীয় কোণ θ (ডিগ্রি) হলে আর্ক দৈর্ঘ্য", "options": ["(θ/360)·2πr", "θ·r", "(θ/180)·π", "πr²"], "correct": 0, "expl": "ডিগ্রিতে আর্ক = (θ/360)·2πr।"}, {"level": "Knowledge", "text": "বৃত্তের পরিধি", "options": ["2πr", "πr²", "πd²", "πr"], "correct": 0, "expl": "পরিধি C=2πr, ক্ষেত্রফল A=πr²।"}, {"level": "Knowledge", "text": "ত্রিভুজের কোণের সমষ্টি", "options": ["180°", "90°", "270°", "360°"], "correct": 0, "expl": "ত্রিভুজে 180°।"}, {"level": "Knowledge", "text": "সমবাহু ত্রিভুজের ক্ষেত্রফল সূত্র", "options": ["(√3/4)·a²", "½·b·h", "½·a·b·sin(C)", "s(s−a)(s−b)(s−c)"], "correct": 0, "expl": "সমবাহু: ΔA=(√3/4)a²।"}, {"level": "Knowledge", "text": "বৃত্তের ক্ষেত্রফল", "options": ["πr²", "2πr", "πd", "πr/2"], "correct": 0, "expl": "A=πr²।"}, {"level": "Knowledge", "text": "সমবাহু ত্রিভুজের ক্ষেত্রফল সূত্র", "options": ["(√3/4)·a²", "½·b·h", "½·a·b·sin(C)", "s(s−a)(s−b)(s−c)"], "correct": 0, "expl": "সমবাহু: ΔA=(√3/4)a²।"}, {"level": "Knowledge", "text": "পিথাগোরাসের উপপাদ্য কোন ত্রিভুজে প্রযোজ্য?", "options": ["সমকোণী ত্রিভুজ", "সমবাহু ত্রিভুজ", "সমদ্বিবাহু ত্রিভুজ", "যে কোনো ত্রিভুজ"], "correct": 0, "expl": "শুধুমাত্র সমকোণী ত্রিভুজে a²+b²=c²।"}, {"level": "Knowledge", "text": "কেন্দ্রীয় কোণ θ (ডিগ্রি) হলে আর্ক দৈর্ঘ্য", "options": ["(θ/360)·2πr", "θ·r", "(θ/180)·π", "πr²"], "correct": 0, "expl": "ডিগ্রিতে আর্ক = (θ/360)·2πr।"}, {"level": "Knowledge", "text": "কেন্দ্রীয় কোণ θ (ডিগ্রি) হলে আর্ক দৈর্ঘ্য", "options": ["(θ/360)·2πr", "θ·r", "(θ/180)·π", "πr²"], "correct": 0, "expl": "ডিগ্রিতে আর্ক = (θ/360)·2πr।"}, {"level": "Knowledge", "text": "n বাহুবিশিষ্ট নিয়মিত বহুভুজে প্রতিটি অন্তঃকোণ", "options": ["[(n−2)·180°]/n", "(n·180°)°", "(n−1)·180°", "[(n−1)·360°]/n"], "correct": 0, "expl": "অন্তঃকোণ = [(n−2)·180°]/n।"}, {"level": "Knowledge", "text": "পিথাগোরাসের উপপাদ্য কোন ত্রিভুজে প্রযোজ্য?", "options": ["সমকোণী ত্রিভুজ", "সমবাহু ত্রিভুজ", "সমদ্বিবাহু ত্রিভুজ", "যে কোনো ত্রিভুজ"], "correct": 0, "expl": "শুধুমাত্র সমকোণী ত্রিভুজে a²+b²=c²।"}, {"level": "Comprehension", "text": "সমবাহু ত্রিভুজের উচ্চতা", "options": ["(√3/2)a", "a", "(√2/2)a", "(3/2)a"], "correct": 0, "expl": "equilateral height h=√3/2·a।"}, {"level": "Comprehension", "text": "একটি আয়তক্ষেত্রের কর্ণ", "options": ["√(l²+w²)", "l+w", "l·w", "|l−w|"], "correct": 0, "expl": "পিথাগোরাস প্রয়োগ।"}, {"level": "Comprehension", "text": "সমবাহু ত্রিভুজের উচ্চতা", "options": ["(√3/2)a", "a", "(√2/2)a", "(3/2)a"], "correct": 0, "expl": "equilateral height h=√3/2·a।"}, {"level": "Comprehension", "text": "সমবাহু ত্রিভুজের উচ্চতা", "options": ["(√3/2)a", "a", "(√2/2)a", "(3/2)a"], "correct": 0, "expl": "equilateral height h=√3/2·a।"}, {"level": "Comprehension", "text": "একটি আয়তক্ষেত্রের কর্ণ", "options": ["√(l²+w²)", "l+w", "l·w", "|l−w|"], "correct": 0, "expl": "পিথাগোরাস প্রয়োগ।"}, {"level": "Comprehension", "text": "সমান্তরাল রেখায় বিকল্প অন্তঃকোণ", "options": ["সমান", "সম্পূরক", "90°", "নির্ণয় করা যায় না"], "correct": 0, "expl": "Alternate interior angles equal।"}, {"level": "Comprehension", "text": "সদৃশ ত্রিভুজে পরিসীমার অনুপাত k হলে ক্ষেত্রফলের অনুপাত", "options": ["k²", "k", "k³", "1/k"], "correct": 0, "expl": "Area scale = k²।"}, {"level": "Comprehension", "text": "বৃত্তে কেন্দ্রীয় কোণ 60° হলে আর্ক দৈর্ঘ্য (ব্যাসার্ধ r)", "options": ["(1/3)·πr", "(1/6)·2πr", "πr", "2πr"], "correct": 0, "expl": "(60/360)·2πr = (1/3)πr।"}, {"level": "Comprehension", "text": "বৃত্তে কেন্দ্রীয় কোণ 60° হলে আর্ক দৈর্ঘ্য (ব্যাসার্ধ r)", "options": ["(1/3)·πr", "(1/6)·2πr", "πr", "2πr"], "correct": 0, "expl": "(60/360)·2πr = (1/3)πr।"}, {"level": "Comprehension", "text": "বৃত্তে কেন্দ্রীয় কোণ 60° হলে আর্ক দৈর্ঘ্য (ব্যাসার্ধ r)", "options": ["(1/3)·πr", "(1/6)·2πr", "πr", "2πr"], "correct": 0, "expl": "(60/360)·2πr = (1/3)πr।"}, {"level": "Comprehension", "text": "সমান্তরাল রেখায় বিকল্প অন্তঃকোণ", "options": ["সমান", "সম্পূরক", "90°", "নির্ণয় করা যায় না"], "correct": 0, "expl": "Alternate interior angles equal।"}, {"level": "Comprehension", "text": "সমান্তরাল রেখায় বিকল্প অন্তঃকোণ", "options": ["সমান", "সম্পূরক", "90°", "নির্ণয় করা যায় না"], "correct": 0, "expl": "Alternate interior angles equal।"}, {"level": "Comprehension", "text": "একটি সমকোণী ত্রিভুজে বাহু 3 ও 4 হলে কর্ণ", "options": ["5", "7", "√7", "25"], "correct": 0, "expl": "3-4-5 ত্রয়ী।"}, {"level": "Higher", "text": "বহিঃকোণ উপপাদ্য: একটি ত্রিভুজের বহিঃকোণ", "options": ["দুটি বিপরীত অন্তঃকোণের সমষ্টি", "তাদের পার্থক্য", "তিনগুণ", "180°−অভ্যন্তরীণ"], "correct": 0, "expl": "Exterior angle theorem।"}, {"level": "Higher", "text": "Midpoint Theorem এর সঠিক ব্যাখ্যা", "options": ["ত্রিভুজের দুই বাহুর মধ্যবিন্দু সংযোগকারী রেখা তৃতীয় বাহুর সমান্তরাল ও তার অর্ধেক", "উচ্চতার সমান", "মধ্যমা = দ্বিভাজক", "বাইসেক্টর সবসময় লম্ব"], "correct": 0, "expl": "Midpoint theorem।"}, {"level": "Higher", "text": "বহিঃকোণ উপপাদ্য: একটি ত্রিভুজের বহিঃকোণ", "options": ["দুটি বিপরীত অন্তঃকোণের সমষ্টি", "তাদের পার্থক্য", "তিনগুণ", "180°−অভ্যন্তরীণ"], "correct": 0, "expl": "Exterior angle theorem।"}, {"level": "Higher", "text": "সমান্তরাল রেখায় অনুবর্ত কোণ দুটির যোগফল", "options": ["180°", "90°", "সমান", "360°"], "correct": 0, "expl": "co-interior (same-side interior) → পরিপূরক: 180°।"}, {"level": "Higher", "text": "পরাবৃত্ত নয়— কোনটি বৃত্ত-সম্পর্কিত সঠিক উক্তি?", "options": ["কেন্দ্রস্থ কোণ আর্কের সমমান, পরিধিস্থ কোণ তার অর্ধেক", "দুটিই সমমান", "দুটিই অর্ধেক", "কোনোটিই নয়"], "correct": 0, "expl": "Inscribed angle = half of central।"}, {"level": "Higher", "text": "একটি সমকোণী ত্রিভুজে, কর্ণের মধ্যবিন্দু থেকে তিন শীর্ষে দূরত্ব", "options": ["সমান", "দুটি সমান", "সব ভিন্ন", "তথ্য অসম্পূর্ণ"], "correct": 0, "expl": "Right triangle circumcenter at hypotenuse midpoint ⇒ দূরত্ব সমান = ব্যাসার্ধ।"}, {"level": "Higher", "text": "কোন উক্তিটি পিথাগোরাসের বিপরীত উপপাদ্য?", "options": ["যদি ত্রিভুজে a²+b²=c² তবে ∠C=90°", "a+b>c", "∠A+∠B+∠C=180°", "যদি ∠C=90° তবে a²+b²=c²"], "correct": 0, "expl": "Converse: a²+b²=c² ⇒ সমকোণ।"}, {"level": "Higher", "text": "বহিঃকোণ উপপাদ্য: একটি ত্রিভুজের বহিঃকোণ", "options": ["দুটি বিপরীত অন্তঃকোণের সমষ্টি", "তাদের পার্থক্য", "তিনগুণ", "180°−অভ্যন্তরীণ"], "correct": 0, "expl": "Exterior angle theorem।"}, {"level": "Higher", "text": "বহিঃকোণ উপপাদ্য: একটি ত্রিভুজের বহিঃকোণ", "options": ["দুটি বিপরীত অন্তঃকোণের সমষ্টি", "তাদের পার্থক্য", "তিনগুণ", "180°−অভ্যন্তরীণ"], "correct": 0, "expl": "Exterior angle theorem।"}, {"level": "Higher", "text": "Midpoint Theorem এর সঠিক ব্যাখ্যা", "options": ["ত্রিভুজের দুই বাহুর মধ্যবিন্দু সংযোগকারী রেখা তৃতীয় বাহুর সমান্তরাল ও তার অর্ধেক", "উচ্চতার সমান", "মধ্যমা = দ্বিভাজক", "বাইসেক্টর সবসময় লম্ব"], "correct": 0, "expl": "Midpoint theorem।"}];
+    const TOTAL = QUESTIONS.length;
+
+    const $ = s=>document.querySelector(s);
+    const $$ = s=>Array.from(document.querySelectorAll(s));
+
+    let state = {order:[], answers:{}, current:0, remaining: 90*60, finished:false, startedAt: Date.now()};
+
+    function shuffle(arr){ for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]];} return arr; }
+    function formatTime(s){const m=String(Math.floor(s/60)).padStart(2,'0'); const r=String(s%60).padStart(2,'0'); return m+":"+r;}
+  </script>
+</body>
+</html>

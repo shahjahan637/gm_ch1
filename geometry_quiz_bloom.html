@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Advanced HTML Quiz – Bloom Taxonomy (Geometry Ch-3)</title>
+<style>
+  :root{
+    --blue:#2563eb;   /* Knowledge */
+    --green:#039855;  /* Comprehension */
+    --yellow:#ca8a04; /* Application */
+    --red:#dc2626;    /* Higher */
+    --bg:#0b1020;
+    --card:#0f172a;
+    --muted:#94a3b8;
+    --text:#e2e8f0;
+    --accent:#22d3ee;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, 'Helvetica Neue', Arial, 'Noto Sans Bengali', 'Noto Sans', 'SolaimanLipi', sans-serif;
+    color:var(--text);
+    background:
+      radial-gradient(1200px 600px at 10% -10%, #1f2937 0%, transparent 70%),
+      radial-gradient(1000px 600px at 110% 10%, #0e7490 0%, transparent 70%),
+      linear-gradient(180deg, #0b1020 0%, #0b1020 100%);
+    min-height:100vh;
+  }
+  header{
+    position:sticky; top:0; z-index:50;
+    backdrop-filter: blur(8px);
+    background:rgba(11,16,32,0.7);
+    border-bottom:1px solid rgba(148,163,184,0.2);
+  }
+  .wrap{max-width:1000px; margin:0 auto; padding:16px;}
+  .brand{
+    display:flex; align-items:center; gap:12px;
+  }
+  .logo{
+    width:36px;height:36px; border-radius:10px;
+    background: conic-gradient(from 180deg, var(--accent), #8b5cf6, #f43f5e, var(--accent));
+    border:1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 10px 30px rgba(34,211,238,0.25);
+  }
+  h1{font-size:22px; margin:0; letter-spacing:.3px;}
+  .meta{
+    display:flex; flex-wrap:wrap; gap:10px; margin-top:10px; color:var(--muted); font-size:14px;
+  }
+  .pill{padding:6px 10px; border:1px solid rgba(255,255,255,0.08); border-radius:999px; background:rgba(255,255,255,0.03);}
+  main{padding:24px 0 100px;}
+  .card{
+    background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+    border:1px solid rgba(148,163,184,0.15);
+    border-radius:18px; padding:20px;
+    box-shadow: 0 10px 35px rgba(0,0,0,0.35);
+  }
+  .question-header{
+    display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:12px;
+  }
+  .q-badge{font-weight:600; letter-spacing:.3px; color:#fff; padding:6px 10px; border-radius:999px;}
+  .q-badge[data-level="Knowledge"]{background:var(--blue);}
+  .q-badge[data-level="Comprehension"]{background:var(--green);}
+  .q-badge[data-level="Application"]{background:var(--yellow); color:#111827;}
+  .q-badge[data-level="Higher"]{background:var(--red);}
+  .progress{
+    height:10px; width:100%; background:rgba(148,163,184,0.2);
+    border-radius:999px; overflow:hidden; margin:8px 0 0;
+  }
+  .progress > div{
+    height:100%; width:0%; background:linear-gradient(90deg, var(--accent), #60a5fa);
+    transition:width .3s ease;
+  }
+  .qtext{font-size:18px; line-height:1.5; margin:8px 0 14px;}
+  .options{display:grid; gap:10px; margin-top:10px;}
+  .opt{
+    display:flex; align-items:flex-start; gap:10px; padding:12px;
+    border:1px solid rgba(148,163,184,0.2); border-radius:12px;
+    background:rgba(2,6,23,0.4); cursor:pointer;
+  }
+  .opt input{margin-top:3px;}
+  .nav{
+    display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:16px;
+  }
+  button{
+    appearance:none; border:none; cursor:pointer;
+    padding:10px 14px; border-radius:12px; font-weight:600;
+    background: linear-gradient(180deg, #22d3ee, #1ea7be);
+    color:#042026; box-shadow: 0 10px 25px rgba(34,211,238,0.3);
+  }
+  button.secondary{background:rgba(148,163,184,0.15); color:var(--text); box-shadow:none; border:1px solid rgba(148,163,184,0.2);}
+  button.danger{background: linear-gradient(180deg, #f43f5e, #e11d48); color:#fff;}
+  .timer{font-weight:700; letter-spacing:.5px;}
+  .small{font-size:13px; color:var(--muted)}
+  .hidden{display:none !important;}
+  .results{
+    display:grid; gap:16px;
+  }
+  .grid2{display:grid; grid-template-columns:1fr; gap:16px;}
+  @media(min-width:900px){ .grid2{grid-template-columns:1.2fr .8fr;} }
+  table{width:100%; border-collapse: collapse; overflow:hidden; border-radius:12px;}
+  th, td{padding:10px 12px; text-align:left; border-bottom:1px solid rgba(148,163,184,0.18);}
+  th{background:rgba(148,163,184,0.15);}
+  .ok{color:#22c55e; font-weight:700;}
+  .bad{color:#f43f5e; font-weight:700;}
+  .neutral{color:#eab308; font-weight:700;}
+  .report-header{display:flex; align-items:center; justify-content:space-between; gap:10px;}
+  .print-hint{font-size:12px; color:var(--muted);}
+  canvas{background:rgba(255,255,255,0.03); border:1px dashed rgba(148,163,184,0.25); border-radius:12px;}
+  footer{
+    position:fixed; bottom:0; left:0; right:0; background:rgba(11,16,32,0.85); backdrop-filter: blur(8px);
+    border-top:1px solid rgba(148,163,184,0.18);
+  }
+  .footer-inner{max-width:1000px; margin:0 auto; display:flex; gap:10px; align-items:center; justify-content:space-between; padding:10px 16px;}
+  .legend{display:flex; gap:8px; flex-wrap:wrap;}
+  .legend span{padding:6px 10px; border-radius:999px; border:1px solid rgba(148,163,184,0.2);}
+  .l-blue{background:var(--blue); color:#fff}
+  .l-green{background:var(--green); color:#fff}
+  .l-yellow{background:var(--yellow); color:#111827}
+  .l-red{background:var(--red); color:#fff}
+  .ghost{opacity:.65}
+  @media print {
+    header, footer, .nav, .meta, .legend, .controls{display:none !important;}
+    body{background:white; color:#111827;}
+    .card{border:1px solid #ddd; box-shadow:none;}
+    .report-only{display:block !important;}
+  }
+  .report-only{display:none;}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="brand">
+      <div class="logo" aria-hidden="true"></div>
+      <div>
+        <h1>Advanced HTML Quiz · Bloom Taxonomy · অধ্যায় ৩: জ্যামিতি</h1>
+        <div class="meta">
+          <span class="pill">⏳ টাইমার: <span class="timer" id="timer">30:00</span></span>
+          <span class="pill">🔀 শাফল অন</span>
+          <span class="pill">➖ নেগেটিভ মার্কিং: ভুলে −0.25</span>
+          <span class="pill">💾 অটো-সেভ সক্রিয়</span>
+        </div>
+        <div class="progress" aria-label="Progress"><div id="bar"></div></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <!-- Question Card -->
+  <section id="quiz-card" class="card">
+    <div class="question-header">
+      <div>
+        <div id="qBadge" class="q-badge" data-level="Knowledge">Knowledge</div>
+        <div class="small">প্রশ্ন <span id="qNum">1</span> / <span id="qTotal">30</span></div>
+      </div>
+      <div class="small">আপনার উত্তর সেভ হবে ✔</div>
+    </div>
+    <div class="qtext" id="qText">Loading…</div>
+    <div class="options" id="options"></div>
+    <div class="nav">
+      <button class="secondary" id="prevBtn">⬅ পূর্বের</button>
+      <div class="controls">
+        <button class="secondary" id="resetBtn" title="সব রিসেট">🔄 রিসেট</button>
+        <button class="secondary" id="saveBtn" title="এখনই সেভ">💾 সেভ</button>
+      </div>
+      <button id="nextBtn">পরবর্তী ➡</button>
+    </div>
+  </section>
+
+  <!-- Results -->
+  <section id="results" class="card hidden">
+    <div class="results">
+      <div class="grid2">
+        <div>
+          <div class="report-header">
+            <h2>📋 ফলাফল ও রিপোর্ট (Bloom স্তরভিত্তিক)</h2>
+            <div>
+              <button id="printBtn" class="secondary">🖨 PDF সেভ/প্রিন্ট</button>
+            </div>
+          </div>
+          <p class="small">স্কোরিং: সঠিকে +1, ভুলে −0.25, ফাঁকা 0।</p>
+          <table id="summary">
+            <thead>
+              <tr>
+                <th>মেট্রিক</th><th>মান</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>মোট প্রশ্ন</td><td id="sumTotal">—</td></tr>
+              <tr><td>সঠিক উত্তর</td><td id="sumRight">—</td></tr>
+              <tr><td>ভুল উত্তর</td><td id="sumWrong">—</td></tr>
+              <tr><td>ফাঁকা</td><td id="sumBlank">—</td></tr>
+              <tr><td>নেগেটিভ মার্ক (মোট)</td><td id="sumNeg">—</td></tr>
+              <tr><td>ফাইনাল স্কোর</td><td id="sumScore">—</td></tr>
+              <tr><td>সময় লেগেছে</td><td id="sumTime">—</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div>
+          <h3>📊 স্তরভিত্তিক পারফরম্যান্স</h3>
+          <canvas id="chart" width="500" height="320" aria-label="Level chart"></canvas>
+          <p class="small print-hint">চার্টসহ এই রিপোর্টকে <strong>PDF</strong> হিসেবে সেভ করতে “🖨 PDF সেভ/প্রিন্ট” বাটনে ক্লিক করুন।</p>
+        </div>
+      </div>
+
+      <div class="report-only">
+        <h2>ব্যাখ্যাসহ উত্তর তালিকা</h2>
+      </div>
+      <table id="explanations">
+        <thead>
+          <tr>
+            <th>#</th><th>Bloom স্তর</th><th>প্রশ্ন</th><th>আপনার উত্তর</th><th>সঠিক উত্তর</th><th>স্ট্যাটাস</th><th>ব্যাখ্যা</th>
+          </tr>
+        </thead>
+        <tbody id="expBody"></tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div class="legend">
+      <span class="l-blue">🔵 জ্ঞানমূলক</span>
+      <span class="l-green">🟢 অনুধাবন</span>
+      <span class="l-yellow">🟡 প্রয়োগ</span>
+      <span class="l-red">🔴 উচ্চতর</span>
+      <span class="pill ghost">প্রতি পেজে ১টি প্রশ্ন</span>
+    </div>
+    <div>
+      <button id="submitBtn" class="danger">✅ সাবমিট</button>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ====== Data: 30 MCQs (Geometry) ======
+const QUESTIONS = [
+  // Knowledge (8)
+  {id:1, level:'Knowledge', text:'পিথাগোরাসের উপপাদ্যের সঠিক উক্তি কোনটি?', options:['a² + b² = c² (সমকোণী ত্রিভুজে)','a² − b² = c²','a² + b = c²','a + b² = c²'], correct:0,
+   expl:'সমকোণী ত্রিভুজে, হাইপোটেনুজ c হলে a² + b² = c²।'},
+  {id:2, level:'Knowledge', text:'৩–৪–৫ একটি —', options:['সমবাহু ত্রয়ী','পিথাগোরাস ত্রয়ী','সমদ্বিবাহু ত্রয়ী','অনিয়মিত ত্রয়ী'], correct:1,
+   expl:'3² + 4² = 5² ⇒ 9 + 16 = 25।'},
+  {id:3, level:'Knowledge', text:'সমকোণী ত্রিভুজের ক্ষেত্রফল = ? (লম্ব বাহু দুটি a, b)', options:['ab','½ab','2ab','a² + b²'], correct:1,
+   expl:'Area = ½ × লম্ব বাহু × ভিত্তি = ½ab।'},
+  {id:4, level:'Knowledge', text:'বৃত্তের ব্যাস (Diameter) = ? (ব্যাসার্ধ r)', options:['r','2r','πr','r²'], correct:1,
+   expl:'ব্যাস = 2r।'},
+  {id:5, level:'Knowledge', text:'কর্ডের দৈর্ঘ্য (কেন্দ্রীয় কোণ θ রেডিয়ান)', options:['rθ','2r sin(θ⁄2)','r²θ','r cos θ'], correct:1,
+   expl:'chord = 2r·sin(θ/2)।'},
+  {id:6, level:'Knowledge', text:'আর্কের দৈর্ঘ্য (θ রেডিয়ান)', options:['rθ','2rθ','r²θ','πrθ'], correct:0,
+   expl:'arc length s = rθ (θ রেডিয়ান হলে)।'},
+  {id:7, level:'Knowledge', text:'ত্রিভুজের অন্তঃকোণের যোগফল —', options:['90°','120°','180°','270°'], correct:2,
+   expl:'∠A + ∠B + ∠C = 180°।'},
+  {id:8, level:'Knowledge', text:'সমান্তরাল রেখায় একান্তর অভ্যন্তরীণ কোণ —', options:['সমান','পরিপূরক নয়','সবসময় 90°','সমান নয়'], correct:0,
+   expl:'Parallel + transversal ⇒ alternate interior angles সমান।'},
+
+  // Comprehension (7)
+  {id:9, level:'Comprehension', text:'৩ ও ৪ সেমি দুই লম্ব বাহু বিশিষ্ট সমকোণী ত্রিভুজের কর্ণ = ?', options:['4 সেমি','5 সেমি','6 সেমি','√7 সেমি'], correct:1,
+   expl:'3² + 4² = 5² ⇒ কর্ণ 5।'},
+  {id:10, level:'Comprehension', text:'একটি বৃত্তের ক্ষেত্রফল 16π হলে ব্যাস = ?', options:['4','6','8','10'], correct:2,
+   expl:'πr²=16π ⇒ r=4 ⇒ ব্যাস=8।'},
+  {id:11, level:'Comprehension', text:'দুইটি রেখা তৃতীয় একই রেখার সাথে সমান্তরাল হলে, তারা পরস্পর —', options:['সমান্তরাল','লম্ব','ছেদক','অনির্দিষ্ট'], correct:0,
+   expl:'Parallel to the same line ⇒ পরস্পরও parallel।'},
+  {id:12, level:'Comprehension', text:'একটি বৃত্তে সমান কর্ডের সমান —', options:['স্পর্শক','ব্যাস','কেন্দ্রীয় কোণ','ব্যাসার্ধ নয়'], correct:2,
+   expl:'সমান কর্ড ↔︎ সমান কেন্দ্রীয় কোণ।'},
+  {id:13, level:'Comprehension', text:'AA শর্তে দুটি ত্রিভুজ —', options:['সমদ্বিবাহু','সদৃশ','সমবাহু','সমদৈর্ঘ্য'], correct:1,
+   expl:'দুটি কোণ সমান ⇒ similar।'},
+  {id:14, level:'Comprehension', text:'কেন্দ্রীয় কোণ 60° ও r=6 হলে আর্কের দৈর্ঘ্য = ?', options:['2π','3π','6','12'], correct:0,
+   expl:'θ=60°=π/3 ⇒ s=rθ=6·(π/3)=2π।'},
+  {id:15, level:'Comprehension', text:'সমান্তরাল রেখায় সমস্থানিক (corresponding) কোণ —', options:['সবসময় পরিপূরক','সমান','সম্পূরক','শূন্য'], correct:1,
+   expl:'Corresponding angles সমান।'},
+
+  // Application (8)
+  {id:16, level:'Application', text:'সমকোণী ΔABC-তে ∠C=90°, AC=6, BC=8 ⇒ AB = ?', options:['10','√100','12','7'], correct:0,
+   expl:'AB=√(6²+8²)=√100=10।'},
+  {id:17, level:'Application', text:'r=5, θ=60° হলে কর্ড = ?', options:['5','10','5√3','6'], correct:0,
+   expl:'2r·sin(θ/2)=2·5·sin30°=10·½=5।'},
+  {id:18, level:'Application', text:'r=6, θ=120° হলে সেক্টরের ক্ষেত্রফল = ?', options:['6π','9π','12π','18π'], correct:2,
+   expl:'(θ/360°)·πr²=(120/360)·π·36=12π।'},
+  {id:19, level:'Application', text:'parallel রেখায় একটি কোণ 65° হলে তার corresponding কোণ = ?', options:['115°','65°','25°','90°'], correct:1,
+   expl:'Corresponding angles সমান।'},
+  {id:20, level:'Application', text:'ΔABC ~ ΔDEF, AB:DE=2:3; যদি AB=8, তবে DE=?', options:['10','12','14','16'], correct:1,
+   expl:'8:DE=2:3 ⇒ DE=12।'},
+  {id:21, level:'Application', text:'বিন্দু (1,2) ও (7,5)-এর দূরত্ব = ?', options:['√13','√45','3√5','উভয় b ও c সঠিক'], correct:3,
+   expl:'√[(7−1)²+(5−2)²]=√45=3√5 ⇒ b ও c সমান।'},
+  {id:22, level:'Application', text:'সমবাহু ত্রিভুজে বাহু 5 হলে উচ্চতা = ?', options:['5','5√3','(5√3)⁄2','2.5'], correct:2,
+   expl:'h=(√3/2)s ⇒ (5√3)/2।'},
+  {id:23, level:'Application', text:'কোনো ত্রিভুজের ক্ষেত্রফল 24, ভিত্তি 8 ⇒ উচ্চতা = ?', options:['3','4','6','8'], correct:2,
+   expl:'A=½·b·h ⇒ h=2A/b=48/8=6।'},
+
+  // Higher (7)
+  {id:24, level:'Higher', text:'7, 24, 25 — এটি কি সমকোণী ত্রিভুজের বাহু হতে পারে?', options:['হ্যাঁ','না','নির্ণয়যোগ্য নয়','কেবলমাত্র সমবাহু'], correct:0,
+   expl:'7²+24²=49+576=625=25² ⇒ হ্যাঁ।'},
+  {id:25, level:'Higher', text:'6, 8, 10 ত্রিভুজ: প্রকৃতি ও ক্ষেত্রফল?', options:['সমদ্বিবাহু, 24','সমকোণী, 24','স্থূলকোণী, 30','ন্যূনকোণী, 20'], correct:1,
+   expl:'6²+8²=10² ⇒ সমকোণী; area=½·6·8=24।'},
+  {id:26, level:'Higher', text:'দুটি রেখা সর্বত্র সমদূরত্বে থাকলে তারা —', options:['লম্ব','সমান্তরাল','ছেদক','সমান্তরাল নাও হতে পারে'], correct:1,
+   expl:'Equidistant everywhere ⇒ parallel।'},
+  {id:27, level:'Higher', text:'বৃত্তে সমান কর্ডের বিপরীতে —', options:['সমান কেন্দ্রীয় কোণ','অসমান আরক','সবসময় ব্যাস','শূন্য কোণ'], correct:0,
+   expl:'Equal chords ↔︎ equal arcs ↔︎ equal central angles।'},
+  {id:28, level:'Higher', text:'থেলসের উপপাদ্য: ব্যাস 10-এর অর্ধবৃত্তে কর্ণ 10 ও এক লম্ব বাহু 6 হলে অন্য লম্ব বাহু ও ক্ষেত্রফল?', options:['6, 18','8, 24','10, 30','4, 12'], correct:1,
+   expl:'c²=a²+b² ⇒ 10²−6²=64 ⇒ b=8; area=½·6·8=24।'},
+  {id:29, level:'Higher', text:'Angle Bisector Theorem: ΔABC-তে ∠A-এর দ্বিখণ্ডক BC-কে D-তে ছেদ করে; AB=6, AC=9 ও BC=10 ⇒ BD:DC = ?', options:['3:2','2:3','5:5','4:6'], correct:1,
+   expl:'BD/DC = AB/AC = 6/9 = 2/3।'},
+  {id:30, level:'Higher', text:'সদৃশতা স্কেল ফ্যাক্টর 2 হলে পরিসীমা ও ক্ষেত্রফল কীভাবে বদলাবে?', options:['পরিসীমা ×2, ক্ষেত্রফল ×4','পরিসীমা ×4, ক্ষেত্রফল ×2','উভয়ই ×2','উভয়ই ×4'], correct:0,
+   expl:'Similarity k ⇒ perimeter ∝ k, area ∝ k² ⇒ ×2 ও ×4।'}
+];
+
+const TOTAL = QUESTIONS.length;
+const STORAGE_KEY = 'geometry_quiz_bloom_v1';
+
+// ====== Utilities ======
+const $ = (sel) => document.querySelector(sel);
+const $$ = (sel) => Array.from(document.querySelectorAll(sel));
+
+function shuffle(arr){
+  for(let i=arr.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [arr[i],arr[j]] = [arr[j],arr[i]];
+  }
+  return arr;
+}
+
+function formatTime(s){
+  const m = Math.floor(s/60).toString().padStart(2,'0');
+  const r = (s%60).toString().padStart(2,'0');
+  return `${m}:${r}`;
+}
+
+// ====== State ======
+let state = {
+  order: [],          // shuffled indices of QUESTIONS
+  answers: {},        // qIndex -> option index
+  current: 0,         // current order index
+  startedAt: Date.now(),
+  remaining: 30*60,   // seconds
+  finished: false
+};
+
+// Restore from localStorage if exists
+function loadState(){
+  const raw = localStorage.getItem(STORAGE_KEY);
+  if(raw){
+    try{
+      const obj = JSON.parse(raw);
+      if(Array.isArray(obj.order) && typeof obj.current==='number'){
+        state = Object.assign(state, obj);
+      }
+    }catch(e){ /* ignore */ }
+  }else{
+    state.order = shuffle([...Array(TOTAL).keys()]);
+    state.startedAt = Date.now();
+    state.remaining = 30*60;
+    saveState();
+  }
+}
+
+function saveState(){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
+
+// ====== Render Question Page ======
+function render(){
+  $('#qTotal').textContent = TOTAL;
+  $('#qNum').textContent = state.current + 1;
+  $('#bar').style.width = `${((state.current)/TOTAL)*100}%`;
+
+  const qIdx = state.order[state.current];
+  const q = QUESTIONS[qIdx];
+
+  const badge = $('#qBadge');
+  badge.dataset.level = q.level;
+  badge.textContent = q.level;
+
+  $('#qText').innerHTML = q.text;
+  const opts = $('#options');
+  opts.innerHTML = '';
+
+  q.options.forEach((opt, i)=>{
+    const id = `q${q.id}_o${i}`;
+    const wrap = document.createElement('label');
+    wrap.className = 'opt';
+    wrap.innerHTML = `<input type="radio" name="q_${q.id}" id="${id}" value="${i}">
+                      <div>${opt}</div>`;
+    opts.appendChild(wrap);
+  });
+
+  // preselect
+  if(state.answers[qIdx] != null){
+    const v = String(state.answers[qIdx]);
+    const inp = $(`input[name="q_${q.id}"][value="${v}"]`);
+    if(inp){ inp.checked = true; }
+  }
+
+  // handlers
+  $$('#options input[type="radio"]').forEach(inp=>{
+    inp.addEventListener('change', (e)=>{
+      state.answers[qIdx] = Number(e.target.value);
+      saveState();
+    });
+  });
+
+  // nav
+  $('#prevBtn').disabled = state.current===0;
+  $('#nextBtn').textContent = state.current===TOTAL-1 ? 'শেষ ➡' : 'পরবর্তী ➡';
+}
+
+// ====== Timer ======
+let timerHandle = null;
+function startTimer(){
+  if(timerHandle) clearInterval(timerHandle);
+  timerHandle = setInterval(()=>{
+    if(state.finished){ clearInterval(timerHandle); return; }
+    state.remaining = Math.max(0, state.remaining - 1);
+    $('#timer').textContent = formatTime(state.remaining);
+    if(state.remaining===0){
+      submitQuiz(true);
+    }
+    if(state.remaining % 5 === 0){ saveState(); }
+  }, 1000);
+}
+
+// ====== Navigation ======
+$('#prevBtn').addEventListener('click', ()=>{
+  if(state.current>0){
+    state.current--;
+    saveState();
+    render();
+  }
+});
+$('#nextBtn').addEventListener('click', ()=>{
+  if(state.current < TOTAL-1){
+    state.current++;
+    saveState();
+    render();
+  }else{
+    submitQuiz(false);
+  }
+});
+$('#resetBtn').addEventListener('click', ()=>{
+  if(confirm('সব প্রগ্রেস মুছে ফেলা হবে। নিশ্চিত?')){
+    localStorage.removeItem(STORAGE_KEY);
+    location.reload();
+  }
+});
+$('#saveBtn').addEventListener('click', ()=>{
+  saveState();
+  alert('✅ সেভ হয়েছে!');
+});
+$('#submitBtn').addEventListener('click', ()=> submitQuiz(false));
+$('#printBtn').addEventListener('click', ()=> window.print());
+
+// ====== Scoring ======
+function submitQuiz(auto=false){
+  state.finished = true;
+  saveState();
+  clearInterval(timerHandle);
+
+  let right=0, wrong=0, blank=0;
+  const byLevel = {Knowledge:{total:0,right:0}, Comprehension:{total:0,right:0}, Application:{total:0,right:0}, Higher:{total:0,right:0}};
+  const expRows = [];
+
+  QUESTIONS.forEach((q, idx)=>{
+    byLevel[q.level].total++;
+    const ans = state.answers[idx];
+    const correct = q.correct;
+    let status='ফাঁকা', isRight=false;
+    let ansText='—';
+    if(ans==null){ blank++; }
+    else if(ans===correct){ right++; status='সঠিক'; isRight=true; ansText=q.options[ans]; }
+    else { wrong++; status='ভুল'; ansText=q.options[ans]; }
+    if(isRight) byLevel[q.level].right++;
+
+    expRows.push({
+      n: idx+1, level:q.level, q:q.text, your: ansText, corr: q.options[correct], status, expl:q.expl
+    });
+  });
+
+  const score = right*1 + wrong*(-0.25);
+  const neg = (wrong*0.25).toFixed(2);
+  const timeUsed = 30*60 - state.remaining;
+  const m = Math.floor(timeUsed/60), s = timeUsed%60;
+
+  $('#sumTotal').textContent = TOTAL;
+  $('#sumRight').textContent = right;
+  $('#sumWrong').textContent = wrong;
+  $('#sumBlank').textContent = blank;
+  $('#sumNeg').textContent = `−${neg}`;
+  $('#sumScore').textContent = `${score.toFixed(2)} / ${TOTAL}`;
+  $('#sumTime').textContent = `${m} মিনিট ${s} সেকেন্ড`;
+
+  const tbody = $('#expBody'); tbody.innerHTML='';
+  expRows.forEach(r=>{
+    const tr = document.createElement('tr');
+    const cls = r.status==='সঠিক' ? 'ok' : (r.status==='ভুল' ? 'bad' : 'neutral');
+    tr.innerHTML = `<td>${r.n}</td>
+                    <td>${r.level}</td>
+                    <td>${r.q}</td>
+                    <td>${r.your}</td>
+                    <td>${r.corr}</td>
+                    <td class="${cls}">${r.status}</td>
+                    <td>${r.expl}</td>`;
+    tbody.appendChild(tr);
+  });
+
+  drawChart(byLevel);
+
+  $('#quiz-card').classList.add('hidden');
+  $('#results').classList.remove('hidden');
+  $('#bar').style.width = '100%';
+}
+
+function drawChart(byLevel){
+  const canvas = document.getElementById('chart');
+  const ctx = canvas.getContext('2d');
+  const labels = ['Knowledge','Comprehension','Application','Higher'];
+  const totals = labels.map(l=>byLevel[l].total);
+  const rights = labels.map(l=>byLevel[l].right);
+
+  ctx.clearRect(0,0,canvas.width, canvas.height);
+
+  const pad = 40, W = canvas.width, H = canvas.height;
+  const gw = W - pad*2, gh = H - pad*2;
+  ctx.strokeStyle = 'rgba(148,163,184,0.6)';
+  ctx.lineWidth = 1;
+  ctx.strokeRect(pad, pad, gw, gh);
+
+  const maxY = Math.max(...totals);
+  const barW = gw / (labels.length*3);
+  const styles = getComputedStyle(document.documentElement);
+  const colors = {
+    Knowledge: styles.getPropertyValue('--blue').trim(),
+    Comprehension: styles.getPropertyValue('--green').trim(),
+    Application: styles.getPropertyValue('--yellow').trim(),
+    Higher: styles.getPropertyValue('--red').trim()
+  };
+
+  labels.forEach((lab, i)=>{
+    const x0 = pad + i*3*barW + barW*0.5;
+    const t = totals[i], r = rights[i];
+    const htT = (t/Math.max(1,maxY))*gh;
+    const htR = (r/Math.max(1,maxY))*gh;
+
+    ctx.fillStyle = 'rgba(148,163,184,0.35)';
+    ctx.fillRect(x0, pad + gh - htT, barW*0.9, htT);
+
+    ctx.fillStyle = colors[lab] || '#60a5fa';
+    ctx.fillRect(x0 + barW, pad + gh - htR, barW*0.9, htR);
+
+    ctx.fillStyle = '#cbd5e1';
+    ctx.font = '12px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(lab, x0 + barW*0.5, H - 10);
+  });
+
+  ctx.fillStyle = '#cbd5e1';
+  ctx.font = '12px sans-serif';
+  ctx.textAlign = 'left';
+  ctx.fillText('ফিকে = মোট প্রশ্ন, রঙিন = সঠিক', pad+6, pad-10);
+}
+
+// ====== Init ======
+loadState();
+render();
+startTimer();
+</script>
+</body>
+</html>

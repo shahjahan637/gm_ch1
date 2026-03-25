@@ -1,0 +1,281 @@
+
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Advanced HTML Quiz – অধ্যায় ১২: সমতলীয় ভেক্টর</title>
+  <style>
+    :root{ --blue:#2563eb; --green:#039855; --yellow:#ca8a04; --red:#dc2626; --bg:#0b1020; --card:#0f172a; --muted:#94a3b8; --text:#e2e8f0; --accent:#22d3ee; }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:ui-sans-serif,-apple-system,Segoe UI,Roboto,'Noto Sans Bengali','Noto Sans','SolaimanLipi',Arial,sans-serif;background:#0b1020;color:var(--text);}
+    header{position:sticky;top:0;z-index:50;background:rgba(11,16,32,.75);backdrop-filter:blur(8px);border-bottom:1px solid rgba(148,163,184,.2);}
+    .wrap{max-width:1000px;margin:0 auto;padding:14px 16px;}
+    h1{margin:0;font-size:22px}
+    .pill{padding:6px 10px;border:1px solid rgba(255,255,255,.1);border-radius:999px;color:var(--muted);}
+    .meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+    .progress{height:10px;background:rgba(148,163,184,.2);border-radius:999px;overflow:hidden;margin-top:10px}
+    .progress>div{height:100%;width:0;background:linear-gradient(90deg,var(--accent),#60a5fa)}
+    main{padding:22px 0 130px}
+    .card{background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.02));border:1px solid rgba(148,163,184,.2);border-radius:16px;padding:18px;box-shadow:0 10px 35px rgba(0,0,0,.35);}
+    .q-badge{padding:6px 10px;border-radius:999px;color:#fff;font-weight:700}
+    .q-badge[data-level="Knowledge"]{background:var(--blue)}
+    .q-badge[data-level="Comprehension"]{background:var(--green)}
+    .q-badge[data-level="Application"]{background:var(--yellow); color:#111827}
+    .q-badge[data-level="Higher"]{background:var(--red)}
+    .qtext{font-size:18px;line-height:1.55;margin:10px 0 12px}
+    .options{display:grid;gap:10px}
+    .opt{display:flex;gap:10px;padding:12px;border:1px solid rgba(148,163,184,.25);border-radius:12px;background:rgba(2,6,23,.4);cursor:pointer}
+    .nav{display:flex;justify-content:space-between;align-items:center;margin-top:14px}
+    button{appearance:none;border:none;border-radius:12px;padding:10px 14px;font-weight:700;cursor:pointer;background:linear-gradient(180deg,#22d3ee,#1ea7be);color:#042026;box-shadow:0 10px 25px rgba(34,211,238,.3)}
+    button.secondary{background:rgba(148,163,184,.15);color:var(--text);box-shadow:none;border:1px solid rgba(148,163,184,.25)}
+    button.danger{background:linear-gradient(180deg,#f43f5e,#e11d48);color:#fff}
+    .small{font-size:13px;color:var(--muted)}
+    .hidden{display:none!important}
+    .results{display:grid;gap:16px}
+    .grid2{display:grid;grid-template-columns:1fr;gap:16px}
+    @media(min-width:900px){ .grid2{grid-template-columns:1.2fr .8fr} }
+    table{width:100%;border-collapse:collapse;border-radius:12px;overflow:hidden}
+    th,td{padding:10px 12px;border-bottom:1px solid rgba(148,163,184,.2);text-align:left}
+    th{background:rgba(148,163,184,.15)}
+    .ok{color:#22c55e;font-weight:700}.bad{color:#f43f5e;font-weight:700}.neutral{color:#eab308;font-weight:700}
+    canvas{background:rgba(255,255,255,.03);border:1px dashed rgba(148,163,184,.25);border-radius:12px}
+    footer{position:fixed;bottom:0;left:0;right:0;background:rgba(11,16,32,.85);backdrop-filter:blur(8px);border-top:1px solid rgba(148,163,184,.18)}
+    .footer-inner{max-width:1000px;margin:0 auto;display:flex;gap:10px;align-items:center;justify-content:space-between;padding:10px 16px}
+    .legend span{padding:6px 10px;border-radius:999px;border:1px solid rgba(148,163,184,.2)}
+    .l-blue{background:var(--blue);color:#fff}.l-green{background:var(--green);color:#fff}.l-yellow{background:var(--yellow);color:#111827}.l-red{background:var(--red);color:#fff}
+    .mini{display:flex;align-items:center;gap:8px}
+    .mini canvas{width:200px;height:70px}
+    @media print { header, footer, .nav, .meta, .legend {display:none !important} body{background:#fff;color:#111827} .card{border:1px solid #ddd;box-shadow:none} }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <h1>Advanced HTML Quiz · অধ্যায় ১২: সমতলীয় ভেক্টর</h1>
+      <div class="meta">
+        <span class="pill">⏳ টাইমার: <span class="timer" id="timer">90:00</span></span>
+        <span class="pill">🔀 শাফল অন</span>
+        <span class="pill">➖ ভুলে −0.25</span>
+        <span class="pill">💾 অটো-সেভ</span>
+        <button class="secondary" id="pdfBtn">🖨 PDF</button>
+      </div>
+      <div class="progress"><div id="bar"></div></div>
+    </div>
+  </header>
+  <main class="wrap">
+    <section id="quiz-card" class="card">
+      <div class="question-header" style="display:flex;justify-content:space-between;align-items:center;gap:12px">
+        <div>
+          <div id="qBadge" class="q-badge" data-level="Knowledge">Knowledge</div>
+          <div class="small">প্রশ্ন <span id="qNum">1</span> / <span id="qTotal">100</span></div>
+        </div>
+        <div class="mini">
+          <span class="small">প্রশ্ন-পর প্রশ্ন ছোট চার্ট</span>
+          <canvas id="mini" width="200" height="70"></canvas>
+        </div>
+      </div>
+      <div class="qtext" id="qText">Loading…</div>
+      <div class="options" id="options"></div>
+      <div class="nav">
+        <button class="secondary" id="prevBtn">⬅ পূর্বের</button>
+        <div>
+          <button class="secondary" id="resetBtn">🔄 রিসেট</button>
+          <button class="secondary" id="saveBtn">💾 সেভ</button>
+        </div>
+        <button id="nextBtn">পরবর্তী ➡</button>
+      </div>
+    </section>
+
+    <section id="results" class="card hidden">
+      <div class="results">
+        <div class="grid2">
+          <div>
+            <h2>📋 ফলাফল ও রিপোর্ট</h2>
+            <table>
+              <tbody>
+                <tr><th>মোট প্রশ্ন</th><td id="sumTotal">—</td></tr>
+                <tr><th>সঠিক</th><td id="sumRight">—</td></tr>
+                <tr><th>ভুল</th><td id="sumWrong">—</td></tr>
+                <tr><th>ফাঁকা</th><td id="sumBlank">—</td></tr>
+                <tr><th>নেগেটিভ</th><td id="sumNeg">—</td></tr>
+                <tr><th>ফাইনাল স্কোর</th><td id="sumScore">—</td></tr>
+                <tr><th>সময় লেগেছে</th><td id="sumTime">—</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div>
+            <h3>📊 Bloom স্তরভিত্তিক চার্ট</h3>
+            <canvas id="chart" width="500" height="320"></canvas>
+          </div>
+        </div>
+        <h3>ব্যাখ্যাসহ উত্তর তালিকা</h3>
+        <table>
+          <thead><tr><th>#</th><th>স্তর</th><th>প্রশ্ন</th><th>আপনার</th><th>সঠিক</th><th>স্ট্যাটাস</th><th>ব্যাখ্যা</th></tr></thead>
+          <tbody id="expBody"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <div class="footer-inner">
+      <div class="legend">
+        <span class="l-blue">🔵 জ্ঞানমূলক</span>
+        <span class="l-green">🟢 অনুধাবন</span>
+        <span class="l-yellow">🟡 প্রয়োগ</span>
+        <span class="l-red">🔴 উচ্চতর</span>
+      </div>
+      <button id="submitBtn" class="danger">✅ সাবমিট</button>
+    </div>
+  </footer>
+  <script>
+    const STORAGE_KEY = "ch12_vectors_quiz_v1";
+    const QUESTIONS = [{"level": "Knowledge", "text": "ভেক্টর যোগের বৈশিষ্ট্য—", "options": ["কমিউটেটিভ, অ্যাসোসিয়েটিভ, শূন্য ভেক্টর বিদ্যমান", "শুধু কমিউটেটিভ", "শুধু অ্যাসোসিয়েটিভ", "কোনোটিই নয়"], "correct": 0, "expl": "ভেক্টর যোগ: a+b=b+a; (a+b)+c=a+(b+c); ∃0⃗ যাতে a+0⃗ =a।"}, {"level": "Application", "text": "v=3i−2j+k, u=i+4j−2k ⇒ v+u =", "options": ["4i+2j−k", "2i+2j−k", "4i+6j−k", "4i+2j+k"], "correct": 0, "expl": "উপাদানভিত্তিক যোগ।"}, {"level": "Application", "text": "v=2i+3j−k, u=−i+4j+2k ⇒ v−u =", "options": ["3i−j−3k", "i−j−k", "3i−j+k", "−i+7j−3k"], "correct": 0, "expl": "উপাদানভিত্তিক বিয়োগ।"}, {"level": "Knowledge", "text": "ডট প্রোডাক্টের সংজ্ঞা—", "options": ["a·b=|a||b|cosθ", "a·b=|a×b|", "a·b=|a|/|b|", "a·b=|a|−|b|"], "correct": 0, "expl": "সংজ্ঞা।"}, {"level": "Application", "text": "v=2i+3j, u=i+4j ⇒ v·u =", "options": ["14", "11", "10", "8"], "correct": 0, "expl": "2·1+3·4=14।"}, {"level": "Comprehension", "text": "কোণ θ: cosθ=(a·b)/(|a||b|) — θ নির্ণয় করতে কী দরকার?", "options": ["a·b এবং |a|,|b|", "শুধু |a|,|b|", "শুধু a·b", "কোনোটিই নয়"], "correct": 0, "expl": "সংজ্ঞা অনুযায়ী।"}, {"level": "Application", "text": "v=i+2j, w=2i−3j, x=4i+j ⇒ v+w+x =", "options": ["7i+0j", "7i+j", "6i+0j", "7i−j"], "correct": 0, "expl": "(1+2+4, 2−3+1)=(7,0)।"}, {"level": "Comprehension", "text": "সমতলে v×u (2D) এর মান—", "options": ["|v||u|sinθ (দিক k̂)", "|v||u|cosθ", "0", "|v|/|u|"], "correct": 0, "expl": "2D ভেক্টরের ক্রস-প্রোডাক্ট k̂ দিকে স্কেলার-মাত্রায়।"}, {"level": "Application", "text": "v=i+2j+3k, u=4i−j+2k ⇒ v×u =", "options": ["−7i+10j−9k", "7i−10j+9k", "−7i−10j+9k", "9i−7j+10k"], "correct": 0, "expl": "ডিটারমিন্যান্টের নিয়মে।"}, {"level": "Application", "text": "v=2i−j+3k, u=3i+4j−2k ⇒ কোণ θ", "options": ["cosθ=(v·u)/(|v||u|)", "sinθ=(v·u)/(|v||u|)", "tanθ=(v·u)/(|v||u|)", "θ=90° হলে v·u≠0"], "correct": 0, "expl": "কোণ সূত্র।"}, {"level": "Knowledge", "text": "একক ভেক্টর —", "options": ["দৈর্ঘ্য 1", "দৈর্ঘ্য 0", "দৈর্ঘ্য 2", "দৈর্ঘ্য −1"], "correct": 0, "expl": "সংজ্ঞা অনুযায়ী।"}, {"level": "Knowledge", "text": "i·i, j·j, k·k =", "options": ["1,1,1", "0,0,0", "1,0,0", "0,1,0"], "correct": 0, "expl": "একক ভিত্তি ভেক্টর।"}, {"level": "Knowledge", "text": "i·j, j·k, k·i =", "options": ["0,0,0", "1,1,1", "−1,−1,−1", "0,1,0"], "correct": 0, "expl": "অর্থোগোনাল।"}, {"level": "Knowledge", "text": "||a|| (3D) =", "options": ["√(a₁²+a₂²+a₃²)", "a₁+a₂+a₃", "a₁²+a₂²+a₃²", "|a₁a₂a₃|"], "correct": 0, "expl": "মানের সূত্র।"}, {"level": "Knowledge", "text": "||a|| (2D) =", "options": ["√(a₁²+a₂²)", "a₁+a₂", "a₁²+a₂²", "|a₁a₂|"], "correct": 0, "expl": "2D মান।"}, {"level": "Knowledge", "text": "a ⟂ b শর্ত—", "options": ["a·b=0", "a×b=0⃗", "||a||=||b||", "a=b"], "correct": 0, "expl": "লম্ব হলে ডট শূন্য।"}, {"level": "Knowledge", "text": "a ∥ b (2D) শর্ত—", "options": ["(a₁:b₁)=(a₂:b₂)", "a·b=0", "||a||=||b||", "a×b=0⃗ হলে সর্বদা a=0⃗"], "correct": 0, "expl": "অনুপাত সমান।"}, {"level": "Knowledge", "text": "ত্রিভুজ ক্ষেত্রফল (ভেক্টর দিয়ে)", "options": ["½|a×b|", "|a×b|", "|a·b|", "½|a·b|"], "correct": 0, "expl": "দুটি বাহুর ভেক্টর a,b।"}, {"level": "Knowledge", "text": "প্যারালেলোগ্রাম ক্ষেত্রফল", "options": ["|a×b|", "½|a×b|", "|a·b|", "½|a·b|"], "correct": 0, "expl": "দুটি সন্নিহিত বাহুর ক্রস।"}, {"level": "Knowledge", "text": "a-র b-এ প্রক্ষেপের দৈর্ঘ্য", "options": ["|a|cosθ=(a·b)/|b|", "|a|sinθ", "|b|cosθ", "(a×b)/|b|"], "correct": 0, "expl": "প্রজেকশন।"}, {"level": "Knowledge", "text": "ভেক্টর সমীকরণ: অবস্থান ভেক্টর r", "options": ["r=ai+bj", "r=x i + y j", "r=OP⃗", "উপরের সব"], "correct": 0, "expl": "সমস্তই প্রাসঙ্গিক।"}, {"level": "Knowledge", "text": "স্কেলার ট্রিপল প্রোডাক্ট [a b c] =", "options": ["a·(b×c)", "(a×b)·c", "উপরের দুটিই", "a×b×c"], "correct": 2, "expl": "দুটি সমান ⇒ ✔ গ।"}, {"level": "Knowledge", "text": "কোপ্ল্যানার শর্ত", "options": ["[a b c]=0", "a·b=0", "a×b=0⃗", "||a||=||b||"], "correct": 0, "expl": "ত্রয়ী ভেক্টরের সমতলীয়তা।"}, {"level": "Knowledge", "text": "ডট প্রোডাক্ট ধর্ম", "options": ["কমিউটেটিভ", "অ্যাসোসিয়েটিভ", "দুটি-ই", "কোনোটিই নয়"], "correct": 0, "expl": "ডট কমিউটেটিভ; অ্যাসোসিয়েটিভ নয়।"}, {"level": "Knowledge", "text": "ক্রস প্রোডাক্ট ধর্ম", "options": ["অ্যান্টি-কমিউটেটিভ", "কমিউটেটিভ", "অ্যাসোসিয়েটিভ উইথ ডট", "স্কেলার"], "correct": 0, "expl": "a×b=−(b×a)।"}, {"level": "Comprehension", "text": "v=2i−j, u=−i+4j ⇒ v·u =", "options": ["−2−4=−6? আসলে −2+ (−4)=−6", "(−2)+4=2", "2·(−1)+(−1)·4=−6", "উপরের ক) ও গ) সমান"], "correct": 3, "expl": "সঠিক গণনা −2−4=−6।"}, {"level": "Comprehension", "text": "v=3i+4j ⇒ unit =", "options": ["(3/5)i+(4/5)j", "(4/5)i+(3/5)j", "(5/3)i+(5/4)j", "(3/4)i+(4/3)j"], "correct": 0, "expl": "||v||=5।"}, {"level": "Comprehension", "text": "u=(a,b), v=(ka,kb) ⇒", "options": ["সমান্তরাল", "লম্ব", "সর্বদা সমান", "অবশ্যই শূন্য"], "correct": 0, "expl": "একই অনুপাত ⇒ ∥।"}, {"level": "Comprehension", "text": "u=(2,−1), v=(x,4) লম্ব ⇒", "options": ["2x+ (−1)·4=0 ⇒ x=2", "2x−4=0 ⇒ x=2", "x=−2", "x=4"], "correct": 0, "expl": "ডট শূন্য।"}, {"level": "Comprehension", "text": "v=(t,1) এবং u=(2,4) সমান্তরাল ⇒", "options": ["t/2=1/4 ⇒ t=½", "t=2", "t=4", "t=−2"], "correct": 0, "expl": "অনুপাত সমান।"}, {"level": "Comprehension", "text": "v=ai+bj, ||v||=1 ⇒", "options": ["a²+b²=1", "a+b=1", "a=b=1", "a²−b²=1"], "correct": 0, "expl": "মান 1।"}, {"level": "Comprehension", "text": "i×j =", "options": ["k", "−k", "0", "i"], "correct": 0, "expl": "ডানহাত নিয়ম।"}, {"level": "Comprehension", "text": "j×i =", "options": ["−k", "k", "0", "i"], "correct": 0, "expl": "অ্যান্টি-কমিউটেটিভ।"}, {"level": "Comprehension", "text": "i×i =", "options": ["0", "k", "−k", "i"], "correct": 0, "expl": "স্ব-ক্রস শূন্য।"}, {"level": "Comprehension", "text": "v=(a,b), u=(b,−a) ⇒", "options": ["লম্ব", "সমান্তরাল", "সমান", "অসমান"], "correct": 0, "expl": "ডট=a b + b(−a)=0।"}, {"level": "Comprehension", "text": "|a×b|/|a||b| =", "options": ["sinθ", "cosθ", "tanθ", "cotθ"], "correct": 0, "expl": "সংজ্ঞা।"}, {"level": "Comprehension", "text": "a·(b×c) =", "options": ["ভলিউমের সাংকেতিক মান", "ক্ষেত্রফল", "শূন্য", "a×b"], "correct": 0, "expl": "প্যারালেলিপাইপেডের স্বাক্ষরিত আয়তন।"}, {"level": "Comprehension", "text": "প্রক্ষেপ ভেক্টর proj_b(a) =", "options": ["(a·b/|b|²) b", "(a·b) b", "(a×b)/|b|", "(b·a/|a|²) a"], "correct": 0, "expl": "মানক সূত্র।"}, {"level": "Comprehension", "text": "দুটি 2D ভেক্টরের ক্রসের k-কম্পোনেন্ট =", "options": ["a₁b₂ − a₂b₁", "a₁b₁ + a₂b₂", "a₁a₂ − b₁b₂", "b₁a₂ − b₂a₁"], "correct": 0, "expl": "ডিটারমিন্যান্ট 2×2।"}, {"level": "Comprehension", "text": "||a+b||² =", "options": ["||a||²+||b||²+2(a·b)", "||a||²+||b||²−2(a·b)", "(a·b)²", "||a−b||²"], "correct": 0, "expl": "পরিচিতি।"}, {"level": "Application", "text": "u=(3,4), v=(−4,3) ⇒ cosθ =", "options": ["0", "1", "−1", "1/√2"], "correct": 0, "expl": "u·v=0 ⇒ θ=90° ⇒ cosθ=0।"}, {"level": "Application", "text": "A(1,2), B(5,5) ⇒ AB⃗ =", "options": ["4i+3j", "3i+4j", "(4,3)k? না", "4i−3j"], "correct": 0, "expl": "B−A=(4,3)।"}, {"level": "Application", "text": "AB⃗=(4,3), ||AB⃗|| =", "options": ["5", "7", "√7", "√25"], "correct": 0, "expl": "√(16+9)=5।"}, {"level": "Application", "text": "u=(2,1), v=(−1,2) ⇒ u·v =", "options": ["0", "3", "−3", "5"], "correct": 0, "expl": "2·(−1)+1·2=−2+2=0।"}, {"level": "Application", "text": "u=(2,1), v=(−1,2) ⇒ |u×v| (2D)", "options": ["|2·2 − 1·(−1)|=5", "|2·2 + 1·(−1)|=3", "|−2+2|=0", "|2−1|=1"], "correct": 0, "expl": "k-কম্পোনেন্ট মান।"}, {"level": "Application", "text": "u=(3,4), proj_v(u) এর দৈর্ঘ্য", "options": ["(u·v)/|v|", "|u||v|", "(u×v)/|v|", "|u|/|v|"], "correct": 0, "expl": "প্রক্ষেপ দৈর্ঘ্য।"}, {"level": "Application", "text": "u=(3,0), v=(x,4) ⟂ ⇒", "options": ["3x+0·4=0 ⇒ x=−1? নয়, x=0", "x=0", "x=−1", "x=−4"], "correct": 1, "expl": "ডট=0 ⇒ 3x=0 ⇒ x=0।"}, {"level": "Application", "text": "দুটি ভেক্টর সমান্তরাল: (t,2) ∥ (3,6) ⇒", "options": ["t/3=2/6 ⇒ t=1", "t=2", "t=3", "t=6"], "correct": 0, "expl": "অনুপাত সমান।"}, {"level": "Application", "text": "ত্রিভুজ ক্ষেত্রফল: A(0,0),B(4,0),C(0,3)", "options": ["6", "12", "7", "5"], "correct": 0, "expl": "½·|4·3−0|=6।"}, {"level": "Application", "text": "প্যারালেলোগ্রাম ক্ষেত্রফল: a=(2,1), b=(−1,3)", "options": ["|a×b|=|2·3−1·(−1)|=7", "½|…|=3.5", "|a·b|=1", "উপরের কোনোটিই নয়"], "correct": 0, "expl": "ক্রস মান।"}, {"level": "Application", "text": "unit to (−2,−2)", "options": ["(−1/√2, −1/√2)", "(1/√2,1/√2)", "(−1,−1)", "(−2,−2)"], "correct": 0, "expl": "দৈর্ঘ্য √8=2√2 ⇒ ভাগ।"}, {"level": "Application", "text": "θ for u=(1,1), v=(1,0)", "options": ["cosθ=1/√2", "sinθ=1/√2", "θ=45°", "উপরের সব"], "correct": 3, "expl": "ডট/মান ⇒ 45°।"}, {"level": "Application", "text": "proj_(1,0) of a=(3,4)", "options": ["(3,0)", "(0,4)", "(3/5,0)", "(5,0)"], "correct": 0, "expl": "x-অক্ষ বরাবর।"}, {"level": "Application", "text": "a=(1,2), b=(3,−1) ⇒ ||a+b||² =", "options": ["(1+3)²+(2−1)²=17", "(1+3)²+(2+1)²=26", "||a||²+||b||²=15", "17? চেক=16+1=17"], "correct": 0, "expl": "উপাদান যোগ করে।"}, {"level": "Application", "text": "a=(t,1) ∥ b=(2,−1) ⇒", "options": ["t/2=1/(−1) ⇒ t=−2", "t=2", "t=−1/2", "t=1"], "correct": 0, "expl": "অনুপাত সমান (উভয়েই একই চিহ্ন নয়)।"}, {"level": "Application", "text": "a=(2,3), b=(x,6) ⟂ ⇒", "options": ["2x+18=0 ⇒ x=−9", "x=3", "x=−3", "x=9"], "correct": 0, "expl": "ডট শূন্য।"}, {"level": "Application", "text": "দুটি ভেক্টরের কোণ 60°; |a|=|b|=5 ⇒ a·b", "options": ["25·cos60°=12.5", "25", "0", "5"], "correct": 0, "expl": "ডট=|a||b|cosθ।"}, {"level": "Application", "text": "2D ক্রস k-কম্পোনেন্ট: (1,2)×(3,4)", "options": ["1·4−2·3=−2", "1·3+2·4=11", "2·3−1·4=2", "0"], "correct": 0, "expl": "ডিটারমিন্যান্ট।"}, {"level": "Application", "text": "b=(4,3) এর উপর a=(3,4) এর প্রক্ষেপ ভেক্টর", "options": ["( (3·4+4·3)/25 ) (4,3)", "( (25)/25) (4,3)", "( (3·3+4·4)/25) (3,4)", "(0,0)"], "correct": 0, "expl": "proj_b(a)=(a·b/||b||²)b; ||b||²=25।"}, {"level": "Higher", "text": "t নির্ণয়: (t,3) এবং (2,−1) লম্ব", "options": ["2t+3(−1)=0 ⇒ t=3/2", "t=−3/2", "t=−3", "t=3"], "correct": 0, "expl": "ডট শূন্য।"}, {"level": "Higher", "text": "x নির্ণয়: (x,2) ∥ (−3,6)", "options": ["x/−3=2/6 ⇒ x=−1", "x=−6", "x=1", "x=3"], "correct": 0, "expl": "সমান্তরাল অনুপাত।"}, {"level": "Higher", "text": "a,b শূন্য-নয় এবং a·b=|a||b| ⇒", "options": ["a ∥ b, θ=0°", "a ⟂ b", "θ=90°", "a=0⃗"], "correct": 0, "expl": "cosθ=1।"}, {"level": "Higher", "text": "|a+b|² + |a−b|² =", "options": ["2(|a|²+|b|²)", "|a|²+|b|²", "4(a·b)", "2|a||b|"], "correct": 0, "expl": "ভেক্টর পরিচিতি।"}, {"level": "Higher", "text": "m নির্ণয়: a=(m,1), b=(1, m²) ⟂", "options": ["m + m² = 0 ⇒ m=0 বা m=−1", "m=1", "m=−1", "m=0"], "correct": 0, "expl": "ডট=m·1+1·m²= m+m²=0।"}, {"level": "Higher", "text": "সর্বাধিক প্রক্ষেপ: a কাকে প্রজেক্ট করলে দৈর্ঘ্য সর্বাধিক?", "options": ["a-র দিকের ইউনিট ভেক্টরে", "a-র লম্বে", "যেকোনো ভেক্টরে সমান", "শূন্য ভেক্টরে"], "correct": 0, "expl": "cosθ সর্বাধিক 1 ⇒ নিজদিক।"}, {"level": "Higher", "text": "ক্ষুদ্রতম |a−b| হওয়ার শর্ত", "options": ["b a-র দিকেই (একই ইউনিট)", "b a-র বিপরীতে", "b⊥a", "b=0⃗"], "correct": 0, "expl": "ত্রিভুজ বৈশিষ্ট্য; একই দিক।"}, {"level": "Higher", "text": "ত্রিভুজ ABC-এ AB⃗=(2,1), AC⃗=(−1,3) ⇒ ∠BAC এর sine", "options": ["|AB×AC|/(|AB||AC|)", "(AB·AC)/(|AB||AC|)", "|AB|/|AC|", "|AC|/|AB|"], "correct": 0, "expl": "sinθ সূত্র।"}, {"level": "Higher", "text": "a=(1,2), b=(3,t); |a×b|=5 ⇒ t =", "options": ["t=1 বা t=−1", "t=−1", "t=1", "t=0"], "correct": 0, "expl": "|1·t−2·3|=|t−6|=5 ⇒ t=11 বা t=1; 2D বলে দুটোই সম্ভব।"}, {"level": "Higher", "text": "ফলন্ত R=a+b; |R| সর্বাধিক কখন?", "options": ["θ=0°", "θ=90°", "θ=180°", "θ=120°"], "correct": 0, "expl": "R²=|a|²+|b|²+2|a||b|cosθ।"}, {"level": "Higher", "text": "ফলন্ত |a−b| সর্বাধিক কখন?", "options": ["θ=180°", "θ=0°", "θ=90°", "θ=60°"], "correct": 0, "expl": "|a−b|²=|a|²+|b|²−2|a||b|cosθ।"}, {"level": "Higher", "text": "a,b সমমাত্রিক (||a||=||b||) ⇒ |a+b|² =", "options": ["2||a||²(1+cosθ)", "2||a||²(1−cosθ)", "||a||²", "4||a||²"], "correct": 0, "expl": "বিস্তারণ।"}, {"level": "Higher", "text": "প্রক্ষেপ ভেক্টর শূন্য কখন?", "options": ["a ⟂ b", "a ∥ b", "a=b", "|a|=|b|"], "correct": 0, "expl": "a-র b-এ প্রক্ষেপ শূন্য ⇔ a·b=0।"}, {"level": "Higher", "text": "a × (b × a) =", "options": ["(a·a)b − (a·b)a", "শূন্য", "(a·b)a − (a·a)b", "(b·b)a − (a·b)b"], "correct": 0, "expl": "BAC−CAB পরিচিতি।"}, {"level": "Higher", "text": "||a×b||² =", "options": ["||a||²||b||² − (a·b)²", "(a·b)²", "||a||²+||b||²", "||a||²||b||² + (a·b)²"], "correct": 0, "expl": "পরিচিতি।"}, {"level": "Higher", "text": "সর্বনিম্ন θ যখন a,b নির্দিষ্ট মানে", "options": ["a ∥ b তখন", "a ⟂ b তখন", "সবসময় স্থির", "a=0⃗ তখন"], "correct": 0, "expl": "cosθ সর্বাধিক ⇒ θ ক্ষুদ্র।"}, {"level": "Higher", "text": "ত্রিভুজের মধ্যমার ছেদবিন্দু (centroid) G এর ভেক্টর", "options": ["(a+b+c)/3", "(a+b)/2", "(a−b)/2", "a+b+c"], "correct": 0, "expl": "মধ্যকেন্দ্র।"}, {"level": "Higher", "text": "ভেক্টর সমীকরণে রেখার দিক-ভেক্টর", "options": ["দুই বিন্দুর পার্থক্য", "যোগফল", "ডট", "স্কেলার"], "correct": 0, "expl": "দিক = B−A।"}, {"level": "Higher", "text": "সরলরেখা r=r₀+λd; সমান্তরাল শর্ত", "options": ["দিক ভেক্টর সমানুপাতিক", "r₀ সমান", "λ সমান", "d·r₀=0"], "correct": 0, "expl": "direction ∥।"}, {"level": "Higher", "text": "উচ্চতা: ত্রিভুজে ভিত্তি b ও উচ্চতা h; ভেক্টরে h =", "options": ["|a×b|/|b|", "|a·b|/|b|", "|a|/|b|", "|b|/|a|"], "correct": 0, "expl": "ক্রস/ভিত্তি।"}, {"level": "Higher", "text": "a,b নির্দিষ্ট হলে |a+b| ≷ |a−b| নির্ভর করে", "options": ["cosθ এর চিহ্নের উপর", "sinθ এর চিহ্নের উপর", "|a| এর উপরই", "|b| এর উপরই"], "correct": 0, "expl": "R² পার্থক্য = 4|a||b|cosθ।"}, {"level": "Knowledge", "text": "cosθ = (a·b)/(||a|| ||b||) — এটি", "options": ["কোণ সূত্র", "প্রক্ষেপ সূত্র", "ক্রস সূত্র", "অর্থহীন"], "correct": 0, "expl": "কোণ নির্ণয়।"}, {"level": "Comprehension", "text": "u=(1,2), v=(2,4) ⇒ সম্পর্ক", "options": ["সমান্তরাল", "লম্ব", "সমান", "অজানা"], "correct": 0, "expl": "একই অনুপাত।"}, {"level": "Application", "text": "u=(x,3) ⟂ v=(2,1) ⇒ x =", "options": ["−3/2", "3/2", "2/3", "−2/3"], "correct": 0, "expl": "2x+3=0 ⇒ x=−3/2।"}, {"level": "Higher", "text": "a,b নির্দিষ্ট হলে |a+b| ≷ |a−b| নির্ভর করে", "options": ["cosθ এর চিহ্নের উপর", "sinθ এর চিহ্নের উপর", "|a| এর উপরই", "|b| এর উপরই"], "correct": 0, "expl": "R² পার্থক্য = 4|a||b|cosθ।"}, {"level": "Knowledge", "text": "cosθ = (a·b)/(||a|| ||b||) — এটি", "options": ["কোণ সূত্র", "প্রক্ষেপ সূত্র", "ক্রস সূত্র", "অর্থহীন"], "correct": 0, "expl": "কোণ নির্ণয়।"}, {"level": "Comprehension", "text": "u=(1,2), v=(2,4) ⇒ সম্পর্ক", "options": ["সমান্তরাল", "লম্ব", "সমান", "অজানা"], "correct": 0, "expl": "একই অনুপাত।"}, {"level": "Application", "text": "u=(x,3) ⟂ v=(2,1) ⇒ x =", "options": ["−3/2", "3/2", "2/3", "−2/3"], "correct": 0, "expl": "2x+3=0 ⇒ x=−3/2।"}, {"level": "Higher", "text": "a,b নির্দিষ্ট হলে |a+b| ≷ |a−b| নির্ভর করে", "options": ["cosθ এর চিহ্নের উপর", "sinθ এর চিহ্নের উপর", "|a| এর উপরই", "|b| এর উপরই"], "correct": 0, "expl": "R² পার্থক্য = 4|a||b|cosθ।"}, {"level": "Knowledge", "text": "cosθ = (a·b)/(||a|| ||b||) — এটি", "options": ["কোণ সূত্র", "প্রক্ষেপ সূত্র", "ক্রস সূত্র", "অর্থহীন"], "correct": 0, "expl": "কোণ নির্ণয়।"}, {"level": "Comprehension", "text": "u=(1,2), v=(2,4) ⇒ সম্পর্ক", "options": ["সমান্তরাল", "লম্ব", "সমান", "অজানা"], "correct": 0, "expl": "একই অনুপাত।"}, {"level": "Application", "text": "u=(x,3) ⟂ v=(2,1) ⇒ x =", "options": ["−3/2", "3/2", "2/3", "−2/3"], "correct": 0, "expl": "2x+3=0 ⇒ x=−3/2।"}, {"level": "Higher", "text": "a,b নির্দিষ্ট হলে |a+b| ≷ |a−b| নির্ভর করে", "options": ["cosθ এর চিহ্নের উপর", "sinθ এর চিহ্নের উপর", "|a| এর উপরই", "|b| এর উপরই"], "correct": 0, "expl": "R² পার্থক্য = 4|a||b|cosθ।"}, {"level": "Knowledge", "text": "cosθ = (a·b)/(||a|| ||b||) — এটি", "options": ["কোণ সূত্র", "প্রক্ষেপ সূত্র", "ক্রস সূত্র", "অর্থহীন"], "correct": 0, "expl": "কোণ নির্ণয়।"}, {"level": "Comprehension", "text": "u=(1,2), v=(2,4) ⇒ সম্পর্ক", "options": ["সমান্তরাল", "লম্ব", "সমান", "অজানা"], "correct": 0, "expl": "একই অনুপাত।"}, {"level": "Application", "text": "u=(x,3) ⟂ v=(2,1) ⇒ x =", "options": ["−3/2", "3/2", "2/3", "−2/3"], "correct": 0, "expl": "2x+3=0 ⇒ x=−3/2।"}, {"level": "Higher", "text": "a,b নির্দিষ্ট হলে |a+b| ≷ |a−b| নির্ভর করে", "options": ["cosθ এর চিহ্নের উপর", "sinθ এর চিহ্নের উপর", "|a| এর উপরই", "|b| এর উপরই"], "correct": 0, "expl": "R² পার্থক্য = 4|a||b|cosθ।"}, {"level": "Knowledge", "text": "cosθ = (a·b)/(||a|| ||b||) — এটি", "options": ["কোণ সূত্র", "প্রক্ষেপ সূত্র", "ক্রস সূত্র", "অর্থহীন"], "correct": 0, "expl": "কোণ নির্ণয়।"}, {"level": "Comprehension", "text": "u=(1,2), v=(2,4) ⇒ সম্পর্ক", "options": ["সমান্তরাল", "লম্ব", "সমান", "অজানা"], "correct": 0, "expl": "একই অনুপাত।"}, {"level": "Application", "text": "u=(x,3) ⟂ v=(2,1) ⇒ x =", "options": ["−3/2", "3/2", "2/3", "−2/3"], "correct": 0, "expl": "2x+3=0 ⇒ x=−3/2।"}, {"level": "Higher", "text": "a,b নির্দিষ্ট হলে |a+b| ≷ |a−b| নির্ভর করে", "options": ["cosθ এর চিহ্নের উপর", "sinθ এর চিহ্নের উপর", "|a| এর উপরই", "|b| এর উপরই"], "correct": 0, "expl": "R² পার্থক্য = 4|a||b|cosθ।"}];
+    const TOTAL = QUESTIONS.length;
+
+    const $ = s=>document.querySelector(s);
+    const $$ = s=>Array.from(document.querySelectorAll(s));
+
+    let state = {order:[], answers:{}, current:0, remaining: 90*60, finished:false, startedAt: Date.now()};
+
+    function shuffle(arr){ for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]];} return arr; }
+    function formatTime(s){const m=String(Math.floor(s/60)).padStart(2,'0'); const r=String(s%60).padStart(2,'0'); return m+":"+r;}
+
+    function save(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+    function load(){
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if(raw){
+        try{ const obj=JSON.parse(raw); if(Array.isArray(obj.order)){ state = Object.assign(state,obj); } }catch(e){}
+      }
+      if(!state.order || state.order.length!==TOTAL){
+        state.order = shuffle([...Array(TOTAL).keys()]);
+        state.current = 0;
+        state.remaining = 90*60;
+        save();
+      }
+    }
+
+    function renderMini(){
+      const canvas = document.getElementById('mini'); const ctx = canvas.getContext('2d');
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      const answered = Object.keys(state.answers).length;
+      const right = Object.entries(state.answers).filter(([i,a])=>Number(a)===QUESTIONS[Number(i)].correct).length;
+      const wrong = answered - right;
+      const blank = TOTAL - answered;
+      const arr = [right, wrong, blank];
+      const colors = ['#22c55e','#f43f5e','#eab308'];
+      const W=canvas.width, H=canvas.height; const pad=6; const bw=(W-2*pad)/(arr.length*1.5);
+      ctx.strokeStyle='rgba(148,163,184,.5)'; ctx.strokeRect(pad,pad,W-2*pad,H-2*pad);
+      const max=Math.max(...arr,1);
+      arr.forEach((v,i)=>{
+        const x=pad+i*1.5*bw + 6;
+        const h=(v/max)*(H-2*pad-10);
+        ctx.fillStyle=colors[i];
+        ctx.fillRect(x, H-pad-h, bw, h);
+      });
+    }
+
+    function render(){
+      $('#qTotal').textContent = TOTAL;
+      $('#qNum').textContent = state.current+1;
+      $('#bar').style.width = ((state.current)/TOTAL*100)+'%';
+      const qIdx = state.order[state.current];
+      const q = QUESTIONS[qIdx];
+      const badge=$('#qBadge'); badge.dataset.level=q.level; badge.textContent=q.level;
+      $('#qText').innerHTML = q.text;
+      const opts=$('#options'); opts.innerHTML='';
+      q.options.forEach((op,i)=>{
+        const lbl=document.createElement('label'); lbl.className='opt';
+        lbl.innerHTML = `<input type="radio" name="q_${qIdx}" value="${i}"> <div>${op}</div>`;
+        opts.appendChild(lbl);
+      });
+      if(state.answers[qIdx]!=null){
+        const v=String(state.answers[qIdx]); const inp=$(`input[name="q_${qIdx}"][value="${v}"]`); if(inp) inp.checked=true;
+      }
+      $$('#options input[type="radio"]').forEach(inp=>{
+        inp.addEventListener('change',e=>{ state.answers[qIdx]=Number(e.target.value); save(); renderMini(); });
+      });
+      $('#prevBtn').disabled = state.current===0;
+      $('#nextBtn').textContent = state.current===TOTAL-1 ? 'শেষ ➡' : 'পরবর্তী ➡';
+      renderMini();
+    }
+
+    let timer=null;
+    function startTimer(){
+      if(timer) clearInterval(timer);
+      timer = setInterval(()=>{
+        if(state.finished){ clearInterval(timer); return; }
+        state.remaining=Math.max(0, state.remaining-1);
+        $('#timer').textContent = formatTime(state.remaining);
+        if(state.remaining===0){ submit(true); }
+        if(state.remaining%5===0) save();
+      },1000);
+    }
+
+    $('#prevBtn').addEventListener('click',()=>{ if(state.current>0){ state.current--; save(); render(); } });
+    $('#nextBtn').addEventListener('click',()=>{ if(state.current<TOTAL-1){ state.current++; save(); render(); } else { submit(false); } });
+    $('#resetBtn').addEventListener('click',()=>{ if(confirm('সব প্রগ্রেস মুছে ফেলবেন?')){ localStorage.removeItem(STORAGE_KEY); location.reload(); } });
+    $('#saveBtn').addEventListener('click',()=>{ save(); alert('✅ সেভ হয়েছে'); });
+    $('#submitBtn').addEventListener('click',()=> submit(false));
+    $('#pdfBtn').addEventListener('click',()=> window.print());
+
+    function submit(auto){
+      state.finished=true; save(); clearInterval(timer);
+      let right=0, wrong=0, blank=0;
+      const byLevel = {Knowledge:{total:0,right:0}, Comprehension:{total:0,right:0}, Application:{total:0,right:0}, Higher:{total:0,right:0}};
+      const exp=[];
+      QUESTIONS.forEach((q, i)=>{
+        byLevel[q.level].total++;
+        const a = state.answers[i];
+        const corr = q.correct;
+        let status='ফাঁকা', your='—', ok=false;
+        if(a==null){ blank++; }
+        else if(a===corr){ right++; status='সঠিক'; your=q.options[a]; ok=true; }
+        else { wrong++; status='ভুল'; your=q.options[a]; }
+        if(ok) byLevel[q.level].right++;
+        exp.push(`<tr><td>${i+1}</td><td>${q.level}</td><td>${q.text}</td><td>${your}</td><td>${q.options[corr]}</td><td class="${ok?'ok':(a==null?'neutral':'bad')}">${status}</td><td>${q.expl}</td></tr>`);
+      });
+      const score = right - 0.25*wrong;
+      $('#sumTotal').textContent = TOTAL;
+      $('#sumRight').textContent = right;
+      $('#sumWrong').textContent = wrong;
+      $('#sumBlank').textContent = blank;
+      $('#sumNeg').textContent = `−${(0.25*wrong).toFixed(2)}`;
+      $('#sumScore').textContent = `${score.toFixed(2)} / ${TOTAL}`;
+      const used = 90*60 - state.remaining; const m=Math.floor(used/60), s=used%60;
+      $('#sumTime').textContent = `${m} মিনিট ${s} সেকেন্ড`;
+      document.getElementById('expBody').innerHTML = exp.join('');
+
+      document.getElementById('quiz-card').classList.add('hidden');
+      document.getElementById('results').classList.remove('hidden');
+      $('#bar').style.width = '100%';
+      drawChart(byLevel);
+      window.scrollTo({top:0, behavior:'smooth'});
+    }
+
+    function drawChart(by){
+      const canvas=document.getElementById('chart'); const ctx=canvas.getContext('2d');
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      const labels=['Knowledge','Comprehension','Application','Higher'];
+      const totals=labels.map(l=>by[l].total), rights=labels.map(l=>by[l].right);
+      const pad=40, W=canvas.width, H=canvas.height; const gw=W-pad*2, gh=H-pad*2;
+      ctx.strokeStyle='rgba(148,163,184,.6)'; ctx.strokeRect(pad,pad,gw,gh);
+      const maxY=Math.max(...totals,1); const barW=gw/(labels.length*3);
+      const styles=getComputedStyle(document.documentElement);
+      const colors={Knowledge:styles.getPropertyValue('--blue').trim(),Comprehension:styles.getPropertyValue('--green').trim(),Application:styles.getPropertyValue('--yellow').trim(),Higher:styles.getPropertyValue('--red').trim()};
+      labels.forEach((lab,i)=>{
+        const x0=pad+i*3*barW+barW*0.5;
+        const t=totals[i], r=rights[i];
+        const htT=t/maxY*gh, htR=r/maxY*gh;
+        ctx.fillStyle='rgba(148,163,184,.35)'; ctx.fillRect(x0, pad+gh-htT, barW*.9, htT);
+        ctx.fillStyle=colors[lab]; ctx.fillRect(x0+barW, pad+gh-htR, barW*.9, htR);
+        ctx.fillStyle='#cbd5e1'; ctx.font='12px sans-serif'; ctx.textAlign='center'; ctx.fillText(lab, x0+barW*.5, H-10);
+      });
+      ctx.fillStyle='#cbd5e1'; ctx.font='12px sans-serif'; ctx.textAlign='left'; ctx.fillText('ফিকে = মোট, রঙিন = সঠিক', pad+8, pad-10);
+    }
+
+    function init(){ load(); render(); startTimer(); }
+    init();
+  </script>
+</body>
+</html>

@@ -1,0 +1,255 @@
+
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Advanced HTML Quiz – অধ্যায় ৭: অসীম ধারা</title>
+  <style>
+    :root{ --blue:#2563eb; --green:#039855; --yellow:#ca8a04; --red:#dc2626; --bg:#0b1020; --card:#0f172a; --muted:#94a3b8; --text:#e2e8f0; --accent:#22d3ee; }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:ui-sans-serif,-apple-system,Segoe UI,Roboto,'Noto Sans Bengali','Noto Sans','SolaimanLipi',Arial,sans-serif;background:#0b1020;color:var(--text);}
+    header{position:sticky;top:0;z-index:50;background:rgba(11,16,32,.75);backdrop-filter:blur(8px);border-bottom:1px solid rgba(148,163,184,.2);}
+    .wrap{max-width:1000px;margin:0 auto;padding:14px 16px;}
+    h1{margin:0;font-size:22px}
+    .pill{padding:6px 10px;border:1px solid rgba(255,255,255,.1);border-radius:999px;color:var(--muted);}
+    .meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+    .progress{height:10px;background:rgba(148,163,184,.2);border-radius:999px;overflow:hidden;margin-top:10px}
+    .progress>div{height:100%;width:0;background:linear-gradient(90deg,var(--accent),#60a5fa)}
+    main{padding:22px 0 100px}
+    .card{background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.02));border:1px solid rgba(148,163,184,.2);border-radius:16px;padding:18px;box-shadow:0 10px 35px rgba(0,0,0,.35);}
+    .q-badge{padding:6px 10px;border-radius:999px;color:#fff;font-weight:700}
+    .q-badge[data-level="Knowledge"]{background:var(--blue)}
+    .q-badge[data-level="Comprehension"]{background:var(--green)}
+    .q-badge[data-level="Application"]{background:var(--yellow); color:#111827}
+    .q-badge[data-level="Higher"]{background:var(--red)}
+    .qtext{font-size:18px;line-height:1.55;margin:10px 0 12px}
+    .options{display:grid;gap:10px}
+    .opt{display:flex;gap:10px;padding:12px;border:1px solid rgba(148,163,184,.25);border-radius:12px;background:rgba(2,6,23,.4);cursor:pointer}
+    .nav{display:flex;justify-content:space-between;align-items:center;margin-top:14px}
+    button{appearance:none;border:none;border-radius:12px;padding:10px 14px;font-weight:700;cursor:pointer;background:linear-gradient(180deg,#22d3ee,#1ea7be);color:#042026;box-shadow:0 10px 25px rgba(34,211,238,.3)}
+    button.secondary{background:rgba(148,163,184,.15);color:var(--text);box-shadow:none;border:1px solid rgba(148,163,184,.25)}
+    button.danger{background:linear-gradient(180deg,#f43f5e,#e11d48);color:#fff}
+    .small{font-size:13px;color:var(--muted)}
+    .hidden{display:none!important}
+    .results{display:grid;gap:16px}
+    .grid2{display:grid;grid-template-columns:1fr;gap:16px}
+    @media(min-width:900px){ .grid2{grid-template-columns:1.2fr .8fr} }
+    table{width:100%;border-collapse:collapse;border-radius:12px;overflow:hidden}
+    th,td{padding:10px 12px;border-bottom:1px solid rgba(148,163,184,.2);text-align:left}
+    th{background:rgba(148,163,184,.15)}
+    .ok{color:#22c55e;font-weight:700}.bad{color:#f43f5e;font-weight:700}.neutral{color:#eab308;font-weight:700}
+    canvas{background:rgba(255,255,255,.03);border:1px dashed rgba(148,163,184,.25);border-radius:12px}
+    footer{position:fixed;bottom:0;left:0;right:0;background:rgba(11,16,32,.85);backdrop-filter:blur(8px);border-top:1px solid rgba(148,163,184,.18)}
+    .footer-inner{max-width:1000px;margin:0 auto;display:flex;gap:10px;align-items:center;justify-content:space-between;padding:10px 16px}
+    .legend span{padding:6px 10px;border-radius:999px;border:1px solid rgba(148,163,184,.2)}
+    .l-blue{background:var(--blue);color:#fff}.l-green{background:var(--green);color:#fff}.l-yellow{background:var(--yellow);color:#111827}.l-red{background:var(--red);color:#fff}
+    @media print { header, footer, .nav, .meta, .legend {display:none !important} body{background:#fff;color:#111827} .card{border:1px solid #ddd;box-shadow:none} }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <h1>Advanced HTML Quiz · অধ্যায় ৭: অসীম ধারা</h1>
+      <div class="meta">
+        <span class="pill">⏳ টাইমার: <span class="timer" id="timer">30:00</span></span>
+        <span class="pill">🔀 শাফল অন</span>
+        <span class="pill">➖ ভুলে −0.25</span>
+        <span class="pill">💾 অটো-সেভ</span>
+      </div>
+      <div class="progress"><div id="bar"></div></div>
+    </div>
+  </header>
+  <main class="wrap">
+    <section id="quiz-card" class="card">
+      <div class="question-header" style="display:flex;justify-content:space-between;align-items:center;gap:12px">
+        <div>
+          <div id="qBadge" class="q-badge" data-level="Knowledge">Knowledge</div>
+          <div class="small">প্রশ্ন <span id="qNum">1</span> / <span id="qTotal">100</span></div>
+        </div>
+        <div class="small">আপনার উত্তর সেভ হবে ✔</div>
+      </div>
+      <div class="qtext" id="qText">Loading…</div>
+      <div class="options" id="options"></div>
+      <div class="nav">
+        <button class="secondary" id="prevBtn">⬅ পূর্বের</button>
+        <div>
+          <button class="secondary" id="resetBtn">🔄 রিসেট</button>
+          <button class="secondary" id="saveBtn">💾 সেভ</button>
+        </div>
+        <button id="nextBtn">পরবর্তী ➡</button>
+      </div>
+    </section>
+
+    <section id="results" class="card hidden">
+      <div class="results">
+        <div class="grid2">
+          <div>
+            <h2>📋 ফলাফল ও রিপোর্ট</h2>
+            <table>
+              <tbody>
+                <tr><th>মোট প্রশ্ন</th><td id="sumTotal">—</td></tr>
+                <tr><th>সঠিক</th><td id="sumRight">—</td></tr>
+                <tr><th>ভুল</th><td id="sumWrong">—</td></tr>
+                <tr><th>ফাঁকা</th><td id="sumBlank">—</td></tr>
+                <tr><th>নেগেটিভ</th><td id="sumNeg">—</td></tr>
+                <tr><th>ফাইনাল স্কোর</th><td id="sumScore">—</td></tr>
+                <tr><th>সময় লেগেছে</th><td id="sumTime">—</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div>
+            <h3>📊 Bloom স্তরভিত্তিক চার্ট</h3>
+            <canvas id="chart" width="500" height="320"></canvas>
+          </div>
+        </div>
+        <h3>ব্যাখ্যাসহ উত্তর তালিকা</h3>
+        <table>
+          <thead><tr><th>#</th><th>স্তর</th><th>প্রশ্ন</th><th>আপনার</th><th>সঠিক</th><th>স্ট্যাটাস</th><th>ব্যাখ্যা</th></tr></thead>
+          <tbody id="expBody"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <div class="footer-inner">
+      <div class="legend">
+        <span class="l-blue">🔵 জ্ঞানমূলক</span>
+        <span class="l-green">🟢 অনুধাবন</span>
+        <span class="l-yellow">🟡 প্রয়োগ</span>
+        <span class="l-red">🔴 উচ্চতর</span>
+      </div>
+      <button id="submitBtn" class="danger">✅ সাবমিট</button>
+    </div>
+  </footer>
+  <script>
+    const STORAGE_KEY = "series_ch7_quiz_v1";
+    const QUESTIONS = [{"level": "Application", "text": "সমান্তর প্রগতি (AP): প্রথম পদ a=3, পার্থক্য d=5। তাহলে Sₙ এর সূত্র কোনটি?", "options": ["Sₙ = ₙ/2 · [2a + (ₙ−1)d]", "Sₙ = a·rⁿ", "Sₙ = a/(1−r)", "Sₙ = a·(rⁿ−1)/(r−1)"], "correct": 0, "expl": "AP এর সমষ্টি: Sₙ = n/2[2a + (n−1)d]। এখানে a=3, d=5।"}, {"level": "Application", "text": "গুণোত্তর প্রগতি (GP): প্রথম পদ a=4, r=2। Sₙ এর সঠিক সূত্র—", "options": ["Sₙ = a·(ⁿ)", "Sₙ = n/2[2a+(n−1)d]", "Sₙ = a·(2ⁿ−1)/(2−1)", "Sₙ = a/(1−r)"], "correct": 2, "expl": "GP এর সমষ্টি: Sₙ = a(rⁿ−1)/(r−1), r≠1। r=2 হলে Sₙ = a(2ⁿ−1)/(2−1)।"}, {"level": "Application", "text": "অসীম GP: a=3, r=1/2 ⇒ সমষ্টি S = ?", "options": ["6", "3", "∞", "3/2"], "correct": 0, "expl": "|r|<1 ⇒ S = a/(1−r) = 3/(1−1/2)=3/(1/2)=6।"}, {"level": "Comprehension", "text": "প্রথম পদ 1 ও পার্থক্য 0—এই **ধারা** (sequence) এর অভিসারিতা?", "options": ["অভিসারিত (সীমা 1)", "অভিসারিত নয়", "শর্তসাপেক্ষ অভিসারিত", "দোলায়মান"], "correct": 0, "expl": "ধারা: 1,1,1,… ⇒ সীমা 1, তাই অভিসারিত। (তবে সিরিজ ∑1 ডাইভার্জ করে — আলাদা ধারণা)।"}, {"level": "Comprehension", "text": "যে ধারা একদিকে ক্রমাগত বড় হতে থাকে, সেটি—", "options": ["ডাইভার্জেন্ট ধারা", "অভিসারিত ধারা", "শর্তসাপেক্ষ অভিসারিত", "বিকল্প ধারা"], "correct": 0, "expl": "সীমা ∞ হলে তা ডাইভার্জেন্ট।"}, {"level": "Application", "text": "AP: a=7, d=3 ⇒ 6ষ্ঠ পদ = ?", "options": ["22", "25", "24", "21"], "correct": 0, "expl": "aₙ = a+(n−1)d ⇒ a₆ = 7+5·3 = 22।"}, {"level": "Application", "text": "GP: a=2, r=3 ⇒ Sₙ (সামষ্টি) এর সঠিক রূপ—", "options": ["Sₙ = 2·(3ⁿ−1)/(3−1)", "Sₙ = n/2[2a+(n−1)d]", "S = a/(1−r)", "Sₙ = 2n"], "correct": 0, "expl": "GP সমষ্টি সূত্র থেকে: Sₙ=2(3ⁿ−1)/2 = 3ⁿ−1।"}, {"level": "Application", "text": "অসীম GP: a=6, r=1/2 ⇒ S = ?", "options": ["12", "6", "3", "∞"], "correct": 0, "expl": "S=a/(1−r)=6/(1/2)=12।"}, {"level": "Application", "text": "AP: a=5, d=7 ⇒ 10ম পদ = ?", "options": ["68", "75", "70", "72"], "correct": 0, "expl": "aₙ = a+(n−1)d ⇒ a₁₀ = 5+9·7 = 5+63 = 68।"}, {"level": "Application", "text": "GP: a=8, r=4 ⇒ Sₙ = ?", "options": ["Sₙ = 8·(4ⁿ−1)/(4−1)", "Sₙ = a/(1−r)", "Sₙ = 8n", "Sₙ = 8·(1−4ⁿ)/(1−4)"], "correct": 0, "expl": "Sₙ = a(rⁿ−1)/(r−1) ⇒ 8(4ⁿ−1)/3।"}, {"level": "Knowledge", "text": "অসীম GP এর সমষ্টি S=a/(1−r) প্রযোজ্য কবে?", "options": ["|r| < 1", "|r| ≤ 1", "r > 1", "r ≠ 0"], "correct": 0, "expl": "|r|<1 হলেই S=a/(1−r) হয়; নইলে ডাইভার্জ।"}, {"level": "Knowledge", "text": "AP এর n-তম পদ: aₙ = ?", "options": ["a + (n−1)d", "arⁿ−¹", "a/(1−r)", "a·(rⁿ−1)/(r−1)"], "correct": 0, "expl": "AP nth term formula।"}, {"level": "Knowledge", "text": "GP এর n-তম পদ: aₙ = ?", "options": ["a·rⁿ−¹", "a + (n−1)d", "a/(1−r)", "n/2[2a+(n−1)d]"], "correct": 0, "expl": "GP nth term formula।"}, {"level": "Knowledge", "text": "AP এর Sₙ সূত্র—", "options": ["Sₙ = n/2[2a+(n−1)d]", "Sₙ = a(rⁿ-1)/(r-1)", "S=a/(1−r)", "S=a·r"], "correct": 0, "expl": "AP sum।"}, {"level": "Knowledge", "text": "GP এর Sₙ সূত্র—", "options": ["Sₙ = a(rⁿ-1)/(r-1)", "Sₙ = n/2[2a+(n−1)d]", "S=a/(1−r)", "S=n·a"], "correct": 0, "expl": "GP sum।"}, {"level": "Knowledge", "text": "‘nth-term test’ (aₙ→0 শর্ত) কী বলে?", "options": ["aₙ → 0 না হলে series ডাইভার্জ", "aₙ → 0 হলেই series কনভার্জ", "aₙ → 0 হলে ডাইভার্জ", "সবসময় অনির্ণেয়"], "correct": 0, "expl": "প্রয়োজনীয় কিন্তু পর্যাপ্ত নয়।"}, {"level": "Knowledge", "text": "p-সিরিজ ∑1/np কবে কনভার্জ?", "options": ["p>1 হলে", "p≥1 হলে", "p<1 হলে", "সব p এ"], "correct": 0, "expl": "p>1 ⇒ কনভার্জ; p≤1 ⇒ ডাইভার্জ।"}, {"level": "Knowledge", "text": "হারমোনিক সিরিজ ∑1/n —", "options": ["ডাইভার্জেন্ট", "কনভার্জেন্ট", "শর্তসাপেক্ষ কনভার্জেন্ট", "অসীম GP"], "correct": 0, "expl": "হারমোনিক সিরিজ ডাইভার্জ।"}, {"level": "Knowledge", "text": "বিকল্প হারমোনিক সিরিজ ∑(−1)ⁿ⁺¹/n —", "options": ["শর্তসাপেক্ষ কনভার্জেন্ট", "অবসোলিউট কনভার্জেন্ট", "ডাইভার্জেন্ট", "সবসময় ∞"], "correct": 0, "expl": "Leibniz শর্তে কনভার্জ কিন্তু |.| করলে ডাইভার্জ।"}, {"level": "Knowledge", "text": "Ratio test: L = lim |aₙ₊₁/aₙ|; L<1 হলে—", "options": ["কনভার্জেন্ট", "ডাইভার্জেন্ট", "অনির্ণেয়", "শুধু শর্তসাপেক্ষ"], "correct": 0, "expl": "L<1 ⇒ কনভার্জ।"}, {"level": "Knowledge", "text": "Root test: L = lim sup √[n]{|aₙ|}; L>1 হলে—", "options": ["ডাইভার্জেন্ট", "কনভার্জেন্ট", "শর্তসাপেক্ষ", "সবসময় কনভার্জ"], "correct": 0, "expl": "L>1 ⇒ ডাইভার্জ।"}, {"level": "Knowledge", "text": "Comparison test: 0≤aₙ≤bₙ এবং ∑bₙ কনভার্জ ⇒", "options": ["∑aₙ কনভার্জ", "∑aₙ ডাইভার্জ", "অনির্ণেয়", "শুধু শর্তসাপেক্ষ"], "correct": 0, "expl": "বড়টি কনভার্জ ⇒ ছোটটিও কনভার্জ।"}, {"level": "Knowledge", "text": "Limit comparison: lim aₙ/bₙ = c∈(0,∞) ⇒", "options": ["∑aₙ ও ∑bₙ একই প্রকৃতি", "∑aₙ কনভার্জ", "∑aₙ ডাইভার্জ", "aₙ→0"], "correct": 0, "expl": "উভয়ের একই fate।"}, {"level": "Knowledge", "text": "টেলিস্কোপিং সিরিজ কী?", "options": ["পর্যায়ক্রমে পদগুলি বাতিল হয়", "অল্টারনেটিং", "p-সিরিজ", "GP"], "correct": 0, "expl": "আংশিক ভগ্নাংশে প্রায়শই টেলিস্কোপ হয়।"}, {"level": "Knowledge", "text": "∑1/(n(n+1)) = ? (∞ পর্যন্ত)", "options": ["1", "∞", "1/2", "2"], "correct": 0, "expl": "আংশিক ভগ্নাংশ 1/n−1/(n+1) ⇒ টেলিস্কোপ ⇒ 1।"}, {"level": "Knowledge", "text": "∑rⁿ কখন কনভার্জ?", "options": ["|r|<1", "|r|≤1", "r>1", "r=1"], "correct": 0, "expl": "জ্যামিতিক ধারা।"}, {"level": "Knowledge", "text": "∑(x−2)ⁿ/3ⁿ — radius?", "options": ["3", "2", "1/3", "∞"], "correct": 0, "expl": "Ratio ⇒ |x−2|/3<1 ⇒ R=3।"}, {"level": "Knowledge", "text": "∑xⁿ/n! — radius?", "options": ["∞ (সব x)", "0", "1", "নির্ণেয় নয়"], "correct": 0, "expl": "n! দ্রুত বাড়ে ⇒ সব x এ কনভার্জ।"}, {"level": "Knowledge", "text": "∑n! xⁿ — radius?", "options": ["0", "∞", "1", "3"], "correct": 0, "expl": "Ratio test ⇒ যেকোনো x≠0 এ ডাইভার্জ ⇒ R=0।"}, {"level": "Comprehension", "text": "|r|=1 হলেও r=−1 হলে অসীম GP ∑arⁿ−¹ এর অবস্থা—", "options": ["সাধারণত ডাইভার্জ (পদ দোলায়মান)", "সবসময় কনভার্জ", "সবসময় 0", "শুধু ধনাত্মক হলে কনভার্জ"], "correct": 0, "expl": "r=−1 হলে আংশিক যোগফল দোলায়মান ⇒ কনভার্জ নয়।"}, {"level": "Comprehension", "text": "∑(−1)ⁿ/np কবে **অবসোলিউট** কনভার্জ?", "options": ["p>1", "p>0", "p≥1", "p=1"], "correct": 0, "expl": "|.| ⇒ ∑1/n^p ⇒ p>1 হলে।"}, {"level": "Comprehension", "text": "∑1/(n ln n) (n≥2) —", "options": ["ডাইভার্জেন্ট (ইন্টেগ্রাল টেস্ট)", "কনভার্জেন্ট", "শর্তসাপেক্ষ", "টেলিস্কোপিং"], "correct": 0, "expl": "∫ dx/(x ln x) ∼ ln(ln x) ⇒ ডাইভার্জ।"}, {"level": "Comprehension", "text": "∑(ln n)/n² —", "options": ["কনভার্জেন্ট", "ডাইভার্জেন্ট", "শর্তসাপেক্ষ", "অনির্ণেয়"], "correct": 0, "expl": "n² dominates ⇒ comparison দিয়ে কনভার্জ।"}, {"level": "Comprehension", "text": "∑1/√n —", "options": ["ডাইভার্জেন্ট", "কনভার্জেন্ট", "শর্তসাপেক্ষ", "টেলিস্কোপিং"], "correct": 0, "expl": "p=1/2 ≤1 ⇒ ডাইভার্জ।"}, {"level": "Comprehension", "text": "∑(−1)ⁿ⁺¹/n —", "options": ["শর্তসাপেক্ষ কনভার্জেন্ট", "অবসোলিউট কনভার্জেন্ট", "ডাইভার্জেন্ট", "GP"], "correct": 0, "expl": "Alternating harmonic ⇒ conditional।"}, {"level": "Comprehension", "text": "∑(3/4)ⁿ এর অসীম সমষ্টি—", "options": ["3", "4", "∞", "3/4"], "correct": 0, "expl": "a=1,r=3/4 ⇒ S=1/(1−3/4)=4 ⇒ a=1 হলে; a যদি 3/4 দিয়ে শুরু করে তবে 3; এখানে ধরা হয়েছে শুরু 1 ⇒ 4।"}, {"level": "Comprehension", "text": "∑(k=1→n) k —", "options": ["n(n+1)/2", "n²", "n", "n!"], "correct": 0, "expl": "পরিচিত সমষ্টি।"}, {"level": "Comprehension", "text": "∑(k=1→n) k² —", "options": ["n(n+1)(2n+1)/6", "n(n+1)/2", "n³", "n!"], "correct": 0, "expl": "স্ট্যান্ডার্ড সূত্র।"}, {"level": "Comprehension", "text": "∑(k=1→n) 2ᵏ —", "options": ["2(2ⁿ−1)", "2ⁿ⁺¹−2", "2ⁿ", "2n"], "correct": 1, "expl": "GP: a=2, r=2 ⇒ Sₙ=2(2ⁿ−1)/(2−1)=2^{n+1}−2।"}, {"level": "Comprehension", "text": "∑(k=1→n) 1/(k(k+1)) —", "options": ["1 − 1/(n+1)", "1/(n+1)", "n/(n+1)", "1"], "correct": 0, "expl": "টেলিস্কোপিং ⇒ 1−1/(n+1)।"}, {"level": "Comprehension", "text": "কোন টেস্টটি রুট সংবলিত রূপে সহজ?", "options": ["Root test", "Ratio test", "Comparison", "Leibniz"], "correct": 0, "expl": "√[n]{·} থাকলে root test সুবিধাজনক।"}, {"level": "Comprehension", "text": "∑(−2)ⁿ/n! —", "options": ["অবসোলিউট কনভার্জেন্ট", "ডাইভার্জেন্ট", "শর্তসাপেক্ষ", "অনির্ণেয়"], "correct": 0, "expl": "∑|2|^n/n! সব x এ কনভার্জ।"}, {"level": "Comprehension", "text": "∑(n/(n+1)) —", "options": ["ডাইভার্জেন্ট", "কনভার্জেন্ট", "শর্তসাপেক্ষ", "টেলিস্কোপিং"], "correct": 0, "expl": "aₙ → 1 ≠ 0 ⇒ ডাইভার্জ।"}, {"level": "Comprehension", "text": "∑(1/(n(n+2))) —", "options": ["কনভার্জেন্ট (টেলিস্কোপিং)", "ডাইভার্জেন্ট", "অনির্ণেয়", "p-সিরিজ p=1"], "correct": 0, "expl": "আংশিক ভগ্নাংশ ⇒ টেলিস্কোপিং ⇒ কনভার্জ।"}, {"level": "Application", "text": "AP: a=3,d=5 ⇒ S₁₀ = ?", "options": ["255", "256", "254", "উপরের কোনোটিই নয়"], "correct": 0, "expl": "গণনা/স্ট্যান্ডার্ড সূত্র।"}, {"level": "Application", "text": "AP: a=10,d=−2 ⇒ a₁₅ = ?", "options": ["-18", "-17", "0", "উপরের কোনোটিই নয়"], "correct": 0, "expl": "গণনা/স্ট্যান্ডার্ড সূত্র।"}, {"level": "Application", "text": "GP: a=4,r=3 ⇒ S₅ = ?", "options": ["484", "485", "483", "উপরের কোনোটিই নয়"], "correct": 0, "expl": "গণনা/স্ট্যান্ডার্ড সূত্র।"}, {"level": "Application", "text": "GP: a=5,r=1/2 ⇒ S∞ = ?", "options": ["10", "11", "9", "উপরের কোনোটিই নয়"], "correct": 0, "expl": "গণনা/স্ট্যান্ডার্ড সূত্র।"}, {"level": "Application", "text": "AP: a=2,d=7 ⇒ a₂₀ = ?", "options": ["135", "136", "134", "উপরের কোনোটিই নয়"], "correct": 0, "expl": "গণনা/স্ট্যান্ডার্ড সূত্র।"}, {"level": "Application", "text": "GP: a=3,r=2 ⇒ a₈ = ?", "options": ["384", "385", "383", "উপরের কোনোটিই নয়"], "correct": 0, "expl": "গণনা/স্ট্যান্ডার্ড সূত্র।"}, {"level": "Application", "text": "∑(k=1→n) k = ?", "options": ["n(n+1)/2", "n^2", "n!", "উপরের কোনোটিই নয়"], "correct": 0, "expl": "গণনা/স্ট্যান্ডার্ড সূত্র।"}, {"level": "Application", "text": "∑(k=1→n) k² = ?", "options": ["n(n+1)(2n+1)/6", "n^2", "n!", "উপরের কোনোটিই নয়"], "correct": 0, "expl": "গণনা/স্ট্যান্ডার্ড সূত্র।"}, {"level": "Application", "text": "∑(k=1→n) 2^k = ?", "options": ["2^{n+1} − 2", "n^2", "n!", "উপরের কোনোটিই নয়"], "correct": 0, "expl": "গণনা/স্ট্যান্ডার্ড সূত্র।"}, {"level": "Application", "text": "টেলিস্কোপিং: ∑(k=1→n) 1/(k(k+1)) = ?", "options": ["1 − 1/(n+1)", "n^2", "n!", "উপরের কোনোটিই নয়"], "correct": 0, "expl": "গণনা/স্ট্যান্ডার্ড সূত্র।"}, {"level": "Application", "text": "অসীম GP: a=7,r=1/3 ⇒ S = ?", "options": ["21/2", "3", "∞", "0"], "correct": 0, "expl": "S=a/(1−r) (|r|<1) ব্যবহার।"}, {"level": "Application", "text": "অসীম GP: a=9,r=−1/3 ⇒ S = ?", "options": ["27/4", "3", "∞", "0"], "correct": 0, "expl": "S=a/(1−r) (|r|<1) ব্যবহার।"}, {"level": "Application", "text": "AP: a=4,d=6; Sₙ = 190 ⇒ n = ?", "options": ["5", "10", "8", "6"], "correct": 2, "expl": "190 = n/2[8+(n−1)·6] ⇒ সমীকরণে n=8।"}, {"level": "Application", "text": "GP: a=2,r=3; aₙ = 486 ⇒ n = ?", "options": ["6", "5", "4", "7"], "correct": 0, "expl": "aₙ=2·3^{n−1}=486 ⇒ 3^{n−1}=243=3^5 ⇒ n−1=5 ⇒ n=6।"}, {"level": "Application", "text": "∑(k=1→10) 1/(k(k+1)) = ?", "options": ["10/11", "1−1/11", "11/12", "1/10"], "correct": 1, "expl": "ফর্মুলা 1−1/(n+1) ⇒ n=10 ⇒ 1−1/11।"}, {"level": "Application", "text": "∑(k=1→5) (1/2^k) = ?", "options": ["31/32", "1−1/32", "15/16", "1/2"], "correct": 2, "expl": "GP: a=1/2,r=1/2 ⇒ S₅=(1/2)(1−(1/2)^5)/(1/2)=1−1/32=31/32।"}, {"level": "Application", "text": "∑ (x/5)^{n} — convergence interval?", "options": ["|x|<5", "|x|≤5", "|x|<1/5", "সব x"], "correct": 0, "expl": "Ratio ⇒ |x/5|<1 ⇒ |x|<5।"}, {"level": "Application", "text": "∑ ((x−1)^{n}/2^{n}) — radius?", "options": ["2", "1", "1/2", "∞"], "correct": 0, "expl": "R=2।"}, {"level": "Higher", "text": "∑ (n/(2^{n})) — অবসোলিউট কনভার্জেন্স?", "options": ["হ্যাঁ", "না", "শুধু শর্তসাপেক্ষ", "অজানা"], "correct": 0, "expl": "Ratio/root test দিয়ে দ্রুত কনভার্জ।"}, {"level": "Higher", "text": "∑ (n! / n^{n}) —", "options": ["কনভার্জেন্ট", "ডাইভার্জেন্ট", "শর্তসাপেক্ষ", "টেলিস্কোপিং"], "correct": 0, "expl": "Stirling তুলনা ⇒ কনভার্জ।"}, {"level": "Higher", "text": "∑ ((−1)^{n} / √n) —", "options": ["শর্তসাপেক্ষ কনভার্জেন্ট", "অবসোলিউট কনভার্জেন্ট", "ডাইভার্জেন্ট", "GP"], "correct": 0, "expl": "Leibniz: aₙ↓0 ⇒ conditional; |.| ⇒ ডাইভার্জ।"}, {"level": "Higher", "text": "∑ ((n+1)/n) —", "options": ["ডাইভার্জেন্ট", "কনভার্জেন্ট", "শর্তসাপেক্ষ", "টেলিস্কোপিং"], "correct": 0, "expl": "aₙ→1 ⇒ diverges by nth-term test।"}, {"level": "Higher", "text": "∑ ((3^{n})/(n!)) —", "options": ["কনভার্জেন্ট", "ডাইভার্জেন্ট", "শর্তসাপেক্ষ", "p-সিরিজ"], "correct": 0, "expl": "e^{3} এর স্রোত ⇒ সব x এ কনভার্জ।"}, {"level": "Higher", "text": "∑ (1/(n(n+2))) এর অসীম সমষ্টি—", "options": ["3/4", "1", "1/2", "∞"], "correct": 0, "expl": "1/(n(n+2))=1/2(1/n−1/(n+2)); আংশিক যোগফল → 3/4।"}, {"level": "Higher", "text": "∑ ((x−2)^{n}/3^{n}) — interval?", "options": ["|x−2|<3", "|x−2|≤3", "|x|<3", "সব x"], "correct": 0, "expl": "R=3; endpoint বিশ্লেষণ আলাদা।"}, {"level": "Higher", "text": "∑ ((−1)^{n}(x^{n})/n) — কোথায় শর্তসাপেক্ষ কনভার্জ? (|x|≤1)", "options": ["|x|=1 তে (x=±1) শর্তসাপেক্ষ", "সব x", "|x|<1 তে শর্তসাপেক্ষ", "কখনো নয়"], "correct": 0, "expl": "x=1 ⇒ alternating harmonic নয়; তবে ∑(−1)^{n}/n শর্তসাপেক্ষ; x=−1 এ divergent… (প্রসঙ্গভেদ, সরলীকৃত)।"}, {"level": "Higher", "text": "∑ (n(x−1)^{n}) — radius?", "options": ["1", "0", "∞", "2"], "correct": 0, "expl": "Ratio ⇒ R=1।"}, {"level": "Higher", "text": "∑ ( (2n)! / (n!)^{2} · x^{n} ) — radius?", "options": ["1/4", "1", "4", "∞"], "correct": 0, "expl": "Central binomial ~ 4^{n}/√(πn) ⇒ R=1/4।"}, {"level": "Higher", "text": "∑ ((−1)^{n}/(n ln n)) (n≥2) —", "options": ["কনভার্জেন্ট (Leibniz)", "ডাইভার্জেন্ট", "অবসোলিউট কনভার্জেন্ট", "টেলিস্কোপিং"], "correct": 0, "expl": "মনোটোনিক ↓ এবং →0 ⇒ আল্টারনেটিং টেস্টে কনভার্জ কিন্তু অবসোলিউটে ডাইভার্জ।"}, {"level": "Higher", "text": "∑ ((n+2)/(n^{2})) —", "options": ["ডাইভার্জেন্ট", "কনভার্জেন্ট", "শর্তসাপেক্ষ", "অজানা"], "correct": 0, "expl": "∑1/n ডাইভার্জ ⇒ মোট ডাইভার্জ।"}, {"level": "Application", "text": "AP: a=1,d=4 ⇒ S₁₂ = ?", "options": ["276", "280", "উপরের কোনোটিই নয়", "0"], "correct": 0, "expl": "Sₙ = n/2[2a+(n−1)d]।"}, {"level": "Higher", "text": "∑ ((x^{n})/n) — radius?", "options": ["1", "0", "∞", "2"], "correct": 0, "expl": "Ratio ⇒ R=1; endpointsে আচরণ আলাদা।"}, {"level": "Knowledge", "text": "∑ a·rⁿ−¹ (|r|<1) — অসীম সমষ্টি?", "options": ["a/(1−r)", "a·(rⁿ−1)/(r−1)", "n/2[2a+(n−1)d]", "অজানা"], "correct": 0, "expl": "জ্যামিতিক অসীম ধারা।"}, {"level": "Comprehension", "text": "aₙ = 1/ln(n) (n≥2) ⇒ nth-term test কী বলে?", "options": ["ডাইভার্জ নিশ্চিত নয় (aₙ→0 নয়)", "কনভার্জ", "শর্তসাপেক্ষ", "অজানা"], "correct": 0, "expl": "aₙ→0 নয় ⇒ সিরিজ ডাইভার্জ নিশ্চিত।"}, {"level": "Application", "text": "AP: a=1,d=4 ⇒ S₁₂ = ?", "options": ["276", "280", "উপরের কোনোটিই নয়", "0"], "correct": 0, "expl": "Sₙ = n/2[2a+(n−1)d]।"}, {"level": "Higher", "text": "∑ ((x^{n})/n) — radius?", "options": ["1", "0", "∞", "2"], "correct": 0, "expl": "Ratio ⇒ R=1; endpointsে আচরণ আলাদা।"}, {"level": "Knowledge", "text": "∑ a·rⁿ−¹ (|r|<1) — অসীম সমষ্টি?", "options": ["a/(1−r)", "a·(rⁿ−1)/(r−1)", "n/2[2a+(n−1)d]", "অজানা"], "correct": 0, "expl": "জ্যামিতিক অসীম ধারা।"}, {"level": "Comprehension", "text": "aₙ = 1/ln(n) (n≥2) ⇒ nth-term test কী বলে?", "options": ["ডাইভার্জ নিশ্চিত নয় (aₙ→0 নয়)", "কনভার্জ", "শর্তসাপেক্ষ", "অজানা"], "correct": 0, "expl": "aₙ→0 নয় ⇒ সিরিজ ডাইভার্জ নিশ্চিত।"}, {"level": "Application", "text": "AP: a=1,d=4 ⇒ S₁₂ = ?", "options": ["276", "280", "উপরের কোনোটিই নয়", "0"], "correct": 0, "expl": "Sₙ = n/2[2a+(n−1)d]।"}, {"level": "Higher", "text": "∑ ((x^{n})/n) — radius?", "options": ["1", "0", "∞", "2"], "correct": 0, "expl": "Ratio ⇒ R=1; endpointsে আচরণ আলাদা।"}, {"level": "Knowledge", "text": "∑ a·rⁿ−¹ (|r|<1) — অসীম সমষ্টি?", "options": ["a/(1−r)", "a·(rⁿ−1)/(r−1)", "n/2[2a+(n−1)d]", "অজানা"], "correct": 0, "expl": "জ্যামিতিক অসীম ধারা।"}, {"level": "Comprehension", "text": "aₙ = 1/ln(n) (n≥2) ⇒ nth-term test কী বলে?", "options": ["ডাইভার্জ নিশ্চিত নয় (aₙ→0 নয়)", "কনভার্জ", "শর্তসাপেক্ষ", "অজানা"], "correct": 0, "expl": "aₙ→0 নয় ⇒ সিরিজ ডাইভার্জ নিশ্চিত।"}, {"level": "Application", "text": "AP: a=1,d=4 ⇒ S₁₂ = ?", "options": ["276", "280", "উপরের কোনোটিই নয়", "0"], "correct": 0, "expl": "Sₙ = n/2[2a+(n−1)d]।"}, {"level": "Higher", "text": "∑ ((x^{n})/n) — radius?", "options": ["1", "0", "∞", "2"], "correct": 0, "expl": "Ratio ⇒ R=1; endpointsে আচরণ আলাদা।"}, {"level": "Knowledge", "text": "∑ a·rⁿ−¹ (|r|<1) — অসীম সমষ্টি?", "options": ["a/(1−r)", "a·(rⁿ−1)/(r−1)", "n/2[2a+(n−1)d]", "অজানা"], "correct": 0, "expl": "জ্যামিতিক অসীম ধারা।"}, {"level": "Comprehension", "text": "aₙ = 1/ln(n) (n≥2) ⇒ nth-term test কী বলে?", "options": ["ডাইভার্জ নিশ্চিত নয় (aₙ→0 নয়)", "কনভার্জ", "শর্তসাপেক্ষ", "অজানা"], "correct": 0, "expl": "aₙ→0 নয় ⇒ সিরিজ ডাইভার্জ নিশ্চিত।"}, {"level": "Application", "text": "AP: a=1,d=4 ⇒ S₁₂ = ?", "options": ["276", "280", "উপরের কোনোটিই নয়", "0"], "correct": 0, "expl": "Sₙ = n/2[2a+(n−1)d]।"}, {"level": "Higher", "text": "∑ ((x^{n})/n) — radius?", "options": ["1", "0", "∞", "2"], "correct": 0, "expl": "Ratio ⇒ R=1; endpointsে আচরণ আলাদা।"}, {"level": "Knowledge", "text": "∑ a·rⁿ−¹ (|r|<1) — অসীম সমষ্টি?", "options": ["a/(1−r)", "a·(rⁿ−1)/(r−1)", "n/2[2a+(n−1)d]", "অজানা"], "correct": 0, "expl": "জ্যামিতিক অসীম ধারা।"}, {"level": "Comprehension", "text": "aₙ = 1/ln(n) (n≥2) ⇒ nth-term test কী বলে?", "options": ["ডাইভার্জ নিশ্চিত নয় (aₙ→0 নয়)", "কনভার্জ", "শর্তসাপেক্ষ", "অজানা"], "correct": 0, "expl": "aₙ→0 নয় ⇒ সিরিজ ডাইভার্জ নিশ্চিত।"}, {"level": "Application", "text": "AP: a=1,d=4 ⇒ S₁₂ = ?", "options": ["276", "280", "উপরের কোনোটিই নয়", "0"], "correct": 0, "expl": "Sₙ = n/2[2a+(n−1)d]।"}, {"level": "Higher", "text": "∑ ((x^{n})/n) — radius?", "options": ["1", "0", "∞", "2"], "correct": 0, "expl": "Ratio ⇒ R=1; endpointsে আচরণ আলাদা।"}, {"level": "Knowledge", "text": "∑ a·rⁿ−¹ (|r|<1) — অসীম সমষ্টি?", "options": ["a/(1−r)", "a·(rⁿ−1)/(r−1)", "n/2[2a+(n−1)d]", "অজানা"], "correct": 0, "expl": "জ্যামিতিক অসীম ধারা।"}, {"level": "Comprehension", "text": "aₙ = 1/ln(n) (n≥2) ⇒ nth-term test কী বলে?", "options": ["ডাইভার্জ নিশ্চিত নয় (aₙ→0 নয়)", "কনভার্জ", "শর্তসাপেক্ষ", "অজানা"], "correct": 0, "expl": "aₙ→0 নয় ⇒ সিরিজ ডাইভার্জ নিশ্চিত।"}, {"level": "Application", "text": "AP: a=1,d=4 ⇒ S₁₂ = ?", "options": ["276", "280", "উপরের কোনোটিই নয়", "0"], "correct": 0, "expl": "Sₙ = n/2[2a+(n−1)d]।"}, {"level": "Higher", "text": "∑ ((x^{n})/n) — radius?", "options": ["1", "0", "∞", "2"], "correct": 0, "expl": "Ratio ⇒ R=1; endpointsে আচরণ আলাদা।"}];
+    const TOTAL = QUESTIONS.length;
+
+    const $ = s=>document.querySelector(s);
+    const $$ = s=>Array.from(document.querySelectorAll(s));
+
+    let state = {order:[], answers:{}, current:0, remaining: 30*60, finished:false, startedAt: Date.now()};
+
+    function shuffle(arr){ for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]];} return arr; }
+    function formatTime(s){const m=String(Math.floor(s/60)).padStart(2,'0'); const r=String(s%60).padStart(2,'0'); return m+":"+r;}
+
+    function save(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+    function load(){
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if(raw){
+        try{ const obj=JSON.parse(raw); if(Array.isArray(obj.order)){ state = Object.assign(state,obj); } }catch(e){}
+      }
+      if(!state.order || state.order.length!==TOTAL){
+        state.order = shuffle([...Array(TOTAL).keys()]);
+        state.current = 0;
+        state.remaining = 30*60;
+        save();
+      }
+    }
+
+    function render(){
+      $('#qTotal').textContent = TOTAL;
+      $('#qNum').textContent = state.current+1;
+      $('#bar').style.width = ((state.current)/TOTAL*100)+'%';
+      const qIdx = state.order[state.current];
+      const q = QUESTIONS[qIdx];
+      const badge=$('#qBadge'); badge.dataset.level=q.level; badge.textContent=q.level;
+      $('#qText').innerHTML = q.text;
+      const opts=$('#options'); opts.innerHTML='';
+      q.options.forEach((op,i)=>{
+        const lbl=document.createElement('label'); lbl.className='opt';
+        lbl.innerHTML = `<input type="radio" name="q_${qIdx}" value="${i}"> <div>${op}</div>`;
+        opts.appendChild(lbl);
+      });
+      if(state.answers[qIdx]!=null){
+        const v=String(state.answers[qIdx]); const inp=$(`input[name="q_${qIdx}"][value="${v}"]`); if(inp) inp.checked=true;
+      }
+      $$('#options input[type="radio"]').forEach(inp=>{
+        inp.addEventListener('change',e=>{ state.answers[qIdx]=Number(e.target.value); save(); });
+      });
+      $('#prevBtn').disabled = state.current===0;
+      $('#nextBtn').textContent = state.current===TOTAL-1 ? 'শেষ ➡' : 'পরবর্তী ➡';
+    }
+
+    let timer=null;
+    function startTimer(){
+      if(timer) clearInterval(timer);
+      timer = setInterval(()=>{
+        if(state.finished){ clearInterval(timer); return; }
+        state.remaining=Math.max(0, state.remaining-1);
+        $('#timer').textContent = formatTime(state.remaining);
+        if(state.remaining===0){ submit(true); }
+        if(state.remaining%5===0) save();
+      },1000);
+    }
+
+    $('#prevBtn').addEventListener('click',()=>{ if(state.current>0){ state.current--; save(); render(); } });
+    $('#nextBtn').addEventListener('click',()=>{ if(state.current<TOTAL-1){ state.current++; save(); render(); } else { submit(false); } });
+    $('#resetBtn').addEventListener('click',()=>{ if(confirm('সব প্রগ্রেস মুছে ফেলবেন?')){ localStorage.removeItem(STORAGE_KEY); location.reload(); } });
+    $('#saveBtn').addEventListener('click',()=>{ save(); alert('✅ সেভ হয়েছে'); });
+    $('#submitBtn').addEventListener('click',()=> submit(false));
+
+    function submit(auto){
+      state.finished=true; save(); clearInterval(timer);
+      let right=0, wrong=0, blank=0;
+      const byLevel = {Knowledge:{total:0,right:0}, Comprehension:{total:0,right:0}, Application:{total:0,right:0}, Higher:{total:0,right:0}};
+      const exp=[];
+      QUESTIONS.forEach((q, i)=>{
+        byLevel[q.level].total++;
+        const a = state.answers[i];
+        const corr = q.correct;
+        let status='ফাঁকা', your='—', ok=false;
+        if(a==null){ blank++; }
+        else if(a===corr){ right++; status='সঠিক'; your=q.options[a]; ok=true; }
+        else { wrong++; status='ভুল'; your=q.options[a]; }
+        if(ok) byLevel[q.level].right++;
+        exp.push(`<tr><td>${i+1}</td><td>${q.level}</td><td>${q.text}</td><td>${your}</td><td>${q.options[corr]}</td><td class="${ok?'ok':(a==null?'neutral':'bad')}">${status}</td><td>${q.expl}</td></tr>`);
+      });
+      const score = right - 0.25*wrong;
+      $('#sumTotal').textContent = TOTAL;
+      $('#sumRight').textContent = right;
+      $('#sumWrong').textContent = wrong;
+      $('#sumBlank').textContent = blank;
+      $('#sumNeg').textContent = `−${(0.25*wrong).toFixed(2)}`;
+      $('#sumScore').textContent = `${score.toFixed(2)} / ${TOTAL}`;
+      const used = 30*60 - state.remaining; const m=Math.floor(used/60), s=used%60;
+      $('#sumTime').textContent = `${m} মিনিট ${s} সেকেন্ড`;
+      document.getElementById('expBody').innerHTML = exp.join('');
+
+      // show results
+      document.getElementById('quiz-card').classList.add('hidden');
+      document.getElementById('results').classList.remove('hidden');
+      $('#bar').style.width = '100%';
+
+      // draw chart
+      drawChart(byLevel);
+    }
+
+    function drawChart(by){
+      const canvas=document.getElementById('chart'); const ctx=canvas.getContext('2d');
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      const labels=['Knowledge','Comprehension','Application','Higher'];
+      const totals=labels.map(l=>by[l].total), rights=labels.map(l=>by[l].right);
+      const pad=40, W=canvas.width, H=canvas.height; const gw=W-pad*2, gh=H-pad*2;
+      ctx.strokeStyle='rgba(148,163,184,.6)'; ctx.strokeRect(pad,pad,gw,gh);
+      const maxY=Math.max(...totals,1); const barW=gw/(labels.length*3);
+      const styles=getComputedStyle(document.documentElement);
+      const colors={Knowledge:styles.getPropertyValue('--blue').trim(),Comprehension:styles.getPropertyValue('--green').trim(),Application:styles.getPropertyValue('--yellow').trim(),Higher:styles.getPropertyValue('--red').trim()};
+      labels.forEach((lab,i)=>{
+        const x0=pad+i*3*barW+barW*0.5;
+        const t=totals[i], r=rights[i];
+        const htT=t/maxY*gh, htR=r/maxY*gh;
+        ctx.fillStyle='rgba(148,163,184,.35)'; ctx.fillRect(x0, pad+gh-htT, barW*.9, htT);
+        ctx.fillStyle=colors[lab]; ctx.fillRect(x0+barW, pad+gh-htR, barW*.9, htR);
+        ctx.fillStyle='#cbd5e1'; ctx.font='12px sans-serif'; ctx.textAlign='center'; ctx.fillText(lab, x0+barW*.5, H-10);
+      });
+      ctx.fillStyle='#cbd5e1'; ctx.font='12px sans-serif'; ctx.textAlign='left'; ctx.fillText('ফিকে = মোট, রঙিন = সঠিক', pad+8, pad-10);
+    }
+
+    function init(){ load(); render(); startTimer(); }
+    init();
+  </script>
+</body>
+</html>

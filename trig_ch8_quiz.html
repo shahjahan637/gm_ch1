@@ -1,0 +1,253 @@
+
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Advanced HTML Quiz – অধ্যায় ৮: ত্রিকোণমিতি</title>
+  <style>
+    :root{ --blue:#2563eb; --green:#039855; --yellow:#ca8a04; --red:#dc2626; --bg:#0b1020; --card:#0f172a; --muted:#94a3b8; --text:#e2e8f0; --accent:#22d3ee; }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:ui-sans-serif,-apple-system,Segoe UI,Roboto,'Noto Sans Bengali','Noto Sans','SolaimanLipi',Arial,sans-serif;background:#0b1020;color:var(--text);}
+    header{position:sticky;top:0;z-index:50;background:rgba(11,16,32,.75);backdrop-filter:blur(8px);border-bottom:1px solid rgba(148,163,184,.2);}
+    .wrap{max-width:1000px;margin:0 auto;padding:14px 16px;}
+    h1{margin:0;font-size:22px}
+    .pill{padding:6px 10px;border:1px solid rgba(255,255,255,.1);border-radius:999px;color:var(--muted);}
+    .meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+    .progress{height:10px;background:rgba(148,163,184,.2);border-radius:999px;overflow:hidden;margin-top:10px}
+    .progress>div{height:100%;width:0;background:linear-gradient(90deg,var(--accent),#60a5fa)}
+    main{padding:22px 0 100px}
+    .card{background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.02));border:1px solid rgba(148,163,184,.2);border-radius:16px;padding:18px;box-shadow:0 10px 35px rgba(0,0,0,.35);}
+    .q-badge{padding:6px 10px;border-radius:999px;color:#fff;font-weight:700}
+    .q-badge[data-level="Knowledge"]{background:var(--blue)}
+    .q-badge[data-level="Comprehension"]{background:var(--green)}
+    .q-badge[data-level="Application"]{background:var(--yellow); color:#111827}
+    .q-badge[data-level="Higher"]{background:var(--red)}
+    .qtext{font-size:18px;line-height:1.55;margin:10px 0 12px}
+    .options{display:grid;gap:10px}
+    .opt{display:flex;gap:10px;padding:12px;border:1px solid rgba(148,163,184,.25);border-radius:12px;background:rgba(2,6,23,.4);cursor:pointer}
+    .nav{display:flex;justify-content:space-between;align-items:center;margin-top:14px}
+    button{appearance:none;border:none;border-radius:12px;padding:10px 14px;font-weight:700;cursor:pointer;background:linear-gradient(180deg,#22d3ee,#1ea7be);color:#042026;box-shadow:0 10px 25px rgba(34,211,238,.3)}
+    button.secondary{background:rgba(148,163,184,.15);color:var(--text);box-shadow:none;border:1px solid rgba(148,163,184,.25)}
+    button.danger{background:linear-gradient(180deg,#f43f5e,#e11d48);color:#fff}
+    .small{font-size:13px;color:var(--muted)}
+    .hidden{display:none!important}
+    .results{display:grid;gap:16px}
+    .grid2{display:grid;grid-template-columns:1fr;gap:16px}
+    @media(min-width:900px){ .grid2{grid-template-columns:1.2fr .8fr} }
+    table{width:100%;border-collapse:collapse;border-radius:12px;overflow:hidden}
+    th,td{padding:10px 12px;border-bottom:1px solid rgba(148,163,184,.2);text-align:left}
+    th{background:rgba(148,163,184,.15)}
+    .ok{color:#22c55e;font-weight:700}.bad{color:#f43f5e;font-weight:700}.neutral{color:#eab308;font-weight:700}
+    canvas{background:rgba(255,255,255,.03);border:1px dashed rgba(148,163,184,.25);border-radius:12px}
+    footer{position:fixed;bottom:0;left:0;right:0;background:rgba(11,16,32,.85);backdrop-filter:blur(8px);border-top:1px solid rgba(148,163,184,.18)}
+    .footer-inner{max-width:1000px;margin:0 auto;display:flex;gap:10px;align-items:center;justify-content:space-between;padding:10px 16px}
+    .legend span{padding:6px 10px;border-radius:999px;border:1px solid rgba(148,163,184,.2)}
+    .l-blue{background:var(--blue);color:#fff}.l-green{background:var(--green);color:#fff}.l-yellow{background:var(--yellow);color:#111827}.l-red{background:var(--red);color:#fff}
+    @media print { header, footer, .nav, .meta, .legend {display:none !important} body{background:#fff;color:#111827} .card{border:1px solid #ddd;box-shadow:none} }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <h1>Advanced HTML Quiz · অধ্যায় ৮: ত্রিকোণমিতি</h1>
+      <div class="meta">
+        <span class="pill">⏳ টাইমার: <span class="timer" id="timer">30:00</span></span>
+        <span class="pill">🔀 শাফল অন</span>
+        <span class="pill">➖ ভুলে −0.25</span>
+        <span class="pill">💾 অটো-সেভ</span>
+      </div>
+      <div class="progress"><div id="bar"></div></div>
+    </div>
+  </header>
+  <main class="wrap">
+    <section id="quiz-card" class="card">
+      <div class="question-header" style="display:flex;justify-content:space-between;align-items:center;gap:12px">
+        <div>
+          <div id="qBadge" class="q-badge" data-level="Knowledge">Knowledge</div>
+          <div class="small">প্রশ্ন <span id="qNum">1</span> / <span id="qTotal">100</span></div>
+        </div>
+        <div class="small">আপনার উত্তর সেভ হবে ✔</div>
+      </div>
+      <div class="qtext" id="qText">Loading…</div>
+      <div class="options" id="options"></div>
+      <div class="nav">
+        <button class="secondary" id="prevBtn">⬅ পূর্বের</button>
+        <div>
+          <button class="secondary" id="resetBtn">🔄 রিসেট</button>
+          <button class="secondary" id="saveBtn">💾 সেভ</button>
+        </div>
+        <button id="nextBtn">পরবর্তী ➡</button>
+      </div>
+    </section>
+
+    <section id="results" class="card hidden">
+      <div class="results">
+        <div class="grid2">
+          <div>
+            <h2>📋 ফলাফল ও রিপোর্ট</h2>
+            <table>
+              <tbody>
+                <tr><th>মোট প্রশ্ন</th><td id="sumTotal">—</td></tr>
+                <tr><th>সঠিক</th><td id="sumRight">—</td></tr>
+                <tr><th>ভুল</th><td id="sumWrong">—</td></tr>
+                <tr><th>ফাঁকা</th><td id="sumBlank">—</td></tr>
+                <tr><th>নেগেটিভ</th><td id="sumNeg">—</td></tr>
+                <tr><th>ফাইনাল স্কোর</th><td id="sumScore">—</td></tr>
+                <tr><th>সময় লেগেছে</th><td id="sumTime">—</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div>
+            <h3>📊 Bloom স্তরভিত্তিক চার্ট</h3>
+            <canvas id="chart" width="500" height="320"></canvas>
+          </div>
+        </div>
+        <h3>ব্যাখ্যাসহ উত্তর তালিকা</h3>
+        <table>
+          <thead><tr><th>#</th><th>স্তর</th><th>প্রশ্ন</th><th>আপনার</th><th>সঠিক</th><th>স্ট্যাটাস</th><th>ব্যাখ্যা</th></tr></thead>
+          <tbody id="expBody"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <div class="footer-inner">
+      <div class="legend">
+        <span class="l-blue">🔵 জ্ঞানমূলক</span>
+        <span class="l-green">🟢 অনুধাবন</span>
+        <span class="l-yellow">🟡 প্রয়োগ</span>
+        <span class="l-red">🔴 উচ্চতর</span>
+      </div>
+      <button id="submitBtn" class="danger">✅ সাবমিট</button>
+    </div>
+  </footer>
+  <script>
+    const STORAGE_KEY = "trig_ch8_quiz_v1";
+    const QUESTIONS = [{"level": "Knowledge", "text": "নিম্নের কোনটি সর্বদা সত্য?", "options": ["sin²θ + cos²θ = 1", "sin²θ − cos²θ = 1", "sinθ + cosθ = 1", "tanθ + cotθ = 1"], "correct": 0, "expl": "পিথাগোরাস পরিচয়: sin²θ + cos²θ = 1।"}, {"level": "Application", "text": "tanθ = 3 এবং θ তীক্ষ্ণ কোণ ⇒ (sinθ, cosθ) = ?", "options": ["3/√10, 1/√10", "3/5, 4/5", "1/√10, 3/√10", "4/5, 3/5"], "correct": 0, "expl": "tanθ=3 ⇒ বিপরীত/সংলগ্ন=3/1 ⇒ অতিভুজ=√10 ⇒ sin=3/√10, cos=1/√10।"}, {"level": "Application", "text": "cotθ = 4 এবং θ তীক্ষ্ণ কোণ ⇒ (sinθ, cosθ) = ?", "options": ["1/√17, 4/√17", "4/√17, 1/√17", "4/5, 3/5", "3/5, 4/5"], "correct": 0, "expl": "cotθ=4 ⇒ সংলগ্ন/বিপরীত=4/1 ⇒ অতিভুজ=√17 ⇒ sin=1/√17, cos=4/√17।"}, {"level": "Knowledge", "text": "ডাবল-এঙ্গেল পরিচয়: sin(2θ) = ?", "options": ["2sinθcosθ", "sinθ+cosθ", "sinθ−cosθ", "2tanθ"], "correct": 0, "expl": "sin(α+β)=sinαcosβ+cosαsinβ; α=β=θ দিলে sin2θ=2sinθcosθ।"}, {"level": "Knowledge", "text": "cofunction পরিচয়: cos(90°−θ) = ?", "options": ["sinθ", "cotθ", "secθ", "cosecθ"], "correct": 0, "expl": "সম্পূরক কোণের জন্য cos(90°−θ)=sinθ।"}, {"level": "Application", "text": "tan(45°+x) = ?", "options": ["(1+tanx)/(1−tanx)", "(tanx−1)/(1+tanx)", "tanx+1", "(1−tanx)/(1+tanx)"], "correct": 0, "expl": "tan(A+B)=(tanA+tanB)/(1−tanA·tanB); tan45°=1 ⇒ (1+tanx)/(1−tanx)।"}, {"level": "Knowledge", "text": "cot(2θ) এর সঠিক রূপ—", "options": ["(cot²θ−1)/(2cotθ)", "(1−cot²θ)/(2cotθ)", "(2cotθ)/(cot²θ−1)", "cotθ+tanθ"], "correct": 0, "expl": "tan2θ=2tanθ/(1−tan²θ) ⇒ cot2θ=(1−tan²θ)/(2tanθ) ⇒ tan=1/cot বসিয়ে (cot²θ−1)/(2cotθ)।"}, {"level": "Knowledge", "text": "sin30° = ?", "options": ["1/2", "√3/2", "√2/2", "0"], "correct": 0, "expl": "মানক মান: sin30°=1/2।"}, {"level": "Knowledge", "text": "cos60° = ?", "options": ["1/2", "√3/2", "√2/2", "0"], "correct": 0, "expl": "মানক মান: cos60°=1/2।"}, {"level": "Knowledge", "text": "tan45° = ?", "options": ["1", "0", "√3", "1/√3"], "correct": 0, "expl": "মানক মান: tan45°=1।"}, {"level": "Knowledge", "text": "secθ = ?", "options": ["1/cosθ", "cosθ", "1/sinθ", "sinθ"], "correct": 0, "expl": "secθ = 1/cosθ।"}, {"level": "Knowledge", "text": "cosecθ = ?", "options": ["1/sinθ", "1/cosθ", "sinθ", "cosθ"], "correct": 0, "expl": "cosecθ = 1/sinθ।"}, {"level": "Knowledge", "text": "tanθ = ?", "options": ["sinθ/cosθ", "cosθ/sinθ", "1/sinθ", "1/cosθ"], "correct": 0, "expl": "tanθ = sinθ/cosθ।"}, {"level": "Knowledge", "text": "cotθ = ?", "options": ["cosθ/sinθ", "sinθ/cosθ", "1/tanθ", "tanθ"], "correct": 0, "expl": "cotθ = cosθ/sinθ = 1/tanθ।"}, {"level": "Knowledge", "text": "1+tan²θ = ?", "options": ["sec²θ", "cosec²θ", "secθ", "tanθ"], "correct": 0, "expl": "Pythagorean: 1+tan²θ=sec²θ।"}, {"level": "Knowledge", "text": "1+cot²θ = ?", "options": ["cosec²θ", "sec²θ", "tanθ", "cotθ"], "correct": 0, "expl": "Pythagorean: 1+cot²θ=cosec²θ।"}, {"level": "Knowledge", "text": "sin(−θ) = ?", "options": ["−sinθ", "sinθ", "cosθ", "−cosθ"], "correct": 0, "expl": "সাইন বিজোড় ফাংশন।"}, {"level": "Knowledge", "text": "cos(−θ) = ?", "options": ["cosθ", "−cosθ", "sinθ", "−sinθ"], "correct": 0, "expl": "কসাইন জোড় ফাংশন।"}, {"level": "Knowledge", "text": "tan(−θ) = ?", "options": ["−tanθ", "tanθ", "cotθ", "−cotθ"], "correct": 0, "expl": "ট্যানজেন্ট বিজোড়।"}, {"level": "Knowledge", "text": "sin(90°−θ) = ?", "options": ["cosθ", "sinθ", "tanθ", "secθ"], "correct": 0, "expl": "cofunction: sin(90°−θ)=cosθ।"}, {"level": "Knowledge", "text": "cos(2θ) = ?", "options": ["cos²θ−sin²θ", "2sin²θ−1", "1−2sin²θ", "উপরের সবই সঠিক"], "correct": 0, "expl": "সবগুলো সমতুল্য রূপ।"}, {"level": "Knowledge", "text": "sin(2θ) = ?", "options": ["2sinθcosθ", "sin²θ+cos²θ", "2tanθ/(1+tan²θ)", "sinθ+cosθ"], "correct": 0, "expl": "দুটি রূপই আছে: 2tan/(1+tan²) ও 2sin cos।"}, {"level": "Knowledge", "text": "tan(2θ) = ?", "options": ["2tanθ/(1−tan²θ)", "(1−tan²θ)/(2tanθ)", "tan²θ", "sec²θ"], "correct": 0, "expl": "tan দ্বিগুণ কোণ।"}, {"level": "Knowledge", "text": "sin(α±β) = ?", "options": ["sinαcosβ ± cosαsinβ", "sinαsinβ ± cosαcosβ", "cosαcosβ ∓ sinαsinβ", "tanα ± tanβ"], "correct": 0, "expl": "যোগ-বিয়োগ সূত্র।"}, {"level": "Knowledge", "text": "cos(α±β) = ?", "options": ["cosαcosβ ∓ sinαsinβ", "cosαcosβ ± sinαsinβ", "sinαcosβ ∓ cosασινβ", "tanα±tanβ"], "correct": 0, "expl": "cos যোগ-বিয়োগ।"}, {"level": "Knowledge", "text": "tan(α±β) = ?", "options": ["(tanα±tanβ)/(1∓tanαtanβ)", "tanα±tanβ", "(1±tanαtanβ)/(tanα∓tanβ)", "secαsecβ"], "correct": 0, "expl": "ট্যানজেন্ট যোগ-বিয়োগ।"}, {"level": "Knowledge", "text": "sin²θ = ?", "options": ["(1−cos2θ)/2", "(1+cos2θ)/2", "(1−sin2θ)/2", "cos²θ"], "correct": 0, "expl": "হাফ-এঙ্গেল।"}, {"level": "Knowledge", "text": "cos²θ = ?", "options": ["(1+cos2θ)/2", "(1−cos2θ)/2", "(1+sin2θ)/2", "sin²θ"], "correct": 0, "expl": "হাফ-এঙ্গেল।"}, {"level": "Knowledge", "text": "1−cos2θ = ?", "options": ["2sin²θ", "2cos²θ", "sin²θ", "tan²θ"], "correct": 0, "expl": "পরিচয়।"}, {"level": "Knowledge", "text": "1+cos2θ = ?", "options": ["2cos²θ", "2sin²θ", "sec²θ", "cosec²θ"], "correct": 0, "expl": "পরিচয়।"}, {"level": "Comprehension", "text": "θ তীক্ষ্ণ কোণ এবং sinθ > cosθ হলে θ কোন পরিসরে?", "options": ["45° < θ < 90°", "0° < θ < 45°", "θ = 45°", "কোনোটিই নয়"], "correct": 0, "expl": "তীক্ষ্ণ কোণে sinθ ও cosθ উভয়ই ধনাত্মক; sin>cos ⇒ θ>45°।"}, {"level": "Comprehension", "text": "θ দ্বিতীয় চতুর্ভুজে হলে (QII) কোনটি সত্য?", "options": ["sinθ>0, cosθ<0, tanθ<0", "sinθ<0, cosθ>0", "সবই ধনাত্মক", "সবই ঋণাত্মক"], "correct": 0, "expl": "QII: sin ধনাত্মক, cos ঋণাত্মক ⇒ tan ঋণাত্মক।"}, {"level": "Comprehension", "text": "sinθ = 3/5, θ তীক্ষ্ণ ⇒ cosθ = ?", "options": ["4/5", "−4/5", "3/5", "√3/2"], "correct": 0, "expl": "Pythagoras: cos=√(1−9/25)=4/5।"}, {"level": "Comprehension", "text": "cosθ = 12/13, θ তীক্ষ্ণ ⇒ tanθ = ?", "options": ["5/12", "12/5", "5/13", "12/13"], "correct": 0, "expl": "sin=5/13 ⇒ tan=5/12।"}, {"level": "Comprehension", "text": "sin(θ+30°)=1/2; θ তীক্ষ্ণ ⇒ θ = ?", "options": ["0°", "15°", "30°", "60°"], "correct": 0, "expl": "sin(θ+30)=1/2 ⇒ θ+30=30° বা 150°. তীক্ষ্ণ ⇒ θ=0°।"}, {"level": "Comprehension", "text": "cos(2θ)=0 ⇒ θ ∈ ? (0° থেকে 360°)", "options": ["45°,135°,225°,315°", "0°,90°,180°,270°", "30°,150°,210°,330°", "60°,120°,240°,300°"], "correct": 0, "expl": "cos2θ=0 ⇒ 2θ=90°+k·180° ⇒ θ=45°,135°,225°,315°।"}, {"level": "Comprehension", "text": "sin(θ)=sin(180°−θ) — এই বৈশিষ্ট্যটি কী নির্দেশ করে?", "options": ["সাইন-এর সমতা (cofunction নয়)", "কোফাংশন সম্পর্ক", "even ফাংশন", "odd ফাংশন"], "correct": 0, "expl": "জ্যামিতিক প্রতিসাম্য: sin(π−θ)=sinθ।"}, {"level": "Comprehension", "text": "tan(θ+180°)=?", "options": ["tanθ", "−tanθ", "cotθ", "secθ"], "correct": 0, "expl": "ট্যানজেন্টের পর্ব 180°।"}, {"level": "Comprehension", "text": "sin(90°+θ)=?", "options": ["cosθ", "−cosθ", "sinθ", "−sinθ"], "correct": 0, "expl": "cofunction + quadrant rule: সাধারণ রূপে cosθ; আদতে চিহ্ন θ-এর উপর নির্ভর।"}, {"level": "Application", "text": "sinθ = 1/2; 0°≤θ<360° ⇒ θ = ?", "options": ["30°, 150°", "45°, 135°", "60°, 120°", "0°, 180°"], "correct": 0, "expl": "sinθ positive QI,QII ⇒ 30°,150°।"}, {"level": "Application", "text": "cosθ = −√3/2; 0°≤θ<360° ⇒ θ = ?", "options": ["150°, 210°", "120°, 240°", "60°, 300°", "90°, 270°"], "correct": 0, "expl": "cos negative QII,QIII ⇒ 120°,240°।"}, {"level": "Application", "text": "tanθ = −1; 0°≤θ<360° ⇒ θ = ?", "options": ["135°, 315°", "45°, 225°", "30°, 210°", "60°, 240°"], "correct": 0, "expl": "tan=−1 ⇒ QII,QIV ⇒ 135°,315°।"}, {"level": "Application", "text": "secθ = 2 ⇒ cosθ = ?", "options": ["1/2", "2", "−1/2", "−2"], "correct": 0, "expl": "sec=1/cos ⇒ cos=1/2।"}, {"level": "Application", "text": "cosecθ = −2 ⇒ sinθ = ?", "options": ["−1/2", "1/2", "√3/2", "−√3/2"], "correct": 0, "expl": "cosec=1/sin ⇒ sin=−1/2।"}, {"level": "Application", "text": "sin2θ = √3/2; 0°≤θ<360° ⇒ θ = ?", "options": ["30°, 60°, 120°, 150°", "15°, 75°, 195°, 255°", "45°, 135°", "90°, 270°"], "correct": 0, "expl": "2θ=60°,120°,240°,300° ⇒ θ=30°,60°,120°,150°।"}, {"level": "Application", "text": "cos2θ = −1 ⇒ θ = ? (0°≤θ<360°)", "options": ["90°, 270°", "0°, 180°", "60°, 120°", "45°, 225°"], "correct": 0, "expl": "cos2θ=−1 ⇒ 2θ=180°,540° ⇒ θ=90°,270°।"}, {"level": "Application", "text": "tan2θ = 0 ⇒ θ = ?", "options": ["0°, 90°, 180°, 270°", "45°, 135°, 225°, 315°", "30°, 210°", "সবগুলো"], "correct": 0, "expl": "tan2θ=0 ⇒ 2θ=k·180° ⇒ θ=k·90°।"}, {"level": "Application", "text": "sin(3θ)=0 ⇒ θ=?", "options": ["0°,60°,120°, …", "0°,30°,60°, …", "30°,90°,150°, …", "সবগুলো"], "correct": 0, "expl": "3θ=k·180° ⇒ θ=k·60°।"}, {"level": "Application", "text": "cos(θ−30°)=√3/2; 0°≤θ<360° ⇒ θ = ?", "options": ["30°, 90°", "30°, 330°", "60°, 0°", "−30°, 90°"], "correct": 0, "expl": "cos(θ−30)=√3/2 ⇒ θ−30=±30° ⇒ θ=60° বা 0°।"}, {"level": "Application", "text": "tan(θ)+cot(θ) ≥ 2 ⇒ এটি সত্য কবে?", "options": ["সব θ যেখানে সংজ্ঞায়িত", "শুধু QI", "শুধু QIII", "কখনোই নয়"], "correct": 0, "expl": "AM≥GM: tan·cot=1 ⇒ tan+cot≥2।"}, {"level": "Application", "text": "sin(75°) এর সঠিক মান—", "options": ["(√6+√2)/4", "(√3+1)/2√2", "√3/2", "(√5)/2"], "correct": 0, "expl": "sin(45+30) ⇒ (√6+√2)/4।"}, {"level": "Application", "text": "cos(15°) এর সঠিক মান—", "options": ["(√6+√2)/4", "(√6−√2)/4", "√3/2", "(√2)/2"], "correct": 0, "expl": "cos(45−30) ⇒ (√6+√2)/4।"}, {"level": "Application", "text": "sin(−30°) = ?", "options": ["−1/2", "1/2", "√3/2", "−√3/2"], "correct": 0, "expl": "সাইন বিজোড় ⇒ −1/2।"}, {"level": "Application", "text": "cos(−60°) = ?", "options": ["1/2", "−1/2", "√3/2", "−√3/2"], "correct": 0, "expl": "কসাইন জোড় ⇒ cos(−x)=cos x=1/2।"}, {"level": "Application", "text": "sec(π/3) = ?", "options": ["2", "1/2", "√3", "2/√3"], "correct": 0, "expl": "π/3=60° ⇒ sec=2।"}, {"level": "Application", "text": "cosec(π/6) = ?", "options": ["2", "1/2", "√3", "2/√3"], "correct": 0, "expl": "π/6=30° ⇒ cosec=2।"}, {"level": "Application", "text": "tan(π/4+θ) = ?", "options": ["(1+tanθ)/(1−tanθ)", "(tanθ−1)/(1+tanθ)", "tanθ+1", "1−tanθ"], "correct": 0, "expl": "রেডিয়ানে একই সূত্র।"}, {"level": "Application", "text": "cot(45°−x) = ?", "options": ["(1+tanx)/(1−tanx)", "(1−tanx)/(1+tanx)", "(tanx+1)/(tanx−1)", "(tanx−1)/(tanx+1)"], "correct": 0, "expl": "tan(45°−x)=(1−tanx)/(1+tanx) ⇒ cot উল্টোটা।"}, {"level": "Application", "text": "sin(2x)=sinx ⇒ x ∈ ? (0°≤x<360°)", "options": ["0°, 60°, 180°, 300°", "0°, 120°, 180°", "0°, 90°, 180°", "0°, 30°, 150°"], "correct": 0, "expl": "sin2x−sinx=2cos(3x/2)sin(x/2)=0 ⇒ x=0°,180° বা 60°,300°।"}, {"level": "Higher", "text": "প্রমাণধর্মী: tanθ + cotθ ≥ 2 — নিচের কোন যুক্তিটি উপযুক্ত?", "options": ["AM ≥ GM এ ধরা: a=tanθ, b=cotθ", "Cauchy সরাসরি sin,cos এ", "Triangle inequality", "Mean value theorem"], "correct": 0, "expl": "tanθ·cotθ=1 ⇒ AM≥GM ⇒ tan+cot ≥ 2।"}, {"level": "Higher", "text": "প্রমাণধর্মী: secθ + tanθ — মূল কৌশল—", "options": ["(secθ−tanθ)(secθ+tanθ)=1", "sin²+cos²=1", "cos দ্বিগুণ কোণ", "product-to-sum"], "correct": 0, "expl": "পরিচয় (sec−tan)(sec+tan)=1 থেকে অসমতা তৈরি।"}, {"level": "Higher", "text": "tanA + tanB = 0 ⇒ A + B = ? (mod π)", "options": ["kπ", "π/2 + kπ", "π/4 + kπ", "0"], "correct": 0, "expl": "tan(A+B)=0 ⇒ A+B=kπ।"}, {"level": "Higher", "text": "tanA + tanB + tanC = tanA·tanB·tanC; A+B+C = ?", "options": ["kπ", "π/2 + kπ", "π/4 + kπ", "কোনোটিই নয়"], "correct": 0, "expl": "A+B+C=kπ শর্তে পরিচয়টি সত্য।"}, {"level": "Higher", "text": "sinx = sin3x ⇒ 0°≤x<360° সমাধানের সংখ্যা—", "options": ["4", "6", "8", "2"], "correct": 0, "expl": "sin3x−sinx=2cos2x·sinx=0 ⇒ x=0°,180° বা 45°,135°,225°,315° ⇒ 6টি।"}, {"level": "Higher", "text": "cosx = cos3x ⇒ 0°≤x<360° সমাধানের সংখ্যা—", "options": ["6", "8", "4", "2"], "correct": 0, "expl": "cos3x−cosx = −2sin2x·sinx ⇒ সমাবেশে 0,90,180,270 ⇒ 4টি।"}, {"level": "Higher", "text": "tanx = tan3x ⇒ সাধারণ সমাধান—", "options": ["x = kπ/2", "x = kπ", "x = π/2 + kπ", "x = 2kπ"], "correct": 0, "expl": "3x = x + kπ ⇒ x = kπ/2।"}, {"level": "Higher", "text": "sin(α)+sin(β) = 2 sin((α+β)/2) cos((α−β)/2) — এটি কোন ধরনের সূত্র?", "options": ["sum-to-product", "product-to-sum", "ডাবল-এঙ্গেল", "হাফ-এঙ্গেল"], "correct": 0, "expl": "Sum-to-Product identity।"}, {"level": "Higher", "text": "cosα + cosβ = 2 cos((α+β)/2) cos((α−β)/2) —", "options": ["sum-to-product", "product-to-sum", "ডাবল-এঙ্গেল", "হাফ-এঙ্গেল"], "correct": 0, "expl": "পরিচিত রূপ।"}, {"level": "Higher", "text": "sinα sinβ = ?", "options": ["(cos(α−β) − cos(α+β))/2", "(cos(α+β) − cos(α−β))/2", "(sin(α+β)+sin(α−β))/2", "(sin(α+β)−sin(α−β))/2"], "correct": 0, "expl": "Product-to-sum।"}, {"level": "Higher", "text": "cosα cosβ = ?", "options": ["(cos(α+β)+cos(α−β))/2", "(cos(α−β)−cos(α+β))/2", "(sin(α+β)+sin(α−β))/2", "(sin(α+β)−sin(α−β))/2"], "correct": 0, "expl": "Product-to-sum।"}, {"level": "Higher", "text": "sin(3θ) = ?", "options": ["3sinθ − 4sin³θ", "4sin³θ − 3sinθ", "3sinθ + 4sin³θ", "sinθ(3−4sin²θ)"], "correct": 0, "expl": "পরিচিত ত্রিকোণমিতিক বহুপাত।"}, {"level": "Higher", "text": "cos(3θ) = ?", "options": ["4cos³θ − 3cosθ", "3cosθ − 4cos³θ", "cosθ(4cos²θ−3)", "উপরের সবই সমতুল্য"], "correct": 0, "expl": "সব রূপ সমতুল্য।"}, {"level": "Higher", "text": "ধরা যাক sinθ + cosθ = 1 ⇒ tanθ এর সম্ভাব্য মান—", "options": ["0", "1", "−1", "অপরিবর্তনীয়"], "correct": 0, "expl": "(sin+cos)²=1 ⇒ 1+sin2θ=1 ⇒ sin2θ=0 ⇒ যেখানে সংজ্ঞায়িত, tanθ=0।"}, {"level": "Application", "text": "sin(π/4) = ?", "options": ["√2/2", "√3/2", "1/2", "1"], "correct": 0, "expl": "π/4=45° ⇒ sin=√2/2।"}, {"level": "Application", "text": "cos(π/4) = ?", "options": ["√2/2", "√3/2", "1/2", "1"], "correct": 0, "expl": "cos45°=√2/2।"}, {"level": "Application", "text": "tan(π/6) = ?", "options": ["1/√3", "√3/3", "√3", "1/2"], "correct": 0, "expl": "π/6=30° ⇒ tan=1/√3।"}, {"level": "Application", "text": "tan(π/3) = ?", "options": ["√3", "1/√3", "1", "√2"], "correct": 0, "expl": "π/3=60° ⇒ tan=√3।"}, {"level": "Application", "text": "cot(π/6) = ?", "options": ["√3", "1/√3", "2", "1/2"], "correct": 0, "expl": "cot = √3।"}, {"level": "Application", "text": "sec(0°) = ?", "options": ["1", "0", "∞", "−1"], "correct": 0, "expl": "cos0=1 ⇒ sec=1।"}, {"level": "Application", "text": "cosec(90°) = ?", "options": ["1", "0", "∞", "−1"], "correct": 0, "expl": "sin90=1 ⇒ cosec=1।"}, {"level": "Application", "text": "sin²θ − cos²θ = ?", "options": ["−cos2θ", "cos2θ", "sin2θ", "tan2θ"], "correct": 1, "expl": "cos2θ=cos²−sin²; সুতরাং sin²−cos²=−cos2θ।"}, {"level": "Application", "text": "1−2sin²θ = ?", "options": ["cos2θ", "−cos2θ", "sin2θ", "−sin2θ"], "correct": 0, "expl": "cos2θ এর একটি রূপ।"}, {"level": "Application", "text": "1+2sinθcosθ = ?", "options": ["1+sin2θ", "cos2θ", "tan2θ", "sec2θ"], "correct": 0, "expl": "sin2θ=2sin cos।"}, {"level": "Application", "text": "sin(θ)cos(θ) = ?", "options": ["sin2θ/2", "cos2θ/2", "(sin²θ)/2", "(cos²θ)/2"], "correct": 0, "expl": "পরিচয়।"}, {"level": "Application", "text": "θ তীক্ষ্ণ, sinθ=√2/2 ⇒ θ = ?", "options": ["45°", "30°", "60°", "90°"], "correct": 0, "expl": "standard angle।"}, {"level": "Application", "text": "θ তীক্ষ্ণ, cosθ=√3/2 ⇒ θ = ?", "options": ["30°", "60°", "45°", "90°"], "correct": 0, "expl": "cos30°=√3/2।"}, {"level": "Application", "text": "0°≤θ≤180°; sinθ ≥ 0 — কোন চতুর্ভুজে?", "options": ["QI বা QII", "QIII বা QIV", "শুধু QI", "শুধু QII"], "correct": 0, "expl": "0°≤θ≤180° ⇒ sin≥0।"}, {"level": "Application", "text": "0°≤θ<360°; cosθ ≤ 0 —", "options": ["QII বা QIII", "QI বা QIV", "QIII বা QIV", "সব"], "correct": 0, "expl": "cos≤0 ⇒ QII,QIII।"}, {"level": "Application", "text": "tanθ>0 —", "options": ["QI বা QIII", "QII বা QIV", "শুধু QI", "শুধু QIII"], "correct": 0, "expl": "ট্যানজেন্ট ধনাত্মক ⇒ QI,QIII।"}, {"level": "Application", "text": "sin(θ)=cos(θ) ⇒ θ = ? (0°≤θ<360°)", "options": ["45°, 225°", "45°, 315°", "135°, 315°", "45°, 135°"], "correct": 0, "expl": "sin=cos ⇒ tan=1 ⇒ θ=45°,225°।"}, {"level": "Application", "text": "sin(θ)=−cos(θ) ⇒ θ = ?", "options": ["135°, 315°", "45°, 225°", "135°, 225°", "45°, 315°"], "correct": 3, "expl": "tan=−1 ⇒ θ=315° বা 135°।"}, {"level": "Application", "text": "sin(2θ)=cos(2θ) ⇒ θ = ? (0°≤θ<360°)", "options": ["22.5°, 112.5°, 202.5°, 292.5°", "45°, 225°", "0°, 180°", "30°, 210°"], "correct": 0, "expl": "tan2θ=1 ⇒ 2θ=45°+k·180° ⇒ θ=22.5°+k·90°।"}, {"level": "Application", "text": "θ∈(0,π/2); sinθ+cosθ সর্বাধিক হলে tanθ = ?", "options": ["1", "√3", "1/√3", "0"], "correct": 0, "expl": "f'(θ)=cos−sin=0 ⇒ θ=45° ⇒ tan=1।"}, {"level": "Comprehension", "text": "গ্রাফ y=sin(x+π/2) — এটি কোন শিফট?", "options": ["বামে π/2", "ডানে π/2", "উপরে 1", "নিচে 1"], "correct": 0, "expl": "x→x+φ ⇒ বামে শিফট।"}, {"level": "Application", "text": "sin20°cos25°+cos20°sin25° = ?", "options": ["sin45°", "cos45°", "sin5°", "cos5°"], "correct": 0, "expl": "sin(A+B)।"}, {"level": "Higher", "text": "যদি 0<θ<π/2 এবং sinθ=3/5 ⇒ sin3θ = ?", "options": ["(3·3/5−4·(3/5)³)", "(4·(3/5)³−3·3/5)", "3/5", "4/5"], "correct": 0, "expl": "sin3θ=3s−4s³।"}, {"level": "Knowledge", "text": "sec²θ − tan²θ = ?", "options": ["1", "0", "cosec²θ", "cot²θ"], "correct": 0, "expl": "Pythagorean rearrangement।"}, {"level": "Comprehension", "text": "গ্রাফ y=sin(x+π/2) — এটি কোন শিফট?", "options": ["বামে π/2", "ডানে π/2", "উপরে 1", "নিচে 1"], "correct": 0, "expl": "x→x+φ ⇒ বামে শিফট।"}, {"level": "Application", "text": "sin20°cos25°+cos20°sin25° = ?", "options": ["sin45°", "cos45°", "sin5°", "cos5°"], "correct": 0, "expl": "sin(A+B)।"}, {"level": "Higher", "text": "যদি 0<θ<π/2 এবং sinθ=3/5 ⇒ sin3θ = ?", "options": ["(3·3/5−4·(3/5)³)", "(4·(3/5)³−3·3/5)", "3/5", "4/5"], "correct": 0, "expl": "sin3θ=3s−4s³।"}];
+    const TOTAL = QUESTIONS.length;
+
+    const $ = s=>document.querySelector(s);
+    const $$ = s=>Array.from(document.querySelectorAll(s));
+
+    let state = {order:[], answers:{}, current:0, remaining: 30*60, finished:false, startedAt: Date.now()};
+
+    function shuffle(arr){ for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]];} return arr; }
+    function formatTime(s){const m=String(Math.floor(s/60)).padStart(2,'0'); const r=String(s%60).padStart(2,'0'); return m+":"+r;}
+
+    function save(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+    function load(){
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if(raw){
+        try{ const obj=JSON.parse(raw); if(Array.isArray(obj.order)){ state = Object.assign(state,obj); } }catch(e){}
+      }
+      if(!state.order || state.order.length!==TOTAL){
+        state.order = shuffle([...Array(TOTAL).keys()]);
+        state.current = 0;
+        state.remaining = 30*60;
+        save();
+      }
+    }
+
+    function render(){
+      $('#qTotal').textContent = TOTAL;
+      $('#qNum').textContent = state.current+1;
+      $('#bar').style.width = ((state.current)/TOTAL*100)+'%';
+      const qIdx = state.order[state.current];
+      const q = QUESTIONS[qIdx];
+      const badge=$('#qBadge'); badge.dataset.level=q.level; badge.textContent=q.level;
+      $('#qText').innerHTML = q.text;
+      const opts=$('#options'); opts.innerHTML='';
+      q.options.forEach((op,i)=>{
+        const lbl=document.createElement('label'); lbl.className='opt';
+        lbl.innerHTML = `<input type="radio" name="q_${qIdx}" value="${i}"> <div>${op}</div>`;
+        opts.appendChild(lbl);
+      });
+      if(state.answers[qIdx]!=null){
+        const v=String(state.answers[qIdx]); const inp=$(`input[name="q_${qIdx}"][value="${v}"]`); if(inp) inp.checked=true;
+      }
+      $$('#options input[type="radio"]').forEach(inp=>{
+        inp.addEventListener('change',e=>{ state.answers[qIdx]=Number(e.target.value); save(); });
+      });
+      $('#prevBtn').disabled = state.current===0;
+      $('#nextBtn').textContent = state.current===TOTAL-1 ? 'শেষ ➡' : 'পরবর্তী ➡';
+    }
+
+    let timer=null;
+    function startTimer(){
+      if(timer) clearInterval(timer);
+      timer = setInterval(()=>{
+        if(state.finished){ clearInterval(timer); return; }
+        state.remaining=Math.max(0, state.remaining-1);
+        $('#timer').textContent = formatTime(state.remaining);
+        if(state.remaining===0){ submit(true); }
+        if(state.remaining%5===0) save();
+      },1000);
+    }
+
+    $('#prevBtn').addEventListener('click',()=>{ if(state.current>0){ state.current--; save(); render(); } });
+    $('#nextBtn').addEventListener('click',()=>{ if(state.current<TOTAL-1){ state.current++; save(); render(); } else { submit(false); } });
+    $('#resetBtn').addEventListener('click',()=>{ if(confirm('সব প্রগ্রেস মুছে ফেলবেন?')){ localStorage.removeItem(STORAGE_KEY); location.reload(); } });
+    $('#saveBtn').addEventListener('click',()=>{ save(); alert('✅ সেভ হয়েছে'); });
+    $('#submitBtn').addEventListener('click',()=> submit(false));
+
+    function submit(auto){
+      state.finished=true; save(); clearInterval(timer);
+      let right=0, wrong=0, blank=0;
+      const byLevel = {Knowledge:{total:0,right:0}, Comprehension:{total:0,right:0}, Application:{total:0,right:0}, Higher:{total:0,right:0}};
+      const exp=[];
+      QUESTIONS.forEach((q, i)=>{
+        byLevel[q.level].total++;
+        const a = state.answers[i];
+        const corr = q.correct;
+        let status='ফাঁকা', your='—', ok=false;
+        if(a==null){ blank++; }
+        else if(a===corr){ right++; status='সঠিক'; your=q.options[a]; ok=true; }
+        else { wrong++; status='ভুল'; your=q.options[a]; }
+        if(ok) byLevel[q.level].right++;
+        exp.push(`<tr><td>${i+1}</td><td>${q.level}</td><td>${q.text}</td><td>${your}</td><td>${q.options[corr]}</td><td class="${ok?'ok':(a==null?'neutral':'bad')}">${status}</td><td>${q.expl}</td></tr>`);
+      });
+      const score = right - 0.25*wrong;
+      $('#sumTotal').textContent = TOTAL;
+      $('#sumRight').textContent = right;
+      $('#sumWrong').textContent = wrong;
+      $('#sumBlank').textContent = blank;
+      $('#sumNeg').textContent = `−${(0.25*wrong).toFixed(2)}`;
+      $('#sumScore').textContent = `${score.toFixed(2)} / ${TOTAL}`;
+      const used = 30*60 - state.remaining; const m=Math.floor(used/60), s=used%60;
+      $('#sumTime').textContent = `${m} মিনিট ${s} সেকেন্ড`;
+      document.getElementById('expBody').innerHTML = exp.join('');
+
+      document.getElementById('quiz-card').classList.add('hidden');
+      document.getElementById('results').classList.remove('hidden');
+      $('#bar').style.width = '100%';
+
+      drawChart(byLevel);
+    }
+
+    function drawChart(by){
+      const canvas=document.getElementById('chart'); const ctx=canvas.getContext('2d');
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      const labels=['Knowledge','Comprehension','Application','Higher'];
+      const totals=labels.map(l=>by[l].total), rights=labels.map(l=>by[l].right);
+      const pad=40, W=canvas.width, H=canvas.height; const gw=W-pad*2, gh=H-pad*2;
+      ctx.strokeStyle='rgba(148,163,184,.6)'; ctx.strokeRect(pad,pad,gw,gh);
+      const maxY=Math.max(...totals,1); const barW=gw/(labels.length*3);
+      const styles=getComputedStyle(document.documentElement);
+      const colors={Knowledge:styles.getPropertyValue('--blue').trim(),Comprehension:styles.getPropertyValue('--green').trim(),Application:styles.getPropertyValue('--yellow').trim(),Higher:styles.getPropertyValue('--red').trim()};
+      labels.forEach((lab,i)=>{
+        const x0=pad+i*3*barW+barW*0.5;
+        const t=totals[i], r=rights[i];
+        const htT=t/maxY*gh, htR=r/maxY*gh;
+        ctx.fillStyle='rgba(148,163,184,.35)'; ctx.fillRect(x0, pad+gh-htT, barW*.9, htT);
+        ctx.fillStyle=colors[lab]; ctx.fillRect(x0+barW, pad+gh-htR, barW*.9, htR);
+        ctx.fillStyle='#cbd5e1'; ctx.font='12px sans-serif'; ctx.textAlign='center'; ctx.fillText(lab, x0+barW*.5, H-10);
+      });
+      ctx.fillStyle='#cbd5e1'; ctx.font='12px sans-serif'; ctx.textAlign='left'; ctx.fillText('ফিকে = মোট, রঙিন = সঠিক', pad+8, pad-10);
+    }
+
+    function init(){ load(); render(); startTimer(); }
+    init();
+  </script>
+</body>
+</html>
